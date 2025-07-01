@@ -1,11 +1,13 @@
 <template>
-  <div class="min-h-screen bg-gray-50 p-4 sm:p-6">
-    <div class="w-full max-w-md mx-auto">
-      <div class="text-center mb-6">
-        <h1 class="text-2xl sm:text-3xl font-bold text-gray-900 mb-4">
-          Personal Information
-        </h1>
-      </div>
+  <div class="min-h-screen bg-gray-50 flex flex-col">
+    <AppHeader />
+    <div class="flex-1 p-4 sm:p-6">
+      <div class="w-full max-w-md mx-auto">
+        <div class="text-center mb-6">
+          <h1 class="text-2xl sm:text-3xl font-bold text-gray-900 mb-4">
+            Personal Information
+          </h1>
+        </div>
 
       <form
         @submit.prevent="submitUserForm"
@@ -59,7 +61,9 @@
           </button>
         </div>
       </form>
+      </div>
     </div>
+    <AppFooter />
   </div>
 </template>
 
@@ -68,6 +72,9 @@ import { reactive, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import { useJourneyTracker } from "@/composables/useJourneyTracker.js";
 import { JOURNEY_STEPS } from "@/constants/journeySteps.js";
+import { ROUTES } from "@/constants/routes.js";
+import AppHeader from "@/components/common/AppHeader.vue";
+import AppFooter from "@/components/common/AppFooter.vue";
 
 const router = useRouter();
 const { recordJourneyStep, saveUserInformation } = useJourneyTracker();
@@ -83,12 +90,12 @@ onMounted(() => {
 
 const goBackToTerms = () => {
   recordJourneyStep(JOURNEY_STEPS.USER_FORM_BACK_BUTTON_CLICKED);
-  router.push("/terms");
+  router.push(ROUTES.TERMS.path);
 };
 
 const submitUserForm = () => {
   saveUserInformation({ personalInformation: { ...userForm } });
   recordJourneyStep(JOURNEY_STEPS.USER_FORM_SUBMITTED);
-  router.push("/wallet");
+  router.push(ROUTES.WALLET.path);
 };
 </script>

@@ -1,16 +1,16 @@
 <template>
-  <div
-    class="min-h-screen bg-gray-50 flex items-center justify-center p-4 sm:p-6"
-  >
-    <div class="w-full max-w-sm bg-white rounded-lg shadow-lg p-6">
-      <div class="text-center mb-6">
-        <h1 class="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
-          Enter OTP
-        </h1>
-        <p class="text-gray-600 text-sm">
-          We've sent a verification code to your phone
-        </p>
-      </div>
+  <div class="min-h-screen bg-gray-50 flex flex-col">
+    <AppHeader />
+    <div class="flex-1 flex items-center justify-center p-4 sm:p-6">
+      <div class="w-full max-w-sm bg-white rounded-lg shadow-lg p-6">
+        <div class="text-center mb-6">
+          <h1 class="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
+            Enter OTP
+          </h1>
+          <p class="text-gray-600 text-sm">
+            We've sent a verification code to your phone
+          </p>
+        </div>
 
       <form @submit.prevent="verifyOtp" class="space-y-4">
         <div>
@@ -52,7 +52,9 @@
           ← Back to Wallet
         </button>
       </div>
+      </div>
     </div>
+    <AppFooter />
   </div>
 </template>
 
@@ -61,6 +63,9 @@ import { ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import { useJourneyTracker } from "@/composables/useJourneyTracker.js";
 import { JOURNEY_STEPS } from "@/constants/journeySteps.js";
+import { ROUTES } from "@/constants/routes.js";
+import AppHeader from "@/components/common/AppHeader.vue";
+import AppFooter from "@/components/common/AppFooter.vue";
 
 const router = useRouter();
 const { recordJourneyStep } = useJourneyTracker();
@@ -76,7 +81,7 @@ const verifyOtp = () => {
     recordJourneyStep(JOURNEY_STEPS.OTP_VERIFICATION_ATTEMPTED, {
       otpLength: otpCode.value.length,
     });
-    router.push("/verification");
+    router.push(ROUTES.VERIFICATION.path);
   }
 };
 
@@ -88,6 +93,6 @@ const resendOtp = () => {
 
 const goBack = () => {
   recordJourneyStep(JOURNEY_STEPS.OTP_BACK_BUTTON_CLICKED);
-  router.push("/wallet");
+  router.push(ROUTES.WALLET.path);
 };
 </script>

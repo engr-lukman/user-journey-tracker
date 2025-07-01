@@ -6,43 +6,51 @@ import WalletPage from "@/pages/WalletPage.vue";
 import OtpPage from "@/pages/OtpPage.vue";
 import VerificationPage from "@/pages/VerificationPage.vue";
 import { useJourneyTracker } from "@/composables/useJourneyTracker.js";
+import { ROUTES } from "@/constants/routes.js";
+import { ROUTER_STEPS } from "@/constants/journeySteps.js";
 
 const journeyRoutes = [
   {
-    path: "/",
-    name: "Home",
+    path: ROUTES.HOME.path,
+    name: ROUTES.HOME.name,
     component: HomePage,
-    meta: { stepName: "home_page" },
+    meta: { stepName: ROUTER_STEPS.HOME_PAGE, title: ROUTES.HOME.title },
   },
   {
-    path: "/terms",
-    name: "Terms",
+    path: ROUTES.TERMS.path,
+    name: ROUTES.TERMS.name,
     component: TermsPage,
-    meta: { stepName: "terms_page" },
+    meta: { stepName: ROUTER_STEPS.TERMS_PAGE, title: ROUTES.TERMS.title },
   },
   {
-    path: "/user-info",
-    name: "UserInfo",
+    path: ROUTES.USER_INFO.path,
+    name: ROUTES.USER_INFO.name,
     component: UserFormPage,
-    meta: { stepName: "user_form_page" },
+    meta: {
+      stepName: ROUTER_STEPS.USER_FORM_PAGE,
+      title: ROUTES.USER_INFO.title,
+    },
   },
   {
-    path: "/wallet",
-    name: "Wallet",
+    path: ROUTES.WALLET.path,
+    name: ROUTES.WALLET.name,
     component: WalletPage,
-    meta: { stepName: "wallet_page" },
+    meta: { stepName: ROUTER_STEPS.WALLET_PAGE, title: ROUTES.WALLET.title },
   },
   {
-    path: "/otp",
-    name: "Otp",
+    path: ROUTES.OTP.path,
+    name: ROUTES.OTP.name,
     component: OtpPage,
-    meta: { stepName: "otp_page" },
+    meta: { stepName: ROUTER_STEPS.OTP_PAGE, title: ROUTES.OTP.title },
   },
   {
-    path: "/verification",
-    name: "Verification",
+    path: ROUTES.VERIFICATION.path,
+    name: ROUTES.VERIFICATION.name,
     component: VerificationPage,
-    meta: { stepName: "verification_page" },
+    meta: {
+      stepName: ROUTER_STEPS.VERIFICATION_PAGE,
+      title: ROUTES.VERIFICATION.title,
+    },
   },
 ];
 

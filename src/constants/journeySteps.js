@@ -30,3 +30,13 @@ export const JOURNEY_STEPS = {
   DATA_DOWNLOAD_REQUESTED: "data_download_requested",
   RESTART_REQUESTED: "restart_requested",
 };
+
+// Router step names for page navigation tracking
+export const ROUTER_STEPS = {
+  HOME_PAGE: "home_page",
+  TERMS_PAGE: "terms_page",
+  USER_FORM_PAGE: "user_form_page",
+  WALLET_PAGE: "wallet_page",
+  OTP_PAGE: "otp_page",
+  VERIFICATION_PAGE: "verification_page",
+};

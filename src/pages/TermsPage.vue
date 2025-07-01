@@ -1,11 +1,13 @@
 <template>
-  <div class="min-h-screen bg-gray-50 p-4 sm:p-6">
-    <div class="w-full max-w-md mx-auto">
-      <div class="text-center mb-6">
-        <h1 class="text-2xl sm:text-3xl font-bold text-gray-900 mb-4">
-          Terms & Conditions
-        </h1>
-      </div>
+  <div class="min-h-screen bg-gray-50 flex flex-col">
+    <AppHeader />
+    <div class="flex-1 p-4 sm:p-6">
+      <div class="w-full max-w-md mx-auto">
+        <div class="text-center mb-6">
+          <h1 class="text-2xl sm:text-3xl font-bold text-gray-900 mb-4">
+            Terms & Conditions
+          </h1>
+        </div>
 
       <div class="bg-white rounded-lg shadow-md p-4 sm:p-6 mb-6">
         <div class="text-sm text-gray-600 space-y-3">
@@ -55,7 +57,9 @@
           Continue
         </button>
       </div>
+      </div>
     </div>
+    <AppFooter />
   </div>
 </template>
 
@@ -64,6 +68,9 @@ import { ref, computed, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import { useJourneyTracker } from "@/composables/useJourneyTracker.js";
 import { JOURNEY_STEPS } from "@/constants/journeySteps.js";
+import { ROUTES } from "@/constants/routes.js";
+import AppHeader from "@/components/common/AppHeader.vue";
+import AppFooter from "@/components/common/AppFooter.vue";
 
 const router = useRouter();
 const { recordJourneyStep, saveUserInformation } = useJourneyTracker();
@@ -78,7 +85,7 @@ onMounted(() => {
 
 const goBackToHome = () => {
   recordJourneyStep(JOURNEY_STEPS.TERMS_BACK_BUTTON_CLICKED);
-  router.push("/");
+  router.push(ROUTES.HOME.path);
 };
 
 const acceptTermsAndContinue = () => {
@@ -90,6 +97,6 @@ const acceptTermsAndContinue = () => {
     },
   });
   recordJourneyStep(JOURNEY_STEPS.TERMS_ACCEPTED);
-  router.push("/user-info");
+  router.push(ROUTES.USER_INFO.path);
 };
 </script>

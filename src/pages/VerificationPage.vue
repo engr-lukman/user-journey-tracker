@@ -1,29 +1,31 @@
 <template>
-  <div class="min-h-screen bg-gray-50 p-4 sm:p-6">
-    <div class="w-full max-w-md mx-auto">
-      <div class="text-center mb-8">
-        <div
-          class="w-20 h-20 bg-green-500 rounded-full mx-auto mb-4 flex items-center justify-center"
-        >
-          <svg
-            class="w-10 h-10 text-white"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
+  <div class="min-h-screen bg-gray-50 flex flex-col">
+    <AppHeader />
+    <div class="flex-1 p-4 sm:p-6">
+      <div class="w-full max-w-md mx-auto">
+        <div class="text-center mb-8">
+          <div
+            class="w-20 h-20 bg-green-500 rounded-full mx-auto mb-4 flex items-center justify-center"
           >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="3"
-              d="M5 13l4 4L19 7"
-            ></path>
-          </svg>
+            <svg
+              class="w-10 h-10 text-white"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="3"
+                d="M5 13l4 4L19 7"
+              ></path>
+            </svg>
+          </div>
+          <h1 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-3">
+            Success!
+          </h1>
+          <p class="text-gray-600">Your account has been verified</p>
         </div>
-        <h1 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-3">
-          Success!
-        </h1>
-        <p class="text-gray-600">Your account has been verified</p>
-      </div>
 
       <div class="bg-white rounded-lg shadow-md p-4 sm:p-6 mb-6">
         <h3 class="text-lg font-semibold text-gray-900 mb-4">
@@ -61,7 +63,9 @@
           Start New Journey
         </button>
       </div>
+      </div>
     </div>
+    <AppFooter />
   </div>
 </template>
 
@@ -70,6 +74,9 @@ import { computed, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import { useJourneyTracker } from "@/composables/useJourneyTracker.js";
 import { JOURNEY_STEPS } from "@/constants/journeySteps.js";
+import { ROUTES } from "@/constants/routes.js";
+import AppHeader from "@/components/common/AppHeader.vue";
+import AppFooter from "@/components/common/AppFooter.vue";
 
 const router = useRouter();
 const {
@@ -102,6 +109,6 @@ const downloadData = () => {
 const startOver = () => {
   recordJourneyStep(JOURNEY_STEPS.RESTART_REQUESTED);
   localStorage.clear();
-  router.push("/");
+  router.push(ROUTES.HOME.path);
 };
 </script>
