@@ -32,8 +32,7 @@
 import { onMounted } from "vue";
 import { useRouter } from "vue-router";
 import { useJourneyTracker } from "@/composables/useJourneyTracker.js";
-import { JOURNEY_STEPS } from "@/constants/journeySteps.js";
-import { ROUTES } from "@/constants/routes.js";
+import { JOURNEY } from "@/constants/journey.js";
 import AppHeader from "@/components/common/AppHeader.vue";
 import AppFooter from "@/components/common/AppFooter.vue";
 
@@ -42,11 +41,11 @@ const { initializeJourneyTracker, recordJourneyStep } = useJourneyTracker();
 
 onMounted(async () => {
   await initializeJourneyTracker();
-  recordJourneyStep(JOURNEY_STEPS.HOME_PAGE_VIEWED);
+  recordJourneyStep(JOURNEY.HOME.steps.PAGE_VIEWED);
 });
 
 const startJourney = () => {
-  recordJourneyStep(JOURNEY_STEPS.GET_STARTED_BUTTON_CLICKED);
-  router.push(ROUTES.TERMS.path);
+  recordJourneyStep(JOURNEY.HOME.steps.GET_STARTED_CLICKED);
+  router.push(JOURNEY.TERMS.path);
 };
 </script>

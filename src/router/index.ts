@@ -6,50 +6,58 @@ import WalletPage from "@/pages/WalletPage.vue";
 import OtpPage from "@/pages/OtpPage.vue";
 import VerificationPage from "@/pages/VerificationPage.vue";
 import { useJourneyTracker } from "@/composables/useJourneyTracker.js";
-import { ROUTES } from "@/constants/routes.js";
-import { ROUTER_STEPS } from "@/constants/journeySteps.js";
+import { JOURNEY } from "@/constants/journey.js";
 
 const journeyRoutes = [
   {
-    path: ROUTES.HOME.path,
-    name: ROUTES.HOME.name,
+    path: JOURNEY.HOME.path,
+    name: JOURNEY.HOME.name,
     component: HomePage,
-    meta: { stepName: ROUTER_STEPS.HOME_PAGE, title: ROUTES.HOME.title },
-  },
-  {
-    path: ROUTES.TERMS.path,
-    name: ROUTES.TERMS.name,
-    component: TermsPage,
-    meta: { stepName: ROUTER_STEPS.TERMS_PAGE, title: ROUTES.TERMS.title },
-  },
-  {
-    path: ROUTES.USER_INFO.path,
-    name: ROUTES.USER_INFO.name,
-    component: UserFormPage,
     meta: {
-      stepName: ROUTER_STEPS.USER_FORM_PAGE,
-      title: ROUTES.USER_INFO.title,
+      stepName: JOURNEY.HOME.steps.PAGE_VIEWED,
+      title: JOURNEY.HOME.title,
     },
   },
   {
-    path: ROUTES.WALLET.path,
-    name: ROUTES.WALLET.name,
+    path: JOURNEY.TERMS.path,
+    name: JOURNEY.TERMS.name,
+    component: TermsPage,
+    meta: {
+      stepName: JOURNEY.TERMS.steps.PAGE_VIEWED,
+      title: JOURNEY.TERMS.title,
+    },
+  },
+  {
+    path: JOURNEY.USER_INFO.path,
+    name: JOURNEY.USER_INFO.name,
+    component: UserFormPage,
+    meta: {
+      stepName: JOURNEY.USER_INFO.steps.PAGE_VIEWED,
+      title: JOURNEY.USER_INFO.title,
+    },
+  },
+  {
+    path: JOURNEY.WALLET.path,
+    name: JOURNEY.WALLET.name,
     component: WalletPage,
-    meta: { stepName: ROUTER_STEPS.WALLET_PAGE, title: ROUTES.WALLET.title },
+    meta: {
+      stepName: JOURNEY.WALLET.steps.PAGE_VIEWED,
+      title: JOURNEY.WALLET.title,
+    },
   },
   {
-    path: ROUTES.OTP.path,
-    name: ROUTES.OTP.name,
+    path: JOURNEY.OTP.path,
+    name: JOURNEY.OTP.name,
     component: OtpPage,
-    meta: { stepName: ROUTER_STEPS.OTP_PAGE, title: ROUTES.OTP.title },
+    meta: { stepName: JOURNEY.OTP.steps.PAGE_VIEWED, title: JOURNEY.OTP.title },
   },
   {
-    path: ROUTES.VERIFICATION.path,
-    name: ROUTES.VERIFICATION.name,
+    path: JOURNEY.VERIFICATION.path,
+    name: JOURNEY.VERIFICATION.name,
     component: VerificationPage,
     meta: {
-      stepName: ROUTER_STEPS.VERIFICATION_PAGE,
-      title: ROUTES.VERIFICATION.title,
+      stepName: JOURNEY.VERIFICATION.steps.COMPLETED,
+      title: JOURNEY.VERIFICATION.title,
     },
   },
 ];

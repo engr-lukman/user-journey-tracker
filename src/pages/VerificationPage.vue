@@ -27,42 +27,42 @@
           <p class="text-gray-600">Your account has been verified</p>
         </div>
 
-      <div class="bg-white rounded-lg shadow-md p-4 sm:p-6 mb-6">
-        <h3 class="text-lg font-semibold text-gray-900 mb-4">
-          Verification Summary
-        </h3>
-        <div class="space-y-3 text-sm">
-          <div class="flex justify-between">
-            <span class="text-gray-600">Session ID:</span>
-            <span class="font-mono text-gray-900"
-              >{{ sessionId?.slice(0, 8) }}...</span
-            >
-          </div>
-          <div class="flex justify-between">
-            <span class="text-gray-600">Completed:</span>
-            <span class="text-gray-900">{{ completedAt }}</span>
-          </div>
-          <div class="flex justify-between">
-            <span class="text-gray-600">Steps:</span>
-            <span class="text-gray-900">{{ totalSteps }}</span>
+        <div class="bg-white rounded-lg shadow-md p-4 sm:p-6 mb-6">
+          <h3 class="text-lg font-semibold text-gray-900 mb-4">
+            Verification Summary
+          </h3>
+          <div class="space-y-3 text-sm">
+            <div class="flex justify-between">
+              <span class="text-gray-600">Session ID:</span>
+              <span class="font-mono text-gray-900"
+                >{{ sessionId?.slice(0, 8) }}...</span
+              >
+            </div>
+            <div class="flex justify-between">
+              <span class="text-gray-600">Completed:</span>
+              <span class="text-gray-900">{{ completedAt }}</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-gray-600">Steps:</span>
+              <span class="text-gray-900">{{ totalSteps }}</span>
+            </div>
           </div>
         </div>
-      </div>
 
-      <div class="space-y-3">
-        <button
-          @click="downloadData"
-          class="w-full bg-pink-600 text-white font-medium py-3 px-4 rounded-md hover:bg-pink-700 transition-colors text-sm sm:text-base"
-        >
-          Download Journey Data
-        </button>
-        <button
-          @click="startOver"
-          class="w-full bg-gray-200 text-gray-700 font-medium py-3 px-4 rounded-md hover:bg-gray-300 transition-colors text-sm sm:text-base"
-        >
-          Start New Journey
-        </button>
-      </div>
+        <div class="space-y-3">
+          <button
+            @click="downloadData"
+            class="w-full bg-pink-600 text-white font-medium py-3 px-4 rounded-md hover:bg-pink-700 transition-colors text-sm sm:text-base"
+          >
+            Download Journey Data
+          </button>
+          <button
+            @click="startOver"
+            class="w-full bg-gray-200 text-gray-700 font-medium py-3 px-4 rounded-md hover:bg-gray-300 transition-colors text-sm sm:text-base"
+          >
+            Start New Journey
+          </button>
+        </div>
       </div>
     </div>
     <AppFooter />
@@ -73,8 +73,7 @@
 import { computed, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import { useJourneyTracker } from "@/composables/useJourneyTracker.js";
-import { JOURNEY_STEPS } from "@/constants/journeySteps.js";
-import { ROUTES } from "@/constants/routes.js";
+import { JOURNEY } from "@/constants/journey.js";
 import AppHeader from "@/components/common/AppHeader.vue";
 import AppFooter from "@/components/common/AppFooter.vue";
 
@@ -98,17 +97,17 @@ const totalSteps = computed(() => {
 });
 
 onMounted(() => {
-  recordJourneyStep(JOURNEY_STEPS.VERIFICATION_COMPLETED);
+  recordJourneyStep(JOURNEY.VERIFICATION.steps.COMPLETED);
 });
 
 const downloadData = () => {
-  recordJourneyStep(JOURNEY_STEPS.DATA_DOWNLOAD_REQUESTED);
+  recordJourneyStep(JOURNEY.VERIFICATION.steps.DATA_DOWNLOAD_REQUESTED);
   exportJourneyData();
 };
 
 const startOver = () => {
-  recordJourneyStep(JOURNEY_STEPS.RESTART_REQUESTED);
+  recordJourneyStep(JOURNEY.VERIFICATION.steps.RESTART_REQUESTED);
   localStorage.clear();
-  router.push(ROUTES.HOME.path);
+  router.push(JOURNEY.HOME.path);
 };
 </script>
