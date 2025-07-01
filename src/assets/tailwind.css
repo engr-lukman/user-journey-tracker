@@ -1,0 +1,6 @@
+@import "tailwindcss";
+
+@theme {
+  /* Example override */
+  --color-primary: oklch(80% 0.2 240);
+}
