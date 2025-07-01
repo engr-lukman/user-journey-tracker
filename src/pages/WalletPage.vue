@@ -79,6 +79,7 @@
 import { ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import { useJourneyTracker } from "@/composables/useJourneyTracker.js";
+import { JOURNEY_STEPS } from "@/constants/journeySteps.js";
 
 const router = useRouter();
 const { recordJourneyStep, saveUserInformation } = useJourneyTracker();
@@ -86,11 +87,11 @@ const { recordJourneyStep, saveUserInformation } = useJourneyTracker();
 const mobileNumber = ref("");
 
 onMounted(() => {
-  recordJourneyStep("wallet_page_viewed");
+  recordJourneyStep(JOURNEY_STEPS.WALLET_PAGE_VIEWED);
 });
 
 const goBackToUserInfo = () => {
-  recordJourneyStep("wallet_back_button_clicked");
+  recordJourneyStep(JOURNEY_STEPS.WALLET_BACK_BUTTON_CLICKED);
   router.push("/user-info");
 };
 
@@ -100,7 +101,7 @@ const submitMobileWalletInfo = () => {
       mobileNumber: mobileNumber.value,
     },
   });
-  recordJourneyStep("wallet_info_submitted");
+  recordJourneyStep(JOURNEY_STEPS.WALLET_INFO_SUBMITTED);
   router.push("/otp");
 };
 </script>

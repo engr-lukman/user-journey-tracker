@@ -63,6 +63,7 @@
 import { ref, computed, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import { useJourneyTracker } from "@/composables/useJourneyTracker.js";
+import { JOURNEY_STEPS } from "@/constants/journeySteps.js";
 
 const router = useRouter();
 const { recordJourneyStep, saveUserInformation } = useJourneyTracker();
@@ -72,11 +73,11 @@ const termsAgreed = ref(false);
 const canProceedToNext = computed(() => termsAgreed.value);
 
 onMounted(() => {
-  recordJourneyStep("terms_page_viewed");
+  recordJourneyStep(JOURNEY_STEPS.TERMS_PAGE_VIEWED);
 });
 
 const goBackToHome = () => {
-  recordJourneyStep("terms_back_button_clicked");
+  recordJourneyStep(JOURNEY_STEPS.TERMS_BACK_BUTTON_CLICKED);
   router.push("/");
 };
 
@@ -88,7 +89,7 @@ const acceptTermsAndContinue = () => {
       acceptedAt: new Date().toISOString(),
     },
   });
-  recordJourneyStep("terms_accepted");
+  recordJourneyStep(JOURNEY_STEPS.TERMS_ACCEPTED);
   router.push("/user-info");
 };
 </script>

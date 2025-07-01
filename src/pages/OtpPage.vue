@@ -60,6 +60,7 @@
 import { ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import { useJourneyTracker } from "@/composables/useJourneyTracker.js";
+import { JOURNEY_STEPS } from "@/constants/journeySteps.js";
 
 const router = useRouter();
 const { recordJourneyStep } = useJourneyTracker();
@@ -67,12 +68,12 @@ const { recordJourneyStep } = useJourneyTracker();
 const otpCode = ref("");
 
 onMounted(() => {
-  recordJourneyStep("otp_page_viewed");
+  recordJourneyStep(JOURNEY_STEPS.OTP_PAGE_VIEWED);
 });
 
 const verifyOtp = () => {
   if (otpCode.value.length === 6) {
-    recordJourneyStep("otp_verification_attempted", {
+    recordJourneyStep(JOURNEY_STEPS.OTP_VERIFICATION_ATTEMPTED, {
       otpLength: otpCode.value.length,
     });
     router.push("/verification");
@@ -80,13 +81,13 @@ const verifyOtp = () => {
 };
 
 const resendOtp = () => {
-  recordJourneyStep("otp_resend_requested");
+  recordJourneyStep(JOURNEY_STEPS.OTP_RESEND_REQUESTED);
   // In a real app, this would trigger a new OTP
   alert("OTP resent successfully!");
 };
 
 const goBack = () => {
-  recordJourneyStep("otp_back_button_clicked");
+  recordJourneyStep(JOURNEY_STEPS.OTP_BACK_BUTTON_CLICKED);
   router.push("/wallet");
 };
 </script>

@@ -69,6 +69,7 @@
 import { computed, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import { useJourneyTracker } from "@/composables/useJourneyTracker.js";
+import { JOURNEY_STEPS } from "@/constants/journeySteps.js";
 
 const router = useRouter();
 const {
@@ -90,16 +91,16 @@ const totalSteps = computed(() => {
 });
 
 onMounted(() => {
-  recordJourneyStep("verification_completed");
+  recordJourneyStep(JOURNEY_STEPS.VERIFICATION_COMPLETED);
 });
 
 const downloadData = () => {
-  recordJourneyStep("data_download_requested");
+  recordJourneyStep(JOURNEY_STEPS.DATA_DOWNLOAD_REQUESTED);
   exportJourneyData();
 };
 
 const startOver = () => {
-  recordJourneyStep("restart_requested");
+  recordJourneyStep(JOURNEY_STEPS.RESTART_REQUESTED);
   localStorage.clear();
   router.push("/");
 };

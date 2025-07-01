@@ -5,10 +5,12 @@
     <div class="w-full max-w-sm bg-white rounded-lg shadow-lg p-6 text-center">
       <h1 class="text-2xl sm:text-3xl font-bold text-gray-900 mb-4">Welcome</h1>
       <p class="text-gray-600 text-sm mb-6 leading-relaxed">
-        Experience our comprehensive user journey tracking system. This app collects detailed browser fingerprinting data 
-        including system information, browser capabilities, display properties, security settings, and behavioral patterns. 
-        Navigate through multiple steps to see how user interactions are tracked and analyzed for insights. Your privacy 
-        and data security are important to us.
+        Experience our comprehensive user journey tracking system. This app
+        collects detailed browser fingerprinting data including system
+        information, browser capabilities, display properties, security
+        settings, and behavioral patterns. Navigate through multiple steps to
+        see how user interactions are tracked and analyzed for insights. Your
+        privacy and data security are important to us.
       </p>
       <button
         @click="startJourney"
@@ -24,17 +26,18 @@
 import { onMounted } from "vue";
 import { useRouter } from "vue-router";
 import { useJourneyTracker } from "@/composables/useJourneyTracker.js";
+import { JOURNEY_STEPS } from "@/constants/journeySteps.js";
 
 const router = useRouter();
 const { initializeJourneyTracker, recordJourneyStep } = useJourneyTracker();
 
 onMounted(async () => {
   await initializeJourneyTracker();
-  recordJourneyStep("home_page_viewed");
+  recordJourneyStep(JOURNEY_STEPS.HOME_PAGE_VIEWED);
 });
 
 const startJourney = () => {
-  recordJourneyStep("get_started_button_clicked");
+  recordJourneyStep(JOURNEY_STEPS.GET_STARTED_BUTTON_CLICKED);
   router.push("/terms");
 };
 </script>

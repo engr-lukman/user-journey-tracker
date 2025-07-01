@@ -67,6 +67,7 @@
 import { reactive, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import { useJourneyTracker } from "@/composables/useJourneyTracker.js";
+import { JOURNEY_STEPS } from "@/constants/journeySteps.js";
 
 const router = useRouter();
 const { recordJourneyStep, saveUserInformation } = useJourneyTracker();
@@ -77,17 +78,17 @@ const userForm = reactive({
 });
 
 onMounted(() => {
-  recordJourneyStep("user_form_page_viewed");
+  recordJourneyStep(JOURNEY_STEPS.USER_FORM_PAGE_VIEWED);
 });
 
 const goBackToTerms = () => {
-  recordJourneyStep("user_form_back_button_clicked");
+  recordJourneyStep(JOURNEY_STEPS.USER_FORM_BACK_BUTTON_CLICKED);
   router.push("/terms");
 };
 
 const submitUserForm = () => {
   saveUserInformation({ personalInformation: { ...userForm } });
-  recordJourneyStep("user_form_submitted");
+  recordJourneyStep(JOURNEY_STEPS.USER_FORM_SUBMITTED);
   router.push("/wallet");
 };
 </script>
