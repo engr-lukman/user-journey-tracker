@@ -30,16 +30,6 @@
               >I agree to the Terms & Conditions</span
             >
           </label>
-          <label class="flex items-center space-x-3 cursor-pointer">
-            <input
-              type="checkbox"
-              v-model="privacyAgreed"
-              class="w-4 h-4 text-pink-600 border-gray-300 rounded focus:ring-pink-500"
-            />
-            <span class="text-gray-700 text-sm"
-              >I accept the Privacy Policy</span
-            >
-          </label>
         </div>
       </div>
 
@@ -78,11 +68,8 @@ const router = useRouter();
 const { recordJourneyStep, saveUserInformation } = useJourneyTracker();
 
 const termsAgreed = ref(false);
-const privacyAgreed = ref(false);
 
-const canProceedToNext = computed(
-  () => termsAgreed.value && privacyAgreed.value
-);
+const canProceedToNext = computed(() => termsAgreed.value);
 
 onMounted(() => {
   recordJourneyStep("terms_page_viewed");
@@ -98,7 +85,6 @@ const acceptTermsAndContinue = () => {
   saveUserInformation({
     termsAndConditions: {
       termsAccepted: termsAgreed.value,
-      privacyAccepted: privacyAgreed.value,
       acceptedAt: new Date().toISOString(),
     },
   });

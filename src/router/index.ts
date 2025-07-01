@@ -5,7 +5,6 @@ import UserFormPage from "@/pages/UserFormPage.vue";
 import WalletPage from "@/pages/WalletPage.vue";
 import OtpPage from "@/pages/OtpPage.vue";
 import VerificationPage from "@/pages/VerificationPage.vue";
-import DebugPage from "@/pages/DebugPage.vue";
 import { useJourneyTracker } from "@/composables/useJourneyTracker.js";
 
 const journeyRoutes = [
@@ -44,12 +43,6 @@ const journeyRoutes = [
     name: "Verification",
     component: VerificationPage,
     meta: { stepName: "verification_page" },
-  },
-  {
-    path: "/debug",
-    name: "Debug",
-    component: DebugPage,
-    meta: { stepName: "debug_page" },
   },
 ];
 

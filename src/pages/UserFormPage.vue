@@ -41,21 +41,6 @@
           />
         </div>
 
-        <div>
-          <label
-            for="userPhone"
-            class="block text-sm font-medium text-gray-700 mb-1"
-            >Phone Number</label
-          >
-          <input
-            id="userPhone"
-            type="tel"
-            v-model="userForm.phoneNumber"
-            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-pink-500 focus:border-transparent text-sm sm:text-base"
-            placeholder="Enter your phone number"
-          />
-        </div>
-
         <div
           class="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-3 pt-4"
         >
@@ -89,7 +74,6 @@ const { recordJourneyStep, saveUserInformation } = useJourneyTracker();
 const userForm = reactive({
   fullName: "",
   email: "",
-  phoneNumber: "",
 });
 
 onMounted(() => {

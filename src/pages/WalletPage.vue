@@ -43,59 +43,14 @@
             class="block text-sm font-medium text-gray-700 mb-1"
             >Mobile Number</label
           >
-          <div class="flex">
-            <select
-              v-model="selectedCountryCode"
-              class="px-3 py-2 border border-r-0 rounded-l-md bg-gray-50 text-sm focus:ring-2 focus:ring-pink-500 focus:border-transparent"
-            >
-              <option value="+880">🇧🇩 +880</option>
-              <option value="+1">🇺🇸 +1</option>
-              <option value="+44">🇬🇧 +44</option>
-            </select>
-            <input
-              id="mobileNumber"
-              type="tel"
-              v-model="mobileNumber"
-              class="flex-1 px-3 py-2 border rounded-r-md focus:ring-2 focus:ring-pink-500 focus:border-transparent text-sm sm:text-base"
-              placeholder="Enter mobile number"
-            />
-          </div>
-        </div>
-
-        <div class="space-y-2">
-          <p class="text-sm font-medium text-gray-700">
-            Select Wallet Provider:
-          </p>
-          <label class="flex items-center space-x-2 cursor-pointer">
-            <input
-              type="radio"
-              name="walletProvider"
-              value="bkash"
-              v-model="selectedWalletType"
-              class="w-4 h-4 text-pink-600 border-gray-300 focus:ring-pink-500"
-            />
-            <span class="text-gray-700 text-sm">bKash</span>
-          </label>
-          <label class="flex items-center space-x-2 cursor-pointer">
-            <input
-              type="radio"
-              name="walletProvider"
-              value="nagad"
-              v-model="selectedWalletType"
-              class="w-4 h-4 text-pink-600 border-gray-300 focus:ring-pink-500"
-            />
-            <span class="text-gray-700 text-sm">Nagad</span>
-          </label>
-          <label class="flex items-center space-x-2 cursor-pointer">
-            <input
-              type="radio"
-              name="walletProvider"
-              value="rocket"
-              v-model="selectedWalletType"
-              class="w-4 h-4 text-pink-600 border-gray-300 focus:ring-pink-500"
-            />
-            <span class="text-gray-700 text-sm">Rocket</span>
-          </label>
+          <input
+            id="mobileNumber"
+            type="tel"
+            v-model="mobileNumber"
+            maxlength="11"
+            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-pink-500 focus:border-transparent text-sm sm:text-base"
+            placeholder="Enter mobile number (11 digits)"
+          />
         </div>
 
         <div
@@ -128,9 +83,7 @@ import { useJourneyTracker } from "@/composables/useJourneyTracker.js";
 const router = useRouter();
 const { recordJourneyStep, saveUserInformation } = useJourneyTracker();
 
-const selectedCountryCode = ref("+880");
 const mobileNumber = ref("");
-const selectedWalletType = ref("bkash");
 
 onMounted(() => {
   recordJourneyStep("wallet_page_viewed");
@@ -144,8 +97,7 @@ const goBackToUserInfo = () => {
 const submitMobileWalletInfo = () => {
   saveUserInformation({
     walletInformation: {
-      fullMobileNumber: selectedCountryCode.value + mobileNumber.value,
-      walletProvider: selectedWalletType.value,
+      mobileNumber: mobileNumber.value,
     },
   });
   recordJourneyStep("wallet_info_submitted");
