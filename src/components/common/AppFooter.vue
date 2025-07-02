@@ -3,7 +3,7 @@
     <div class="max-w-md mx-auto px-4 py-6">
       <div class="text-center space-y-4">
         <!-- Copyright -->
-        <div class="border-t border-gray-100 pt-4 space-y-1">
+        <div class="space-y-1">
           <p class="text-xs text-gray-500">
             © {{ currentYear }} Journey Tracker. All rights reserved.
           </p>

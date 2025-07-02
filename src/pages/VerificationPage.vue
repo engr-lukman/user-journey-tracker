@@ -53,7 +53,7 @@
 
         <!-- Summary Card -->
         <div
-          class="bg-white rounded-2xl shadow-lg p-6 sm:p-8 mb-8 border border-gray-100"
+          class="bg-white rounded-2xl shadow-lg p-6 sm:p-8 mb-6 border border-gray-100"
         >
           <div class="flex items-center mb-6">
             <div
@@ -107,7 +107,7 @@
         </div>
 
         <!-- Action Buttons -->
-        <div class="space-y-4">
+        <div class="space-y-2">
           <Button @click="downloadData" variant="primary" full-width>
             Download Journey Data
           </Button>

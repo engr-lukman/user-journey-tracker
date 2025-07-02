@@ -60,12 +60,36 @@ import { JOURNEY } from "@/constants/journey";
 const route = useRoute();
 
 const journeySteps = [
-  { path: JOURNEY.WELCOME_PAGE.path, name: "Welcome", step: 1 },
-  { path: JOURNEY.TERMS_CONDITIONS.path, name: "Terms", step: 2 },
-  { path: JOURNEY.PERSONAL_INFORMATION.path, name: "Personal Info", step: 3 },
-  { path: JOURNEY.WALLET_SETUP.path, name: "Wallet Setup", step: 4 },
-  { path: JOURNEY.OTP_VERIFICATION.path, name: "Verification", step: 5 },
-  { path: JOURNEY.JOURNEY_COMPLETE.path, name: "Complete", step: 6 },
+  {
+    path: JOURNEY.WELCOME_PAGE.path,
+    name: JOURNEY.WELCOME_PAGE.title,
+    step: 1,
+  },
+  {
+    path: JOURNEY.TERMS_CONDITIONS.path,
+    name: JOURNEY.TERMS_CONDITIONS.title,
+    step: 2,
+  },
+  {
+    path: JOURNEY.PERSONAL_INFORMATION.path,
+    name: JOURNEY.PERSONAL_INFORMATION.title,
+    step: 3,
+  },
+  {
+    path: JOURNEY.WALLET_SETUP.path,
+    name: JOURNEY.WALLET_SETUP.title,
+    step: 4,
+  },
+  {
+    path: JOURNEY.OTP_VERIFICATION.path,
+    name: JOURNEY.OTP_VERIFICATION.title,
+    step: 5,
+  },
+  {
+    path: JOURNEY.JOURNEY_COMPLETE.path,
+    name: JOURNEY.JOURNEY_COMPLETE.title,
+    step: 6,
+  },
 ];
 
 const currentStep = computed(() => {
