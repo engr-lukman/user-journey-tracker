@@ -6,9 +6,6 @@
           © {{ currentYear }} Journey Tracker. All rights reserved.
         </p>
         <p class="text-xs text-gray-400">
-          Version 1.0.0 | Built with Vue 3 & Tailwind CSS
-        </p>
-        <p class="text-xs text-gray-400">
           Data collected for analytics and user experience improvement
         </p>
       </div>

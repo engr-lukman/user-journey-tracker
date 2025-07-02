@@ -1,18 +1,12 @@
 import { createRouter, createWebHistory } from "vue-router";
-import HomePage from "@/pages/HomePage.vue";
-import TermsPage from "@/pages/TermsPage.vue";
-import UserFormPage from "@/pages/UserFormPage.vue";
-import WalletPage from "@/pages/WalletPage.vue";
-import OtpPage from "@/pages/OtpPage.vue";
-import VerificationPage from "@/pages/VerificationPage.vue";
-import { useJourneyTracker } from "@/composables/useJourneyTracker.js";
-import { JOURNEY } from "@/constants/journey.js";
+import { useJourneyTracker } from "@/composables/useJourneyTracker";
+import { JOURNEY } from "@/constants/journey";
 
 const journeyRoutes = [
   {
     path: JOURNEY.HOME.path,
     name: JOURNEY.HOME.name,
-    component: HomePage,
+    component: () => import("@/pages/HomePage.vue"),
     meta: {
       stepName: JOURNEY.HOME.steps.PAGE_VIEWED,
       title: JOURNEY.HOME.title,
@@ -21,7 +15,7 @@ const journeyRoutes = [
   {
     path: JOURNEY.TERMS.path,
     name: JOURNEY.TERMS.name,
-    component: TermsPage,
+    component: () => import("@/pages/TermsPage.vue"),
     meta: {
       stepName: JOURNEY.TERMS.steps.PAGE_VIEWED,
       title: JOURNEY.TERMS.title,
@@ -30,7 +24,7 @@ const journeyRoutes = [
   {
     path: JOURNEY.USER_INFO.path,
     name: JOURNEY.USER_INFO.name,
-    component: UserFormPage,
+    component: () => import("@/pages/UserFormPage.vue"),
     meta: {
       stepName: JOURNEY.USER_INFO.steps.PAGE_VIEWED,
       title: JOURNEY.USER_INFO.title,
@@ -39,7 +33,7 @@ const journeyRoutes = [
   {
     path: JOURNEY.WALLET.path,
     name: JOURNEY.WALLET.name,
-    component: WalletPage,
+    component: () => import("@/pages/WalletPage.vue"),
     meta: {
       stepName: JOURNEY.WALLET.steps.PAGE_VIEWED,
       title: JOURNEY.WALLET.title,
@@ -48,13 +42,13 @@ const journeyRoutes = [
   {
     path: JOURNEY.OTP.path,
     name: JOURNEY.OTP.name,
-    component: OtpPage,
+    component: () => import("@/pages/OtpPage.vue"),
     meta: { stepName: JOURNEY.OTP.steps.PAGE_VIEWED, title: JOURNEY.OTP.title },
   },
   {
     path: JOURNEY.VERIFICATION.path,
     name: JOURNEY.VERIFICATION.name,
-    component: VerificationPage,
+    component: () => import("@/pages/VerificationPage.vue"),
     meta: {
       stepName: JOURNEY.VERIFICATION.steps.COMPLETED,
       title: JOURNEY.VERIFICATION.title,

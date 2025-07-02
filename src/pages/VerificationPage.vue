@@ -72,8 +72,8 @@
 <script setup>
 import { computed, onMounted } from "vue";
 import { useRouter } from "vue-router";
-import { useJourneyTracker } from "@/composables/useJourneyTracker.js";
-import { JOURNEY } from "@/constants/journey.js";
+import { useJourneyTracker } from "@/composables/useJourneyTracker";
+import { JOURNEY } from "@/constants/journey";
 import AppHeader from "@/components/common/AppHeader.vue";
 import AppFooter from "@/components/common/AppFooter.vue";
 

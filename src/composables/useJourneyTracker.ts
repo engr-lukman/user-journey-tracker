@@ -1,12 +1,13 @@
+// @ts-nocheck
 import { ref, reactive } from "vue";
 import FingerprintJS from "@fingerprintjs/fingerprintjs";
 
-const currentUserId = ref(null);
-const currentSessionId = ref(null);
-const journeyStepsData = ref([]);
-const collectedUserData = reactive({});
-const deviceSystemData = reactive({});
-const trackerInitialized = ref(false);
+const currentUserId = ref<string | null>(null);
+const currentSessionId = ref<string | null>(null);
+const journeyStepsData = ref<any[]>([]);
+const collectedUserData = reactive<Record<string, any>>({});
+const deviceSystemData = reactive<Record<string, any>>({});
+const trackerInitialized = ref<boolean>(false);
 
 export function useJourneyTracker() {
   const generateUserIdentifiers = async () => {
@@ -151,8 +152,10 @@ export function useJourneyTracker() {
   const getBrowserName = () => {
     const userAgent = navigator.userAgent;
     if (userAgent.includes("Firefox")) return "Firefox";
-    if (userAgent.includes("Chrome") && !userAgent.includes("Edge")) return "Chrome";
-    if (userAgent.includes("Safari") && !userAgent.includes("Chrome")) return "Safari";
+    if (userAgent.includes("Chrome") && !userAgent.includes("Edge"))
+      return "Chrome";
+    if (userAgent.includes("Safari") && !userAgent.includes("Chrome"))
+      return "Safari";
     if (userAgent.includes("Edge")) return "Edge";
     if (userAgent.includes("Opera")) return "Opera";
     return "Unknown";
@@ -166,63 +169,70 @@ export function useJourneyTracker() {
 
   const getOperatingSystem = () => {
     const userAgent = navigator.userAgent;
-    
+
     if (/Windows NT/i.test(userAgent)) {
       const version = userAgent.match(/Windows NT (\d+\.\d+)/);
-      return `Windows ${version ? version[1] : 'Unknown'}`;
+      return `Windows ${version ? version[1] : "Unknown"}`;
     }
     if (/Mac OS X/i.test(userAgent)) {
       const version = userAgent.match(/Mac OS X (\d+[._]\d+[._]?\d*)/);
-      return `macOS ${version ? version[1].replace(/_/g, '.') : 'Unknown'}`;
+      return `macOS ${version ? version[1].replace(/_/g, ".") : "Unknown"}`;
     }
-    if (/Linux/i.test(userAgent)) return 'Linux';
+    if (/Linux/i.test(userAgent)) return "Linux";
     if (/Android/i.test(userAgent)) {
       const version = userAgent.match(/Android (\d+\.\d+)/);
-      return `Android ${version ? version[1] : 'Unknown'}`;
+      return `Android ${version ? version[1] : "Unknown"}`;
     }
     if (/iPhone|iPad|iPod/i.test(userAgent)) {
       const version = userAgent.match(/OS (\d+_\d+)/);
-      return `iOS ${version ? version[1].replace(/_/g, '.') : 'Unknown'}`;
+      return `iOS ${version ? version[1].replace(/_/g, ".") : "Unknown"}`;
     }
-    return navigator.platform || 'Unknown';
+    return navigator.platform || "Unknown";
   };
 
   const getDeviceType = () => {
     const userAgent = navigator.userAgent;
-    if (/Mobi|Android/i.test(userAgent) && !/Tablet|iPad/i.test(userAgent)) return 'mobile';
-    if (/Tablet|iPad/i.test(userAgent)) return 'tablet';
-    return 'desktop';
+    if (/Mobi|Android/i.test(userAgent) && !/Tablet|iPad/i.test(userAgent))
+      return "mobile";
+    if (/Tablet|iPad/i.test(userAgent)) return "tablet";
+    return "desktop";
   };
 
   const detectVirtualization = () => {
     const userAgent = navigator.userAgent;
-    const vendor = navigator.vendor || '';
-    
+    const vendor = navigator.vendor || "";
+
     const vmIndicators = [
-      'VMware', 'VirtualBox', 'Parallels', 'QEMU', 'Xen',
-      'Microsoft Corporation', 'innotek', 'Oracle Corporation'
+      "VMware",
+      "VirtualBox",
+      "Parallels",
+      "QEMU",
+      "Xen",
+      "Microsoft Corporation",
+      "innotek",
+      "Oracle Corporation",
     ];
-    
-    return vmIndicators.some(indicator => 
-      userAgent.includes(indicator) || vendor.includes(indicator)
+
+    return vmIndicators.some(
+      (indicator) => userAgent.includes(indicator) || vendor.includes(indicator)
     );
   };
 
   const getClockSkew = () => {
     const start = Date.now();
     const perfStart = performance.now();
-    
+
     // Small delay to measure consistency
     for (let i = 0; i < 1000; i++) {
       Math.random();
     }
-    
+
     const end = Date.now();
     const perfEnd = performance.now();
-    
+
     const dateTimeDiff = end - start;
     const perfTimeDiff = perfEnd - perfStart;
-    
+
     return Math.abs(dateTimeDiff - perfTimeDiff);
   };
 
@@ -260,13 +270,23 @@ export function useJourneyTracker() {
 
   const getMediaQuerySupport = () => {
     return {
-      prefersColorScheme: window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light",
-      prefersReducedMotion: window.matchMedia("(prefers-reduced-motion: reduce)").matches,
-      prefersHighContrast: window.matchMedia("(prefers-contrast: high)").matches,
+      prefersColorScheme: window.matchMedia("(prefers-color-scheme: dark)")
+        .matches
+        ? "dark"
+        : "light",
+      prefersReducedMotion: window.matchMedia(
+        "(prefers-reduced-motion: reduce)"
+      ).matches,
+      prefersHighContrast: window.matchMedia("(prefers-contrast: high)")
+        .matches,
       forcedColors: window.matchMedia("(forced-colors: active)").matches,
       hoverCapability: window.matchMedia("(hover: hover)").matches,
-      pointerAccuracy: window.matchMedia("(pointer: fine)").matches ? "fine" : "coarse",
-      dynamicRange: window.matchMedia("(dynamic-range: high)").matches ? "high" : "standard",
+      pointerAccuracy: window.matchMedia("(pointer: fine)").matches
+        ? "fine"
+        : "coarse",
+      dynamicRange: window.matchMedia("(dynamic-range: high)").matches
+        ? "high"
+        : "standard",
     };
   };
 
@@ -309,7 +329,8 @@ export function useJourneyTracker() {
   const getWebGLFingerprint = async () => {
     try {
       const canvas = document.createElement("canvas");
-      const gl = canvas.getContext("webgl") || canvas.getContext("experimental-webgl");
+      const gl =
+        canvas.getContext("webgl") || canvas.getContext("experimental-webgl");
 
       if (!gl) return { error: "WebGL not supported" };
 
@@ -320,8 +341,12 @@ export function useJourneyTracker() {
         renderer: gl.getParameter(gl.RENDERER),
         version: gl.getParameter(gl.VERSION),
         shadingLanguageVersion: gl.getParameter(gl.SHADING_LANGUAGE_VERSION),
-        unmaskedVendor: debugInfo ? gl.getParameter(debugInfo.UNMASKED_VENDOR_WEBGL) : "unknown",
-        unmaskedRenderer: debugInfo ? gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL) : "unknown",
+        unmaskedVendor: debugInfo
+          ? gl.getParameter(debugInfo.UNMASKED_VENDOR_WEBGL)
+          : "unknown",
+        unmaskedRenderer: debugInfo
+          ? gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL)
+          : "unknown",
         extensions: gl.getSupportedExtensions() || [],
         maxTextureSize: gl.getParameter(gl.MAX_TEXTURE_SIZE),
         maxViewportDims: gl.getParameter(gl.MAX_VIEWPORT_DIMS),
@@ -359,7 +384,10 @@ export function useJourneyTracker() {
       return new Promise((resolve) => {
         scriptProcessor.onaudioprocess = function (event) {
           const output = event.outputBuffer.getChannelData(0);
-          const hash = Array.from(output.slice(0, 50)).reduce((a, b) => a + b, 0);
+          const hash = Array.from(output.slice(0, 50)).reduce(
+            (a, b) => a + b,
+            0
+          );
 
           oscillator.stop();
           context.close();
@@ -378,9 +406,19 @@ export function useJourneyTracker() {
   const getFontFingerprint = async () => {
     try {
       const fonts = [
-        "Arial", "Helvetica", "Times New Roman", "Georgia", "Verdana",
-        "Trebuchet MS", "Arial Black", "Impact", "Comic Sans MS",
-        "Tahoma", "Lucida Grande", "Palatino", "Garamond",
+        "Arial",
+        "Helvetica",
+        "Times New Roman",
+        "Georgia",
+        "Verdana",
+        "Trebuchet MS",
+        "Arial Black",
+        "Impact",
+        "Comic Sans MS",
+        "Tahoma",
+        "Lucida Grande",
+        "Palatino",
+        "Garamond",
       ];
 
       const canvas = document.createElement("canvas");
@@ -459,14 +497,22 @@ export function useJourneyTracker() {
 
   const getPermissionsStatus = async () => {
     try {
-      if (!("permissions" in navigator)) return { error: "Permissions API not supported" };
+      if (!("permissions" in navigator))
+        return { error: "Permissions API not supported" };
 
       const permissions = {};
-      const permissionNames = ["geolocation", "notifications", "camera", "microphone"];
+      const permissionNames = [
+        "geolocation",
+        "notifications",
+        "camera",
+        "microphone",
+      ];
 
       for (const permission of permissionNames) {
         try {
-          const result = await navigator.permissions.query({ name: permission });
+          const result = await navigator.permissions.query({
+            name: permission,
+          });
           permissions[permission] = result.state;
         } catch (e) {
           permissions[permission] = "not-supported";
@@ -485,12 +531,20 @@ export function useJourneyTracker() {
 
       // Test CSS features
       const testFeatures = [
-        "grid", "flexbox", "backdrop-filter", "css-variables",
-        "transforms", "transitions", "animations", "filter",
+        "grid",
+        "flexbox",
+        "backdrop-filter",
+        "css-variables",
+        "transforms",
+        "transitions",
+        "animations",
+        "filter",
       ];
 
       testFeatures.forEach((feature) => {
-        features[feature] = CSS.supports ? CSS.supports(feature, "initial") : false;
+        features[feature] = CSS.supports
+          ? CSS.supports(feature, "initial")
+          : false;
       });
 
       return features;
@@ -629,7 +683,10 @@ export function useJourneyTracker() {
     };
 
     journeyStepsData.value.push(stepRecord);
-    localStorage.setItem("journey_steps", JSON.stringify(journeyStepsData.value));
+    localStorage.setItem(
+      "journey_steps",
+      JSON.stringify(journeyStepsData.value)
+    );
     console.log("Journey Step:", stepRecord);
   };
 
@@ -649,13 +706,16 @@ export function useJourneyTracker() {
     systemData: { ...deviceSystemData },
     totalJourneyTime:
       journeyStepsData.value.length > 0
-        ? new Date().getTime() - new Date(journeyStepsData.value[0].recordedAt).getTime()
+        ? new Date().getTime() -
+          new Date(journeyStepsData.value[0].recordedAt).getTime()
         : 0,
   });
 
   const clearAllJourneyData = () => {
     journeyStepsData.value = [];
-    Object.keys(collectedUserData).forEach((key) => delete collectedUserData[key]);
+    Object.keys(collectedUserData).forEach(
+      (key) => delete collectedUserData[key]
+    );
     localStorage.removeItem("journey_steps");
     localStorage.removeItem("user_data");
   };
