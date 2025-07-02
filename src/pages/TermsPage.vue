@@ -24,10 +24,10 @@
               />
             </svg>
           </div>
-          <h1 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-2">
+          <h1 class="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
             Terms & Conditions
           </h1>
-          <p class="text-gray-600">
+          <p class="text-sm text-gray-600">
             Please review and accept our terms to continue
           </p>
         </div>
@@ -37,7 +37,7 @@
           class="bg-white rounded-2xl shadow-lg p-6 sm:p-8 mb-6 border border-gray-100"
         >
           <h3
-            class="text-lg font-semibold text-gray-900 mb-4 flex items-center"
+            class="text-base sm:text-lg font-semibold text-gray-900 mb-4 flex items-center"
           >
             <svg
               class="w-5 h-5 text-blue-600 mr-2"

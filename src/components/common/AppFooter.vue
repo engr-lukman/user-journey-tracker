@@ -11,9 +11,6 @@
             Secure analytics and user experience insights
           </p>
         </div>
-
-        <!-- Version -->
-        <div class="text-xs text-gray-400">v1.0.0 • Built with ❤️</div>
       </div>
     </div>
   </footer>

@@ -24,10 +24,10 @@
               />
             </svg>
           </div>
-          <h1 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-2">
+          <h1 class="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
             Wallet Setup
           </h1>
-          <p class="text-gray-600">
+          <p class="text-sm text-gray-600">
             Connect your mobile wallet for secure transactions
           </p>
         </div>
@@ -55,10 +55,10 @@
               </svg>
             </div>
             <div>
-              <h3 class="font-semibold text-gray-900 text-lg">
+              <h3 class="font-semibold text-gray-900 text-base sm:text-lg">
                 Digital Wallet
               </h3>
-              <p class="text-sm text-gray-600">
+              <p class="text-xs sm:text-sm text-gray-600">
                 Link your mobile number for secure payments
               </p>
             </div>
@@ -78,7 +78,6 @@
               label="Wallet Number"
               placeholder="Enter wallet number (11 digits)"
               maxlength="11"
-              size="lg"
             />
             <div class="mt-2 flex items-center text-xs text-gray-500">
               <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">

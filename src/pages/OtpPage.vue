@@ -24,10 +24,10 @@
               />
             </svg>
           </div>
-          <h1 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-3">
+          <h1 class="text-2xl sm:text-3xl font-bold text-gray-900 mb-3">
             Enter Verification Code
           </h1>
-          <p class="text-gray-600 text-base">
+          <p class="text-sm sm:text-base text-gray-600">
             We've sent a 6-digit code to your mobile number
           </p>
         </div>

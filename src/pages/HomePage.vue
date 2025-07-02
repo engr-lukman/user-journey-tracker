@@ -30,12 +30,12 @@
 
           <!-- Content -->
           <h1
-            class="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-3 sm:mb-4"
+            class="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 mb-3 sm:mb-4"
           >
             Welcome to Your Journey
           </h1>
           <p
-            class="text-sm sm:text-base md:text-lg text-gray-600 mb-6 sm:mb-8 leading-relaxed px-2"
+            class="text-xs sm:text-sm md:text-base text-gray-600 mb-6 sm:mb-8 leading-relaxed px-2"
           >
             Discover our comprehensive user experience tracking system. Navigate
             through personalized steps while we securely analyze your

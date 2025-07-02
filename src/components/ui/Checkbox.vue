@@ -78,9 +78,9 @@ const labelClasses = computed(() => {
 
   // Size classes for label with mobile-first responsive design
   const sizeClasses = {
-    sm: "text-xs sm:text-sm",
-    md: "text-sm sm:text-base",
-    lg: "text-base sm:text-lg",
+    sm: "text-xs",
+    md: "text-xs sm:text-sm",
+    lg: "text-sm sm:text-base",
   };
 
   // State classes

@@ -26,7 +26,7 @@
         </div>
 
         <div class="flex-1 min-w-0">
-          <h1 class="text-base sm:text-lg font-bold text-gray-900 truncate">
+          <h1 class="text-sm sm:text-base font-bold text-gray-900 truncate">
             Journey Tracker
           </h1>
           <p class="text-xs text-gray-500 truncate">

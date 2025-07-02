@@ -40,11 +40,15 @@
             </div>
           </div>
 
-          <h1 class="text-4xl sm:text-5xl font-bold text-gray-900 mb-4">
+          <h1 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
             Congratulations!
           </h1>
-          <p class="text-xl text-gray-600 mb-2">Your journey is complete</p>
-          <p class="text-sm text-gray-500">Account verified successfully</p>
+          <p class="text-lg sm:text-xl text-gray-600 mb-2">
+            Your journey is complete
+          </p>
+          <p class="text-xs sm:text-sm text-gray-500">
+            Account verified successfully
+          </p>
         </div>
 
         <!-- Summary Card -->
@@ -67,7 +71,9 @@
                 />
               </svg>
             </div>
-            <h3 class="text-lg font-semibold text-gray-900">Journey Summary</h3>
+            <h3 class="text-base sm:text-lg font-semibold text-gray-900">
+              Journey Summary
+            </h3>
           </div>
 
           <div class="space-y-4">

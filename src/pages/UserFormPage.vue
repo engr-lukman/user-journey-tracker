@@ -25,11 +25,11 @@
             </svg>
           </div>
           <h1
-            class="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-1 sm:mb-2"
+            class="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 mb-1 sm:mb-2"
           >
             Personal Information
           </h1>
-          <p class="text-sm sm:text-base text-gray-600 px-4">
+          <p class="text-xs sm:text-sm text-gray-600 px-4">
             Tell us a bit about yourself to personalize your experience
           </p>
         </div>
