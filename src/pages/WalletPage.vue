@@ -72,11 +72,11 @@
         >
           <div class="relative">
             <TextField
-              id="mobileNumber"
-              v-model="mobileNumber"
+              id="walletNumber"
+              v-model="walletNumber"
               type="tel"
-              label="Mobile Number"
-              placeholder="Enter mobile number (11 digits)"
+              label="Wallet Number"
+              placeholder="Enter wallet number (11 digits)"
               maxlength="11"
               size="lg"
             />
@@ -100,46 +100,18 @@
               type="button"
               variant="secondary"
               full-width
-              size="lg"
               @click="goBackToUserInfo"
               class="sm:flex-1"
             >
-              <svg
-                class="w-4 h-4 mr-2"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M15 19l-7-7 7-7"
-                />
-              </svg>
               Back
             </Button>
             <Button
               type="submit"
               variant="primary"
               full-width
-              size="lg"
               class="sm:flex-1"
             >
               Continue
-              <svg
-                class="w-4 h-4 ml-2"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M9 5l7 7-7 7"
-                />
-              </svg>
             </Button>
           </div>
         </form>
@@ -162,7 +134,7 @@ import TextField from "@/components/ui/TextField.vue";
 const router = useRouter();
 const { recordJourneyStep, saveUserInformation } = useJourneyTracker();
 
-const mobileNumber = ref("");
+const walletNumber = ref("");
 
 onMounted(() => {
   recordJourneyStep(JOURNEY.WALLET_SETUP.steps.PAGE_VIEWED);
@@ -176,7 +148,7 @@ const goBackToUserInfo = () => {
 const submitMobileWalletInfo = () => {
   saveUserInformation({
     walletInformation: {
-      mobileNumber: mobileNumber.value,
+      walletNumber: walletNumber.value,
     },
   });
   recordJourneyStep(JOURNEY.WALLET_SETUP.steps.MOBILE_NUMBER_SUBMITTED);

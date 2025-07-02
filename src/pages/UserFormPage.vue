@@ -47,7 +47,6 @@
                 type="text"
                 label="Full Name"
                 placeholder="Enter your full name"
-                size="lg"
               />
             </div>
 
@@ -58,7 +57,6 @@
                 type="email"
                 label="Email Address"
                 placeholder="Enter your email address"
-                size="lg"
               />
             </div>
           </div>
@@ -71,46 +69,18 @@
               type="button"
               variant="secondary"
               full-width
-              size="lg"
               @click="goBackToTerms"
               class="sm:flex-1"
             >
-              <svg
-                class="w-4 h-4 mr-2"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M15 19l-7-7 7-7"
-                />
-              </svg>
               Back
             </Button>
             <Button
               type="submit"
               variant="primary"
               full-width
-              size="lg"
               class="sm:flex-1"
             >
               Continue
-              <svg
-                class="w-4 h-4 ml-2"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M9 5l7 7-7 7"
-                />
-              </svg>
             </Button>
           </div>
         </form>

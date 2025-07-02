@@ -82,13 +82,11 @@
         </div>
 
         <!-- Agreement Checkbox -->
-        <div
-          class="bg-white rounded-2xl shadow-lg p-6 mb-8 border border-gray-100"
-        >
+        <div class="mb-8">
           <Checkbox
             v-model="termsAgreed"
             label="I have read and agree to the Terms & Conditions"
-            size="lg"
+            size="md"
           />
         </div>
 
@@ -100,22 +98,8 @@
             @click="goBackToHome"
             variant="secondary"
             full-width
-            size="lg"
             class="sm:flex-1"
           >
-            <svg
-              class="w-4 h-4 mr-2"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M15 19l-7-7 7-7"
-              />
-            </svg>
             Back
           </Button>
           <Button
@@ -123,23 +107,9 @@
             :disabled="!canProceedToNext"
             variant="primary"
             full-width
-            size="lg"
             class="sm:flex-1"
           >
             Continue
-            <svg
-              class="w-4 h-4 ml-2"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M9 5l7 7-7 7"
-              />
-            </svg>
           </Button>
         </div>
       </div>

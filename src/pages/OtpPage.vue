@@ -45,7 +45,6 @@
               placeholder="000000"
               maxlength="6"
               variant="otp"
-              size="lg"
               required
             />
             <div class="mt-3 text-center">
@@ -60,22 +59,8 @@
             type="submit"
             variant="primary"
             full-width
-            size="lg"
             :disabled="otpCode.length !== 6"
           >
-            <svg
-              class="w-4 h-4 mr-2"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-              />
-            </svg>
             Verify Code
           </Button>
 
@@ -93,26 +78,13 @@
         </form>
 
         <!-- Back Option -->
-        <div class="mt-8 text-center">
+        <div class="mt-2 text-center">
           <Button
             type="button"
             variant="text"
             @click="goBack"
             class="text-sm text-gray-500 hover:text-gray-700"
           >
-            <svg
-              class="w-4 h-4 mr-1"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M15 19l-7-7 7-7"
-              />
-            </svg>
             Back to Wallet Setup
           </Button>
         </div>

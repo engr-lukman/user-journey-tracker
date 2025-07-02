@@ -43,7 +43,7 @@
           </p>
 
           <!-- CTA Button -->
-          <Button @click="startJourney" variant="primary" full-width size="lg">
+          <Button @click="startJourney" variant="primary" full-width>
             Start Your Journey
           </Button>
 
