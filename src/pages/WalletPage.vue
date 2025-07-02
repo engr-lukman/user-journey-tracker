@@ -93,12 +93,12 @@ const { recordJourneyStep, saveUserInformation } = useJourneyTracker();
 const mobileNumber = ref("");
 
 onMounted(() => {
-  recordJourneyStep(JOURNEY.WALLET.steps.PAGE_VIEWED);
+  recordJourneyStep(JOURNEY.WALLET_SETUP.steps.PAGE_VIEWED);
 });
 
 const goBackToUserInfo = () => {
-  recordJourneyStep(JOURNEY.WALLET.steps.BACK_CLICKED);
-  router.push(JOURNEY.USER_INFO.path);
+  recordJourneyStep(JOURNEY.WALLET_SETUP.steps.BACK_CLICKED);
+  router.push(JOURNEY.PERSONAL_INFORMATION.path);
 };
 
 const submitMobileWalletInfo = () => {
@@ -107,7 +107,7 @@ const submitMobileWalletInfo = () => {
       mobileNumber: mobileNumber.value,
     },
   });
-  recordJourneyStep(JOURNEY.WALLET.steps.INFO_SUBMITTED);
-  router.push(JOURNEY.OTP.path);
+  recordJourneyStep(JOURNEY.WALLET_SETUP.steps.MOBILE_NUMBER_SUBMITTED);
+  router.push(JOURNEY.OTP_VERIFICATION.path);
 };
 </script>

@@ -687,7 +687,6 @@ export function useJourneyTracker() {
       "journey_steps",
       JSON.stringify(journeyStepsData.value)
     );
-    console.log("Journey Step:", stepRecord);
   };
 
   const saveUserInformation = (userInfo) => {

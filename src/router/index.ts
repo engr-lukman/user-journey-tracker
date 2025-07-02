@@ -4,54 +4,57 @@ import { JOURNEY } from "@/constants/journey";
 
 const journeyRoutes = [
   {
-    path: JOURNEY.HOME.path,
-    name: JOURNEY.HOME.name,
+    path: JOURNEY.WELCOME_PAGE.path,
+    name: JOURNEY.WELCOME_PAGE.name,
     component: () => import("@/pages/HomePage.vue"),
     meta: {
-      stepName: JOURNEY.HOME.steps.PAGE_VIEWED,
-      title: JOURNEY.HOME.title,
+      stepName: JOURNEY.WELCOME_PAGE.steps.PAGE_VIEWED,
+      title: JOURNEY.WELCOME_PAGE.title,
     },
   },
   {
-    path: JOURNEY.TERMS.path,
-    name: JOURNEY.TERMS.name,
+    path: JOURNEY.TERMS_CONDITIONS.path,
+    name: JOURNEY.TERMS_CONDITIONS.name,
     component: () => import("@/pages/TermsPage.vue"),
     meta: {
-      stepName: JOURNEY.TERMS.steps.PAGE_VIEWED,
-      title: JOURNEY.TERMS.title,
+      stepName: JOURNEY.TERMS_CONDITIONS.steps.PAGE_VIEWED,
+      title: JOURNEY.TERMS_CONDITIONS.title,
     },
   },
   {
-    path: JOURNEY.USER_INFO.path,
-    name: JOURNEY.USER_INFO.name,
+    path: JOURNEY.PERSONAL_INFORMATION.path,
+    name: JOURNEY.PERSONAL_INFORMATION.name,
     component: () => import("@/pages/UserFormPage.vue"),
     meta: {
-      stepName: JOURNEY.USER_INFO.steps.PAGE_VIEWED,
-      title: JOURNEY.USER_INFO.title,
+      stepName: JOURNEY.PERSONAL_INFORMATION.steps.PAGE_VIEWED,
+      title: JOURNEY.PERSONAL_INFORMATION.title,
     },
   },
   {
-    path: JOURNEY.WALLET.path,
-    name: JOURNEY.WALLET.name,
+    path: JOURNEY.WALLET_SETUP.path,
+    name: JOURNEY.WALLET_SETUP.name,
     component: () => import("@/pages/WalletPage.vue"),
     meta: {
-      stepName: JOURNEY.WALLET.steps.PAGE_VIEWED,
-      title: JOURNEY.WALLET.title,
+      stepName: JOURNEY.WALLET_SETUP.steps.PAGE_VIEWED,
+      title: JOURNEY.WALLET_SETUP.title,
     },
   },
   {
-    path: JOURNEY.OTP.path,
-    name: JOURNEY.OTP.name,
+    path: JOURNEY.OTP_VERIFICATION.path,
+    name: JOURNEY.OTP_VERIFICATION.name,
     component: () => import("@/pages/OtpPage.vue"),
-    meta: { stepName: JOURNEY.OTP.steps.PAGE_VIEWED, title: JOURNEY.OTP.title },
+    meta: {
+      stepName: JOURNEY.OTP_VERIFICATION.steps.PAGE_VIEWED,
+      title: JOURNEY.OTP_VERIFICATION.title,
+    },
   },
   {
-    path: JOURNEY.VERIFICATION.path,
-    name: JOURNEY.VERIFICATION.name,
+    path: JOURNEY.JOURNEY_COMPLETE.path,
+    name: JOURNEY.JOURNEY_COMPLETE.name,
     component: () => import("@/pages/VerificationPage.vue"),
     meta: {
-      stepName: JOURNEY.VERIFICATION.steps.COMPLETED,
-      title: JOURNEY.VERIFICATION.title,
+      stepName: JOURNEY.JOURNEY_COMPLETE.steps.JOURNEY_COMPLETED,
+      title: JOURNEY.JOURNEY_COMPLETE.title,
     },
   },
 ];

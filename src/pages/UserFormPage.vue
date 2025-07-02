@@ -84,17 +84,17 @@ const userForm = reactive({
 });
 
 onMounted(() => {
-  recordJourneyStep(JOURNEY.USER_INFO.steps.PAGE_VIEWED);
+  recordJourneyStep(JOURNEY.PERSONAL_INFORMATION.steps.PAGE_VIEWED);
 });
 
 const goBackToTerms = () => {
-  recordJourneyStep(JOURNEY.USER_INFO.steps.BACK_CLICKED);
-  router.push(JOURNEY.TERMS.path);
+  recordJourneyStep(JOURNEY.PERSONAL_INFORMATION.steps.BACK_CLICKED);
+  router.push(JOURNEY.TERMS_CONDITIONS.path);
 };
 
 const submitUserForm = () => {
   saveUserInformation({ personalInformation: { ...userForm } });
-  recordJourneyStep(JOURNEY.USER_INFO.steps.SUBMITTED);
-  router.push(JOURNEY.WALLET.path);
+  recordJourneyStep(JOURNEY.PERSONAL_INFORMATION.steps.FORM_SUBMITTED);
+  router.push(JOURNEY.WALLET_SETUP.path);
 };
 </script>

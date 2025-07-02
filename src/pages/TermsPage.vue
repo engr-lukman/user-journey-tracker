@@ -79,12 +79,12 @@ const termsAgreed = ref(false);
 const canProceedToNext = computed(() => termsAgreed.value);
 
 onMounted(() => {
-  recordJourneyStep(JOURNEY.TERMS.steps.PAGE_VIEWED);
+  recordJourneyStep(JOURNEY.TERMS_CONDITIONS.steps.PAGE_VIEWED);
 });
 
 const goBackToHome = () => {
-  recordJourneyStep(JOURNEY.TERMS.steps.BACK_CLICKED);
-  router.push(JOURNEY.HOME.path);
+  recordJourneyStep(JOURNEY.TERMS_CONDITIONS.steps.BACK_CLICKED);
+  router.push(JOURNEY.WELCOME_PAGE.path);
 };
 
 const acceptTermsAndContinue = () => {
@@ -95,7 +95,7 @@ const acceptTermsAndContinue = () => {
       acceptedAt: new Date().toISOString(),
     },
   });
-  recordJourneyStep(JOURNEY.TERMS.steps.ACCEPTED);
-  router.push(JOURNEY.USER_INFO.path);
+  recordJourneyStep(JOURNEY.TERMS_CONDITIONS.steps.ACCEPTED);
+  router.push(JOURNEY.PERSONAL_INFORMATION.path);
 };
 </script>

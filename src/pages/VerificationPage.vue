@@ -97,17 +97,17 @@ const totalSteps = computed(() => {
 });
 
 onMounted(() => {
-  recordJourneyStep(JOURNEY.VERIFICATION.steps.COMPLETED);
+  recordJourneyStep(JOURNEY.JOURNEY_COMPLETE.steps.JOURNEY_COMPLETED);
 });
 
 const downloadData = () => {
-  recordJourneyStep(JOURNEY.VERIFICATION.steps.DATA_DOWNLOAD_REQUESTED);
+  recordJourneyStep(JOURNEY.JOURNEY_COMPLETE.steps.DATA_EXPORT_REQUESTED);
   exportJourneyData();
 };
 
 const startOver = () => {
-  recordJourneyStep(JOURNEY.VERIFICATION.steps.RESTART_REQUESTED);
+  recordJourneyStep(JOURNEY.JOURNEY_COMPLETE.steps.RESTART_JOURNEY);
   localStorage.clear();
-  router.push(JOURNEY.HOME.path);
+  router.push(JOURNEY.WELCOME_PAGE.path);
 };
 </script>

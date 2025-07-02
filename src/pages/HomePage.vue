@@ -41,11 +41,11 @@ const { initializeJourneyTracker, recordJourneyStep } = useJourneyTracker();
 
 onMounted(async () => {
   await initializeJourneyTracker();
-  recordJourneyStep(JOURNEY.HOME.steps.PAGE_VIEWED);
+  recordJourneyStep(JOURNEY.WELCOME_PAGE.steps.PAGE_VIEWED);
 });
 
 const startJourney = () => {
-  recordJourneyStep(JOURNEY.HOME.steps.GET_STARTED_CLICKED);
-  router.push(JOURNEY.TERMS.path);
+  recordJourneyStep(JOURNEY.WELCOME_PAGE.steps.GET_STARTED_CLICKED);
+  router.push(JOURNEY.TERMS_CONDITIONS.path);
 };
 </script>

@@ -1,86 +1,73 @@
-// Unified journey constants - combining routes and tracking steps
 export const JOURNEY = {
-  HOME: {
-    // Route information
+  WELCOME_PAGE: {
     path: "/",
     name: "Home",
     title: "Welcome",
-
-    // Journey tracking steps
+    displayName: "Welcome Page",
     steps: {
-      PAGE_VIEWED: "home_page_viewed",
-      GET_STARTED_CLICKED: "get_started_button_clicked",
+      PAGE_VIEWED: "welcome_page_viewed",
+      GET_STARTED_CLICKED: "welcome_get_started_clicked",
     },
   },
 
-  TERMS: {
-    // Route information
+  TERMS_CONDITIONS: {
     path: "/terms",
     name: "Terms",
     title: "Terms & Conditions",
-
-    // Journey tracking steps
+    displayName: "Terms & Conditions",
     steps: {
-      PAGE_VIEWED: "terms_page_viewed",
-      BACK_CLICKED: "terms_back_button_clicked",
-      ACCEPTED: "terms_accepted",
+      PAGE_VIEWED: "terms_conditions_page_viewed",
+      BACK_CLICKED: "terms_conditions_back_clicked",
+      ACCEPTED: "terms_conditions_accepted",
     },
   },
 
-  USER_INFO: {
-    // Route information
+  PERSONAL_INFORMATION: {
     path: "/user-info",
     name: "UserInfo",
     title: "Personal Information",
-
-    // Journey tracking steps
+    displayName: "Personal Information Form",
     steps: {
-      PAGE_VIEWED: "user_form_page_viewed",
-      BACK_CLICKED: "user_form_back_button_clicked",
-      SUBMITTED: "user_form_submitted",
+      PAGE_VIEWED: "personal_information_page_viewed",
+      BACK_CLICKED: "personal_information_back_clicked",
+      FORM_SUBMITTED: "personal_information_form_submitted",
     },
   },
 
-  WALLET: {
-    // Route information
+  WALLET_SETUP: {
     path: "/wallet",
     name: "Wallet",
     title: "Wallet Setup",
-
-    // Journey tracking steps
+    displayName: "Mobile Wallet Setup",
     steps: {
-      PAGE_VIEWED: "wallet_page_viewed",
-      BACK_CLICKED: "wallet_back_button_clicked",
-      INFO_SUBMITTED: "wallet_info_submitted",
+      PAGE_VIEWED: "wallet_setup_page_viewed",
+      BACK_CLICKED: "wallet_setup_back_clicked",
+      MOBILE_NUMBER_SUBMITTED: "wallet_setup_mobile_number_submitted",
     },
   },
 
-  OTP: {
-    // Route information
+  OTP_VERIFICATION: {
     path: "/otp",
     name: "Otp",
     title: "Verify OTP",
-
-    // Journey tracking steps
+    displayName: "OTP Verification",
     steps: {
-      PAGE_VIEWED: "otp_page_viewed",
-      VERIFICATION_ATTEMPTED: "otp_verification_attempted",
-      RESEND_REQUESTED: "otp_resend_requested",
-      BACK_CLICKED: "otp_back_button_clicked",
+      PAGE_VIEWED: "otp_verification_page_viewed",
+      CODE_ENTERED: "otp_verification_code_entered",
+      RESEND_REQUESTED: "otp_verification_resend_requested",
+      BACK_CLICKED: "otp_verification_back_clicked",
     },
   },
 
-  VERIFICATION: {
-    // Route information
+  JOURNEY_COMPLETE: {
     path: "/verification",
     name: "Verification",
     title: "Journey Complete",
-
-    // Journey tracking steps
+    displayName: "Journey Completion",
     steps: {
-      COMPLETED: "verification_completed",
-      DATA_DOWNLOAD_REQUESTED: "data_download_requested",
-      RESTART_REQUESTED: "restart_requested",
+      JOURNEY_COMPLETED: "journey_completion_success",
+      DATA_EXPORT_REQUESTED: "journey_data_export_requested",
+      RESTART_JOURNEY: "journey_restart_requested",
     },
   },
 };

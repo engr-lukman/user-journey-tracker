@@ -72,26 +72,26 @@ const { recordJourneyStep } = useJourneyTracker();
 const otpCode = ref("");
 
 onMounted(() => {
-  recordJourneyStep(JOURNEY.OTP.steps.PAGE_VIEWED);
+  recordJourneyStep(JOURNEY.OTP_VERIFICATION.steps.PAGE_VIEWED);
 });
 
 const verifyOtp = () => {
   if (otpCode.value.length === 6) {
-    recordJourneyStep(JOURNEY.OTP.steps.VERIFICATION_ATTEMPTED, {
+    recordJourneyStep(JOURNEY.OTP_VERIFICATION.steps.CODE_ENTERED, {
       otpLength: otpCode.value.length,
     });
-    router.push(JOURNEY.VERIFICATION.path);
+    router.push(JOURNEY.JOURNEY_COMPLETE.path);
   }
 };
 
 const resendOtp = () => {
-  recordJourneyStep(JOURNEY.OTP.steps.RESEND_REQUESTED);
+  recordJourneyStep(JOURNEY.OTP_VERIFICATION.steps.RESEND_REQUESTED);
   // In a real app, this would trigger a new OTP
   alert("OTP resent successfully!");
 };
 
 const goBack = () => {
-  recordJourneyStep(JOURNEY.OTP.steps.BACK_CLICKED);
-  router.push(JOURNEY.WALLET.path);
+  recordJourneyStep(JOURNEY.OTP_VERIFICATION.steps.BACK_CLICKED);
+  router.push(JOURNEY.WALLET_SETUP.path);
 };
 </script>
