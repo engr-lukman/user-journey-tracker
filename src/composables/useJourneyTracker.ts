@@ -27,15 +27,20 @@ export function useJourneyTracker() {
       currentSessionId.value = `session-${Date.now()}-${Math.random()
         .toString(36)
         .substr(2, 9)}`;
+    } finally {
+      console.info("User and session identifiers initialized:", {
+        userId: currentUserId.value,
+        sessionId: currentSessionId.value,
+      });
     }
   };
 
   const collectDeviceAndBrowserData = async () => {
     const deviceInfo = {
-      // 🌐 1. Client IP & Network Information
+      // Client IP & Network Information
       clientNetwork: await getClientIPAndNetwork(),
 
-      // 🧠 2. System Information
+      // System Information
       systemInformation: {
         architecture: navigator.platform,
         cpuCores: navigator.hardwareConcurrency || "unknown",
@@ -51,7 +56,7 @@ export function useJourneyTracker() {
         hardwareInfo: getHardwareInfo(),
       },
 
-      // 🌐 3. Browser Information (Enhanced)
+      // Browser Information
       browserInformation: {
         browserName: getBrowserName(),
         browserVersion: getBrowserVersion(),
@@ -74,7 +79,7 @@ export function useJourneyTracker() {
         browserFeatures: getBrowserFeatures(),
       },
 
-      // 📱 4. Display & Device Information (Enhanced)
+      // Display & Device Information
       displayAndDevice: {
         screenResolution: {
           width: screen.width,
@@ -100,7 +105,7 @@ export function useJourneyTracker() {
         },
       },
 
-      // 🌍 5. Locale & Time Information
+      // Locale & Time Information
       localeAndTime: {
         timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
         timezoneOffset: new Date().getTimezoneOffset(),
@@ -109,7 +114,7 @@ export function useJourneyTracker() {
         dateTimeFormat: getDateTimeFormats(),
       },
 
-      // 🔐 6. Security & Privacy Indicators
+      // Security & Privacy Indicators
       securityAndPrivacy: {
         webdriver: navigator.webdriver || false,
         permissions: await getPermissionsStatus(),
@@ -118,18 +123,18 @@ export function useJourneyTracker() {
         crossOriginIsolated: window.crossOriginIsolated,
       },
 
-      // 🧪 7. Rendering & Behavioral Fingerprints (Audio removed)
+      // Rendering & Behavioral Fingerprints (Audio removed)
       renderingAndBehavior: {
         webGL: await getWebGLFingerprint(),
       },
 
-      // 📊 8. Performance & Memory Information
+      // Performance & Memory Information
       performanceInfo: getPerformanceInfo(),
 
-      // 🌐 9. Network Connection Details
+      // Network Connection Details
       networkConnection: getNetworkConnectionInfo(),
 
-      // 📄 10. Session Metadata
+      // Session Metadata
       sessionMetadata: {
         sessionStartTime: new Date().toISOString(),
         referrerUrl: document.referrer,
@@ -142,8 +147,6 @@ export function useJourneyTracker() {
 
     Object.assign(deviceSystemData, deviceInfo);
   };
-
-  // Enhanced helper functions for comprehensive data collection
 
   const getClientIPAndNetwork = async () => {
     try {
@@ -340,8 +343,6 @@ export function useJourneyTracker() {
     };
   };
 
-
-
   const getBrowserEngine = () => {
     const userAgent = navigator.userAgent;
     if (userAgent.includes("WebKit") && userAgent.includes("Chrome"))
@@ -455,8 +456,6 @@ export function useJourneyTracker() {
     };
   };
 
-
-
   const getDateTimeFormats = () => {
     const now = new Date();
     return {
@@ -469,8 +468,6 @@ export function useJourneyTracker() {
       timezoneOffset: now.getTimezoneOffset(),
     };
   };
-
-
 
   const getPerformanceInfo = () => {
     try {
@@ -570,16 +567,6 @@ export function useJourneyTracker() {
     return "desktop";
   };
 
-
-
-
-
-
-
-
-
-
-
   const getWebGLFingerprint = async () => {
     try {
       const canvas = document.createElement("canvas");
@@ -610,12 +597,6 @@ export function useJourneyTracker() {
     }
   };
 
-
-
-
-
-
-
   const getPermissionsStatus = async () => {
     try {
       if (!("permissions" in navigator))
@@ -645,12 +626,6 @@ export function useJourneyTracker() {
       return { error: "Permissions check failed" };
     }
   };
-
-
-
-
-
-
 
   const isStorageAvailable = (type) => {
     try {
