@@ -144,11 +144,11 @@ const router = useRouter();
 const { recordJourneyStep } = useJourneyTracker();
 
 onMounted(async () => {
-  recordJourneyStep(JOURNEY.WELCOME_PAGE.steps.PAGE_VIEWED);
+  await recordJourneyStep(JOURNEY.WELCOME_PAGE.steps.PAGE_VIEWED);
 });
 
-const startJourney = () => {
-  recordJourneyStep(JOURNEY.WELCOME_PAGE.steps.GET_STARTED_CLICKED);
+const startJourney = async () => {
+  await recordJourneyStep(JOURNEY.WELCOME_PAGE.steps.GET_STARTED_CLICKED);
   router.push(JOURNEY.TERMS_CONDITIONS.path);
 };
 </script>
