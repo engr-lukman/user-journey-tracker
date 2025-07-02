@@ -16,12 +16,9 @@
           see how user interactions are tracked and analyzed for insights. Your
           privacy and data security are important to us.
         </p>
-        <button
-          @click="startJourney"
-          class="w-full bg-pink-600 text-white font-medium py-3 px-4 rounded-md hover:bg-pink-700 transition-colors text-sm sm:text-base"
-        >
+        <Button @click="startJourney" variant="primary" full-width>
           Get Started
-        </button>
+        </Button>
       </div>
     </div>
     <AppFooter />
@@ -35,6 +32,7 @@ import { useJourneyTracker } from "@/composables/useJourneyTracker";
 import { JOURNEY } from "@/constants/journey";
 import AppHeader from "@/components/common/AppHeader.vue";
 import AppFooter from "@/components/common/AppFooter.vue";
+import Button from "@/components/ui/Button.vue";
 
 const router = useRouter();
 const { initializeJourneyTracker, recordJourneyStep } = useJourneyTracker();

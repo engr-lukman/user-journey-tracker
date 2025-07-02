@@ -58,19 +58,23 @@
           <div
             class="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-3 pt-4"
           >
-            <button
+            <Button
               type="button"
+              variant="secondary"
+              full-width
               @click="goBackToUserInfo"
-              class="w-full sm:flex-1 bg-gray-200 text-gray-700 font-medium py-3 px-4 rounded-md hover:bg-gray-300 transition-colors text-sm sm:text-base"
+              class="sm:flex-1"
             >
               Back
-            </button>
-            <button
+            </Button>
+            <Button
               type="submit"
-              class="w-full sm:flex-1 bg-pink-600 text-white font-medium py-3 px-4 rounded-md hover:bg-pink-700 transition-colors text-sm sm:text-base"
+              variant="primary"
+              full-width
+              class="sm:flex-1"
             >
               Continue
-            </button>
+            </Button>
           </div>
         </form>
       </div>
@@ -86,6 +90,7 @@ import { useJourneyTracker } from "@/composables/useJourneyTracker";
 import { JOURNEY } from "@/constants/journey";
 import AppHeader from "@/components/common/AppHeader.vue";
 import AppFooter from "@/components/common/AppFooter.vue";
+import Button from "@/components/ui/Button.vue";
 
 const router = useRouter();
 const { recordJourneyStep, saveUserInformation } = useJourneyTracker();

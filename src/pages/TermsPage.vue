@@ -38,24 +38,23 @@
         <div
           class="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-3"
         >
-          <button
+          <Button
             @click="goBackToHome"
-            class="w-full sm:flex-1 bg-gray-200 text-gray-700 font-medium py-3 px-4 rounded-md hover:bg-gray-300 transition-colors text-sm sm:text-base"
+            variant="secondary"
+            :full-width="true"
+            class="sm:flex-1"
           >
             Back
-          </button>
-          <button
+          </Button>
+          <Button
             @click="acceptTermsAndContinue"
             :disabled="!canProceedToNext"
-            :class="[
-              'w-full sm:flex-1 font-medium py-3 px-4 rounded-md transition-colors text-sm sm:text-base',
-              canProceedToNext
-                ? 'bg-pink-600 text-white hover:bg-pink-700'
-                : 'bg-gray-300 text-gray-500 cursor-not-allowed',
-            ]"
+            variant="primary"
+            :full-width="true"
+            class="sm:flex-1"
           >
             Continue
-          </button>
+          </Button>
         </div>
       </div>
     </div>

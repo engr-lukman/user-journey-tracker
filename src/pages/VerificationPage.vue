@@ -50,18 +50,22 @@
         </div>
 
         <div class="space-y-3">
-          <button
+          <Button
+            type="button"
+            variant="primary"
+            full-width
             @click="downloadData"
-            class="w-full bg-pink-600 text-white font-medium py-3 px-4 rounded-md hover:bg-pink-700 transition-colors text-sm sm:text-base"
           >
             Download Journey Data
-          </button>
-          <button
+          </Button>
+          <Button
+            type="button"
+            variant="secondary"
+            full-width
             @click="startOver"
-            class="w-full bg-gray-200 text-gray-700 font-medium py-3 px-4 rounded-md hover:bg-gray-300 transition-colors text-sm sm:text-base"
           >
             Start New Journey
-          </button>
+          </Button>
         </div>
       </div>
     </div>
@@ -76,6 +80,7 @@ import { useJourneyTracker } from "@/composables/useJourneyTracker";
 import { JOURNEY } from "@/constants/journey";
 import AppHeader from "@/components/common/AppHeader.vue";
 import AppFooter from "@/components/common/AppFooter.vue";
+import Button from "@/components/ui/Button.vue";
 
 const router = useRouter();
 const {

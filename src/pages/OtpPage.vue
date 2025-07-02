@@ -27,30 +27,36 @@
             />
           </div>
 
-          <button
+          <Button
             type="submit"
+            variant="primary"
+            full-width
             :disabled="otpCode.length !== 6"
-            class="w-full bg-pink-600 text-white font-medium py-2 px-4 rounded-md hover:bg-pink-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors text-sm sm:text-base"
           >
             Verify OTP
-          </button>
+          </Button>
 
-          <button
+          <Button
             type="button"
+            variant="text"
+            full-width
             @click="resendOtp"
-            class="w-full text-pink-600 hover:text-pink-700 font-medium py-2 text-sm"
+            class="py-2 text-sm"
           >
             Resend Code
-          </button>
+          </Button>
         </form>
 
         <div class="mt-6 pt-4 border-t border-gray-200">
-          <button
+          <Button
+            type="button"
+            variant="text"
+            full-width
             @click="goBack"
-            class="w-full text-gray-600 hover:text-gray-700 font-medium py-2 text-sm"
+            class="py-2 text-sm"
           >
             ← Back to Wallet
-          </button>
+          </Button>
         </div>
       </div>
     </div>
@@ -65,6 +71,7 @@ import { useJourneyTracker } from "@/composables/useJourneyTracker";
 import { JOURNEY } from "@/constants/journey";
 import AppHeader from "@/components/common/AppHeader.vue";
 import AppFooter from "@/components/common/AppFooter.vue";
+import Button from "@/components/ui/Button.vue";
 
 const router = useRouter();
 const { recordJourneyStep } = useJourneyTracker();
@@ -87,7 +94,6 @@ const verifyOtp = () => {
 const resendOtp = () => {
   recordJourneyStep(JOURNEY.OTP_VERIFICATION.steps.RESEND_REQUESTED);
   // In a real app, this would trigger a new OTP
-  alert("OTP resent successfully!");
 };
 
 const goBack = () => {
