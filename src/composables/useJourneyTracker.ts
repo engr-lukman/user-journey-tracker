@@ -20,25 +20,13 @@ export function useJourneyTracker() {
       const fingerprintResult = await fingerprintProcessor.get();
       currentUserId.value = fingerprintResult.visitorId;
       currentSessionId.value = `${fingerprintResult.visitorId}-${Date.now()}`;
-
-      console.log("🔐 User Identifiers Generated:", {
-        userId: currentUserId.value,
-        sessionId: currentSessionId.value,
-        fingerprintData: fingerprintResult,
-      });
     } catch (error) {
-      console.warn("FingerprintJS failed, using fallback ID:", error);
       currentUserId.value = `user-${Date.now()}-${Math.random()
         .toString(36)
         .substr(2, 9)}`;
       currentSessionId.value = `session-${Date.now()}-${Math.random()
         .toString(36)
         .substr(2, 9)}`;
-
-      console.log("🔐 Fallback User Identifiers Generated:", {
-        userId: currentUserId.value,
-        sessionId: currentSessionId.value,
-      });
     }
   };
 
@@ -60,8 +48,6 @@ export function useJourneyTracker() {
         isMobile: getDeviceType() === "mobile",
         isDesktop: getDeviceType() === "desktop",
         isTablet: getDeviceType() === "tablet",
-        virtualization: detectVirtualization(),
-        clockSkew: getClockSkew(),
         hardwareInfo: getHardwareInfo(),
       },
 
@@ -85,7 +71,6 @@ export function useJourneyTracker() {
           cookies: navigator.cookieEnabled,
           webSQL: "openDatabase" in window,
         },
-        apiSupport: getAPISupport(),
         browserFeatures: getBrowserFeatures(),
       },
 
@@ -113,9 +98,6 @@ export function useJourneyTracker() {
           touchEvent: "ontouchstart" in window,
           isTouch: navigator.maxTouchPoints > 0 || "ontouchstart" in window,
         },
-        inputCapabilities: getInputCapabilities(),
-        mediaQueries: getMediaQuerySupport(),
-        displayFeatures: getDisplayFeatures(),
       },
 
       // 🌍 5. Locale & Time Information
@@ -125,15 +107,11 @@ export function useJourneyTracker() {
         language: navigator.language,
         languages: navigator.languages || [navigator.language],
         dateTimeFormat: getDateTimeFormats(),
-        numberFormat: getNumberFormats(),
-        currencyFormat: getCurrencyFormats(),
       },
 
       // 🔐 6. Security & Privacy Indicators
       securityAndPrivacy: {
         webdriver: navigator.webdriver || false,
-        incognitoMode: await detectIncognitoMode(),
-        adBlocker: await detectAdBlocker(),
         permissions: await getPermissionsStatus(),
         doNotTrack: navigator.doNotTrack || "unknown",
         secureContext: window.isSecureContext,
@@ -142,12 +120,7 @@ export function useJourneyTracker() {
 
       // 🧪 7. Rendering & Behavioral Fingerprints (Audio removed)
       renderingAndBehavior: {
-        canvas: getCanvasFingerprint(),
         webGL: await getWebGLFingerprint(),
-        fontFingerprint: await getFontFingerprint(),
-        cssSupport: getCSSSupport(),
-        webAssembly: await getWebAssemblyFingerprint(),
-        timing: getTimingFingerprint(),
       },
 
       // 📊 8. Performance & Memory Information
@@ -364,49 +337,10 @@ export function useJourneyTracker() {
       platform: navigator.platform,
       maxTouchPoints: navigator.maxTouchPoints || 0,
       devicePixelRatio: window.devicePixelRatio || 1,
-      colorGamut: getColorGamut(),
-      hdrSupport: getHDRSupport(),
-      refreshRate: getRefreshRate(),
     };
   };
 
-  const getColorGamut = () => {
-    if (window.matchMedia("(color-gamut: rec2020)").matches) return "rec2020";
-    if (window.matchMedia("(color-gamut: p3)").matches) return "p3";
-    if (window.matchMedia("(color-gamut: srgb)").matches) return "srgb";
-    return "unknown";
-  };
 
-  const getHDRSupport = () => {
-    return {
-      hdr10: window.matchMedia("(dynamic-range: high)").matches,
-      dolbyVision: window.matchMedia(
-        "(color-gamut: rec2020) and (dynamic-range: high)"
-      ).matches,
-    };
-  };
-
-  const getRefreshRate = () => {
-    return new Promise((resolve) => {
-      let startTime = performance.now();
-      let frameCount = 0;
-
-      const countFrames = () => {
-        frameCount++;
-        if (frameCount < 60) {
-          requestAnimationFrame(countFrames);
-        } else {
-          const endTime = performance.now();
-          const refreshRate = Math.round(
-            (1000 * frameCount) / (endTime - startTime)
-          );
-          resolve(refreshRate);
-        }
-      };
-
-      requestAnimationFrame(countFrames);
-    });
-  };
 
   const getBrowserEngine = () => {
     const userAgent = navigator.userAgent;
@@ -521,21 +455,7 @@ export function useJourneyTracker() {
     };
   };
 
-  const getDisplayFeatures = () => {
-    return {
-      colorDepth: screen.colorDepth,
-      pixelDepth: screen.pixelDepth,
-      colorGamut: getColorGamut(),
-      hdrCapable: window.matchMedia("(dynamic-range: high)").matches,
-      highContrast: window.matchMedia("(prefers-contrast: high)").matches,
-      forcedColors: window.matchMedia("(forced-colors: active)").matches,
-      reducedMotion: window.matchMedia("(prefers-reduced-motion: reduce)")
-        .matches,
-      colorScheme: window.matchMedia("(prefers-color-scheme: dark)").matches
-        ? "dark"
-        : "light",
-    };
-  };
+
 
   const getDateTimeFormats = () => {
     const now = new Date();
@@ -550,45 +470,7 @@ export function useJourneyTracker() {
     };
   };
 
-  const getNumberFormats = () => {
-    try {
-      const number = 1234567.89;
-      return {
-        standard: number.toLocaleString(),
-        currency: number.toLocaleString(undefined, {
-          style: "currency",
-          currency: "USD",
-        }),
-        percent: (0.1234).toLocaleString(undefined, { style: "percent" }),
-        scientific: number.toExponential(),
-      };
-    } catch (error) {
-      return { error: "Number formatting not supported" };
-    }
-  };
 
-  const getCurrencyFormats = () => {
-    try {
-      const amount = 1234.56;
-      const currencies = ["USD", "EUR", "GBP", "JPY"];
-      const formats = {};
-
-      currencies.forEach((currency) => {
-        try {
-          formats[currency] = amount.toLocaleString(undefined, {
-            style: "currency",
-            currency: currency,
-          });
-        } catch (e) {
-          formats[currency] = "Not supported";
-        }
-      });
-
-      return formats;
-    } catch (error) {
-      return { error: "Currency formatting not supported" };
-    }
-  };
 
   const getPerformanceInfo = () => {
     try {
@@ -688,190 +570,15 @@ export function useJourneyTracker() {
     return "desktop";
   };
 
-  const detectVirtualization = () => {
-    const userAgent = navigator.userAgent;
-    const vendor = navigator.vendor || "";
 
-    const vmIndicators = [
-      "VMware",
-      "VirtualBox",
-      "Parallels",
-      "QEMU",
-      "Xen",
-      "Microsoft Corporation",
-      "innotek",
-      "Oracle Corporation",
-    ];
 
-    return vmIndicators.some(
-      (indicator) => userAgent.includes(indicator) || vendor.includes(indicator)
-    );
-  };
 
-  const getClockSkew = () => {
-    const start = Date.now();
-    const perfStart = performance.now();
 
-    // Small delay to measure consistency
-    for (let i = 0; i < 1000; i++) {
-      Math.random();
-    }
 
-    const end = Date.now();
-    const perfEnd = performance.now();
 
-    const dateTimeDiff = end - start;
-    const perfTimeDiff = perfEnd - perfStart;
 
-    return Math.abs(dateTimeDiff - perfTimeDiff);
-  };
 
-  const getAPISupport = () => {
-    return {
-      // Core APIs
-      fetch: "fetch" in window,
-      xhr: "XMLHttpRequest" in window,
-      websocket: "WebSocket" in window,
-      webWorker: "Worker" in window,
-      serviceWorker: "serviceWorker" in navigator,
-      sharedWorker: "SharedWorker" in window,
 
-      // Communication APIs
-      broadcastChannel: "BroadcastChannel" in window,
-      messageChannel: "MessageChannel" in window,
-      postMessage: "postMessage" in window,
-
-      // Notification & Engagement
-      notification: "Notification" in window,
-      pushManager: "PushManager" in window,
-      badging: "setAppBadge" in navigator,
-
-      // Device APIs (non-location/audio)
-      bluetooth: "bluetooth" in navigator,
-      usb: "usb" in navigator,
-      serial: "serial" in navigator,
-      hid: "hid" in navigator,
-
-      // System APIs
-      wakeLock: "wakeLock" in navigator,
-      scheduler: "scheduler" in window && "postTask" in window.scheduler,
-      idleDetection: "IdleDetector" in window,
-
-      // Storage APIs
-      indexedDB: "indexedDB" in window,
-      sessionStorage: "sessionStorage" in window,
-      caches: "caches" in window,
-
-      // Graphics & Media
-      webGL: !!getWebGLContext(),
-      webGL2: !!getWebGL2Context(),
-      canvas: "HTMLCanvasElement" in window,
-      webRTC: "RTCPeerConnection" in window,
-      webAssembly: "WebAssembly" in window,
-
-      // Security & Credentials
-      credentials: "credentials" in navigator,
-      publicKeyCredential: "PublicKeyCredential" in window,
-
-      // Payment & Commerce
-      paymentRequest: "PaymentRequest" in window,
-
-      // File System
-      fileSystemAccess: "showOpenFilePicker" in window,
-
-      // Clipboard
-      clipboard: "clipboard" in navigator,
-
-      // Sharing
-      webShare: "share" in navigator,
-
-      // Performance
-      performanceObserver: "PerformanceObserver" in window,
-      intersectionObserver: "IntersectionObserver" in window,
-      mutationObserver: "MutationObserver" in window,
-      resizeObserver: "ResizeObserver" in window,
-
-      // Gaming
-      gamepad: "getGamepads" in navigator,
-
-      // Misc
-      vibration: "vibrate" in navigator,
-      fullscreen: "requestFullscreen" in document.documentElement,
-      pictureInPicture: "pictureInPictureEnabled" in document,
-      screenOrientation: "orientation" in screen,
-      visualViewport: "visualViewport" in window,
-    };
-  };
-
-  const getInputCapabilities = () => {
-    return {
-      keyboard: "KeyboardEvent" in window,
-      mouse: "MouseEvent" in window,
-      pointer: "PointerEvent" in window,
-      wheel: "WheelEvent" in window,
-      gamepad: "Gamepad" in window,
-      deviceMotion: "DeviceMotionEvent" in window,
-      deviceOrientation: "DeviceOrientationEvent" in window,
-    };
-  };
-
-  const getMediaQuerySupport = () => {
-    return {
-      prefersColorScheme: window.matchMedia("(prefers-color-scheme: dark)")
-        .matches
-        ? "dark"
-        : "light",
-      prefersReducedMotion: window.matchMedia(
-        "(prefers-reduced-motion: reduce)"
-      ).matches,
-      prefersHighContrast: window.matchMedia("(prefers-contrast: high)")
-        .matches,
-      forcedColors: window.matchMedia("(forced-colors: active)").matches,
-      hoverCapability: window.matchMedia("(hover: hover)").matches,
-      pointerAccuracy: window.matchMedia("(pointer: fine)").matches
-        ? "fine"
-        : "coarse",
-      dynamicRange: window.matchMedia("(dynamic-range: high)").matches
-        ? "high"
-        : "standard",
-    };
-  };
-
-  const getCanvasFingerprint = () => {
-    try {
-      const canvas = document.createElement("canvas");
-      const ctx = canvas.getContext("2d");
-
-      canvas.width = 280;
-      canvas.height = 60;
-
-      // Test text rendering
-      ctx.textBaseline = "top";
-      ctx.font = "14px Arial";
-      ctx.fillStyle = "#f60";
-      ctx.fillRect(125, 1, 62, 20);
-      ctx.fillStyle = "#069";
-      ctx.fillText("Hello, World! 🌍", 2, 15);
-      ctx.fillStyle = "rgba(102, 204, 0, 0.7)";
-      ctx.fillText("Hello, World! 🌍", 4, 17);
-
-      // Test geometry rendering
-      ctx.globalCompositeOperation = "multiply";
-      ctx.fillStyle = "rgb(255,0,255)";
-      ctx.beginPath();
-      ctx.arc(50, 50, 50, 0, Math.PI * 2, true);
-      ctx.closePath();
-      ctx.fill();
-
-      const dataURL = canvas.toDataURL();
-      return {
-        dataURL,
-        hash: btoa(dataURL).slice(0, 16),
-      };
-    } catch (error) {
-      return { error: "Canvas not supported" };
-    }
-  };
 
   const getWebGLFingerprint = async () => {
     try {
@@ -903,123 +610,11 @@ export function useJourneyTracker() {
     }
   };
 
-  const getFontFingerprint = async () => {
-    try {
-      const fonts = [
-        "Arial",
-        "Helvetica",
-        "Times New Roman",
-        "Georgia",
-        "Verdana",
-        "Trebuchet MS",
-        "Arial Black",
-        "Impact",
-        "Comic Sans MS",
-        "Tahoma",
-        "Lucida Grande",
-        "Palatino",
-        "Garamond",
-        "Calibri",
-        "Cambria",
-        "Century Gothic",
-        "Franklin Gothic Medium",
-        "Segoe UI",
-        "Roboto",
-        "Open Sans",
-        "Lato",
-        "Montserrat",
-        "Source Sans Pro",
-        "Ubuntu",
-        "Nunito",
-        "Poppins",
-        "Inter",
-      ];
 
-      const canvas = document.createElement("canvas");
-      const ctx = canvas.getContext("2d");
-      const testString = "mmmmmmmmmmlli";
-      const baseFonts = ["monospace", "sans-serif", "serif"];
 
-      const defaultWidths = {};
 
-      // Get baseline measurements
-      baseFonts.forEach((baseFont) => {
-        ctx.font = "72px " + baseFont;
-        defaultWidths[baseFont] = ctx.measureText(testString).width;
-      });
 
-      const detectedFonts = [];
 
-      fonts.forEach((font) => {
-        baseFonts.forEach((baseFont) => {
-          ctx.font = "72px " + font + ", " + baseFont;
-          const width = ctx.measureText(testString).width;
-          if (width !== defaultWidths[baseFont]) {
-            detectedFonts.push(font);
-          }
-        });
-      });
-
-      return {
-        availableFonts: [...new Set(detectedFonts)],
-        fontCount: detectedFonts.length,
-        systemFonts: detectedFonts.filter((font) =>
-          [
-            "Arial",
-            "Helvetica",
-            "Times New Roman",
-            "Georgia",
-            "Verdana",
-          ].includes(font)
-        ),
-        webFonts: detectedFonts.filter((font) =>
-          ["Roboto", "Open Sans", "Lato", "Montserrat", "Inter"].includes(font)
-        ),
-      };
-    } catch (error) {
-      return { error: "Font detection failed" };
-    }
-  };
-
-  const detectIncognitoMode = async () => {
-    try {
-      // Test storage quota (modern approach)
-      if ("storage" in navigator && "estimate" in navigator.storage) {
-        const estimate = await navigator.storage.estimate();
-        return estimate.quota < 120000000; // Incognito typically has lower quota
-      }
-
-      // Fallback: check if sessionStorage behaves differently
-      try {
-        sessionStorage.setItem("test", "test");
-        sessionStorage.removeItem("test");
-        return false;
-      } catch (e) {
-        return true;
-      }
-    } catch (error) {
-      return false;
-    }
-  };
-
-  const detectAdBlocker = async () => {
-    try {
-      // Create a fake ad element
-      const adElement = document.createElement("div");
-      adElement.innerHTML = "&nbsp;";
-      adElement.className = "adsbox";
-      adElement.style.position = "absolute";
-      adElement.style.left = "-10000px";
-      document.body.appendChild(adElement);
-
-      const isBlocked = adElement.offsetHeight === 0;
-      document.body.removeChild(adElement);
-
-      return isBlocked;
-    } catch (error) {
-      return false;
-    }
-  };
 
   const getPermissionsStatus = async () => {
     try {
@@ -1051,90 +646,11 @@ export function useJourneyTracker() {
     }
   };
 
-  const getCSSSupport = () => {
-    try {
-      const features = {};
 
-      // Test CSS features
-      const testFeatures = [
-        "grid",
-        "flexbox",
-        "backdrop-filter",
-        "css-variables",
-        "transforms",
-        "transitions",
-        "animations",
-        "filter",
-      ];
 
-      testFeatures.forEach((feature) => {
-        features[feature] = CSS.supports
-          ? CSS.supports(feature, "initial")
-          : false;
-      });
 
-      return features;
-    } catch (error) {
-      return { error: "CSS support detection failed" };
-    }
-  };
 
-  const getWebAssemblyFingerprint = async () => {
-    try {
-      if (!("WebAssembly" in window)) {
-        return { supported: false };
-      }
 
-      // Test basic WebAssembly support
-      const wasmSupported = typeof WebAssembly === "object";
-
-      // Test WASM compilation with a minimal module
-      const simpleWasm = new Uint8Array([
-        0x00, 0x61, 0x73, 0x6d, 0x01, 0x00, 0x00, 0x00,
-      ]);
-
-      let compileSupported = false;
-      try {
-        await WebAssembly.compile(simpleWasm);
-        compileSupported = true;
-      } catch (e) {
-        compileSupported = false;
-      }
-
-      return {
-        supported: wasmSupported,
-        compile: compileSupported,
-        instantiate: "instantiate" in WebAssembly,
-        streaming: "compileStreaming" in WebAssembly,
-      };
-    } catch (error) {
-      return { error: "WebAssembly fingerprint failed" };
-    }
-  };
-
-  const getTimingFingerprint = () => {
-    try {
-      const timing = performance.timing || {};
-      const navigation = performance.navigation || {};
-
-      return {
-        navigationStart: timing.navigationStart,
-        domLoading: timing.domLoading,
-        domInteractive: timing.domInteractive,
-        domContentLoaded: timing.domContentLoadedEventEnd,
-        loadComplete: timing.loadEventEnd,
-        navigationType: navigation.type,
-        redirectCount: navigation.redirectCount,
-        performanceObserver: "PerformanceObserver" in window,
-        performanceNow: "performance" in window && "now" in performance,
-        resourceTiming: "getEntriesByType" in performance,
-        userTiming: "mark" in performance && "measure" in performance,
-        navigationTiming: "getEntriesByType" in performance,
-      };
-    } catch (error) {
-      return { error: "Timing fingerprint failed" };
-    }
-  };
 
   const isStorageAvailable = (type) => {
     try {
@@ -1148,43 +664,23 @@ export function useJourneyTracker() {
     }
   };
 
-  const initializeJourneyTracker = async (options = { resetData: true }) => {
+  const initializeJourneyTracker = async () => {
     if (trackerInitialized.value) return;
 
-    console.log("🚀 Initializing Journey Tracker...");
-
-    if (options.resetData) {
-      // Reset all stored data for new journey
-      console.log("🗑️ Resetting stored data for new journey...");
-
-      // Clear previous journey data
-      journeyStepsData.value = [];
-      Object.keys(collectedUserData).forEach(
-        (key) => delete collectedUserData[key]
-      );
-      Object.keys(deviceSystemData).forEach(
-        (key) => delete deviceSystemData[key]
-      );
-
-      console.log("✅ Previous data cleared, starting fresh journey");
-    } else {
-      console.log("🔄 Continuing with existing data (if any)...");
-    }
+    // Always start with fresh data
+    journeyStepsData.value = [];
+    Object.keys(collectedUserData).forEach(
+      (key) => delete collectedUserData[key]
+    );
+    Object.keys(deviceSystemData).forEach(
+      (key) => delete deviceSystemData[key]
+    );
 
     await generateUserIdentifiers();
     await collectDeviceAndBrowserData();
 
     trackerInitialized.value = true;
     recordJourneyStep("journey_started");
-
-    console.log("✅ Journey Tracker Initialized Successfully!");
-    console.log("📋 Current Status:", {
-      initialized: trackerInitialized.value,
-      userId: currentUserId.value,
-      sessionId: currentSessionId.value,
-      totalSteps: journeyStepsData.value.length,
-      resetData: options.resetData,
-    });
   };
 
   const recordJourneyStep = (
@@ -1202,23 +698,11 @@ export function useJourneyTracker() {
     };
 
     journeyStepsData.value.push(stepRecord);
-
-    console.log(`📍 Journey Step Recorded: "${stepName}"`, {
-      step: stepRecord,
-      totalSteps: journeyStepsData.value.length,
-      allSteps: journeyStepsData.value,
-    });
   };
 
   const saveUserInformation = (userInfo) => {
     Object.assign(collectedUserData, userInfo);
     recordJourneyStep("user_information_saved", {
-      dataFields: Object.keys(userInfo),
-    });
-
-    console.log("💾 User Information Saved:", {
-      newData: userInfo,
-      allUserData: { ...collectedUserData },
       dataFields: Object.keys(userInfo),
     });
   };
@@ -1237,40 +721,17 @@ export function useJourneyTracker() {
           : 0,
     };
 
-    console.log("📋 Complete Journey Data Retrieved:");
-    console.log("👤 User ID:", completeData.userId);
-    console.log("🔗 Session ID:", completeData.sessionId);
-    console.log(
-      "📍 Journey Steps (" + completeData.journeySteps.length + "):",
-      completeData.journeySteps
-    );
-    console.log("👤 User Data:", completeData.userData);
-    console.log("🖥️ System Data:", completeData.systemData);
-    console.log("⏱️ Total Journey Time:", completeData.totalJourneyTime + "ms");
-    console.log("📦 Full Payload:", completeData);
-
     return completeData;
   };
 
   const clearAllJourneyData = () => {
-    console.log("🗑️ Clearing All Journey Data...");
-    console.log("📊 Data before clearing:", {
-      steps: journeyStepsData.value.length,
-      userData: Object.keys(collectedUserData).length,
-      systemData: Object.keys(deviceSystemData).length,
-    });
-
     journeyStepsData.value = [];
     Object.keys(collectedUserData).forEach(
       (key) => delete collectedUserData[key]
     );
-
-    console.log("✅ All Journey Data Cleared Successfully!");
   };
 
   const exportJourneyData = () => {
-    console.log("📤 Exporting Journey Data...");
-
     const completeJourneyData = getCompleteJourneyData();
     const dataBlob = new Blob([JSON.stringify(completeJourneyData, null, 2)], {
       type: "application/json",
@@ -1285,79 +746,11 @@ export function useJourneyTracker() {
     downloadLink.click();
     document.body.removeChild(downloadLink);
     URL.revokeObjectURL(downloadUrl);
-
-    console.log("✅ Journey Data Exported Successfully as:", filename);
-    console.log("📊 Export Summary:", {
-      filename: filename,
-      dataSize: dataBlob.size + " bytes",
-      stepsCount: completeJourneyData.journeySteps.length,
-      totalJourneyTime: completeJourneyData.totalJourneyTime + "ms",
-    });
   };
 
   // Console logging utility function
   const printAllData = () => {
-    console.log("=".repeat(80));
-    console.log("📊 COMPLETE JOURNEY TRACKER DATA SUMMARY");
-    console.log("=".repeat(80));
-
-    console.log("🔐 IDENTIFIERS:");
-    console.log("   User ID:", currentUserId.value);
-    console.log("   Session ID:", currentSessionId.value);
-    console.log("   Initialized:", trackerInitialized.value);
-
-    console.log(
-      "\n📍 JOURNEY STEPS (" + journeyStepsData.value.length + " total):"
-    );
-    journeyStepsData.value.forEach((step, index) => {
-      console.log(`   ${index + 1}. ${step.stepName} - ${step.recordedAt}`);
-      console.log(`      URL: ${step.currentUrl}`);
-      if (Object.keys(step).length > 6) {
-        console.log(
-          "      Additional Data:",
-          Object.fromEntries(
-            Object.entries(step).filter(
-              ([key]) =>
-                ![
-                  "stepName",
-                  "recordedAt",
-                  "sessionId",
-                  "userId",
-                  "currentUrl",
-                  "currentPath",
-                ].includes(key)
-            )
-          )
-        );
-      }
-    });
-
-    console.log("\n👤 USER DATA:");
-    if (Object.keys(collectedUserData).length > 0) {
-      console.log(collectedUserData);
-    } else {
-      console.log("   No user data collected yet");
-    }
-
-    console.log("\n🖥️ SYSTEM DATA:");
-    Object.entries(deviceSystemData).forEach(([section, data]) => {
-      console.log(`   ${section}:`, data);
-    });
-
-    if (journeyStepsData.value.length > 0) {
-      const totalTime =
-        new Date().getTime() -
-        new Date(journeyStepsData.value[0].recordedAt).getTime();
-      console.log("\n⏱️ TIMING:");
-      console.log("   Journey Started:", journeyStepsData.value[0].recordedAt);
-      console.log("   Current Time:", new Date().toISOString());
-      console.log(
-        "   Total Duration:",
-        totalTime + "ms (" + Math.round(totalTime / 1000) + "s)"
-      );
-    }
-
-    console.log("=".repeat(80));
+    // Instead of logging to console, just return the data
 
     return getCompleteJourneyData();
   };

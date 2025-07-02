@@ -358,8 +358,8 @@ function App() {
 ```typescript
 const { initializeJourneyTracker } = useJourneyTracker();
 
-// Enable debug logging
-await initializeJourneyTracker({ debug: true });
+// Initialize the journey tracker
+await initializeJourneyTracker();
 ```
 
 ## Contributing
