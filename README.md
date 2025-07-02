@@ -92,8 +92,7 @@ interface JourneyTrackerPayload {
     browserInformation: { ... }; // Browser details
     displayAndDevice: { ... };  // Screen and device info
     localeAndTime: { ... };     // Timezone and locale
-    securityAndPrivacy: { ... }; // Security indicators
-    renderingAndBehavior: { ... }; // Fingerprinting data
+
     performanceInfo: { ... };   // Performance metrics
     networkConnection: { ... }; // Connection details
     sessionMetadata: { ... };   // Session information

@@ -110,20 +110,6 @@ export function useJourneyTracker() {
         languages: navigator.languages || [navigator.language],
       },
 
-      // Security & Privacy Indicators
-      securityAndPrivacy: {
-        webdriver: navigator.webdriver || false,
-        permissions: await getPermissionsStatus(),
-        doNotTrack: navigator.doNotTrack || "unknown",
-        secureContext: window.isSecureContext,
-        crossOriginIsolated: window.crossOriginIsolated,
-      },
-
-      // Rendering & Behavioral Fingerprints (Audio removed)
-      renderingAndBehavior: {
-        webGL: await getWebGLFingerprint(),
-      },
-
       // Performance & Memory Information
       performanceInfo: getPerformanceInfo(),
 
@@ -480,66 +466,6 @@ export function useJourneyTracker() {
       return "mobile";
     if (/Tablet|iPad/i.test(userAgent)) return "tablet";
     return "desktop";
-  };
-
-  const getWebGLFingerprint = async () => {
-    try {
-      const canvas = document.createElement("canvas");
-      const gl =
-        canvas.getContext("webgl") || canvas.getContext("experimental-webgl");
-
-      if (!gl) return { error: "WebGL not supported" };
-
-      const debugInfo = gl.getExtension("WEBGL_debug_renderer_info");
-
-      return {
-        vendor: gl.getParameter(gl.VENDOR),
-        renderer: gl.getParameter(gl.RENDERER),
-        version: gl.getParameter(gl.VERSION),
-        shadingLanguageVersion: gl.getParameter(gl.SHADING_LANGUAGE_VERSION),
-        unmaskedVendor: debugInfo
-          ? gl.getParameter(debugInfo.UNMASKED_VENDOR_WEBGL)
-          : "unknown",
-        unmaskedRenderer: debugInfo
-          ? gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL)
-          : "unknown",
-        extensions: gl.getSupportedExtensions() || [],
-        maxTextureSize: gl.getParameter(gl.MAX_TEXTURE_SIZE),
-        maxViewportDims: gl.getParameter(gl.MAX_VIEWPORT_DIMS),
-      };
-    } catch (error) {
-      return { error: "WebGL fingerprinting failed" };
-    }
-  };
-
-  const getPermissionsStatus = async () => {
-    try {
-      if (!("permissions" in navigator))
-        return { error: "Permissions API not supported" };
-
-      const permissions = {};
-      const permissionNames = [
-        "geolocation",
-        "notifications",
-        "camera",
-        "microphone",
-      ];
-
-      for (const permission of permissionNames) {
-        try {
-          const result = await navigator.permissions.query({
-            name: permission,
-          });
-          permissions[permission] = result.state;
-        } catch (e) {
-          permissions[permission] = "not-supported";
-        }
-      }
-
-      return permissions;
-    } catch (error) {
-      return { error: "Permissions check failed" };
-    }
   };
 
   const isStorageAvailable = (type) => {

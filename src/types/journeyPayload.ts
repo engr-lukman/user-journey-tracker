@@ -53,20 +53,13 @@ export interface JourneyTrackerPayload {
       isMobile: boolean;
       isDesktop: boolean;
       isTablet: boolean;
-      virtualization: boolean;
-      clockSkew: number;
+
       hardwareInfo: {
         cpuCores: number | string;
         deviceMemory: string;
         platform: string;
         maxTouchPoints: number;
         devicePixelRatio: number;
-        colorGamut: string;
-        hdrSupport: {
-          hdr10: boolean;
-          dolbyVision: boolean;
-        };
-        refreshRate: number;
       };
     };
 
@@ -82,19 +75,7 @@ export interface JourneyTrackerPayload {
       onLine: boolean;
       maxTouchPoints: number;
       pdfViewerEnabled: boolean;
-      plugins: Array<{
-        name: string;
-        description: string;
-        filename: string;
-        length: number;
-        mimeTypes: string[];
-      }>;
-      mimeTypes: Array<{
-        type: string;
-        description: string;
-        suffixes: string;
-        enabledPlugin: string | null;
-      }>;
+
       storageAvailability: {
         localStorage: boolean;
         sessionStorage: boolean;
@@ -102,12 +83,7 @@ export interface JourneyTrackerPayload {
         cookies: boolean;
         webSQL: boolean;
       };
-      apiSupport: {
-        [key: string]: boolean;
-      };
-      browserFeatures: {
-        [key: string]: boolean;
-      };
+
     };
 
     // 📱 4. Display & Device Information (Enhanced)
@@ -148,28 +124,6 @@ export interface JourneyTrackerPayload {
         touchEvent: boolean;
         isTouch: boolean;
       };
-      inputCapabilities: {
-        [key: string]: boolean;
-      };
-      mediaQueries: {
-        prefersColorScheme: string;
-        prefersReducedMotion: boolean;
-        prefersHighContrast: boolean;
-        forcedColors: boolean;
-        hoverCapability: boolean;
-        pointerAccuracy: string;
-        dynamicRange: string;
-      };
-      displayFeatures: {
-        colorDepth: number;
-        pixelDepth: number;
-        colorGamut: string;
-        hdrCapable: boolean;
-        highContrast: boolean;
-        forcedColors: boolean;
-        reducedMotion: boolean;
-        colorScheme: string;
-      };
     };
 
     // 🌍 5. Locale & Time Information
@@ -178,90 +132,7 @@ export interface JourneyTrackerPayload {
       timezoneOffset: number;
       language: string;
       languages: string[];
-      dateTimeFormat: {
-        locale: string;
-        dateString: string;
-        timeString: string;
-        isoString: string;
-        utcString: string;
-        timezone: string;
-        timezoneOffset: number;
-      };
-      numberFormat: {
-        standard: string;
-        currency: string;
-        percent: string;
-        scientific: string;
-      };
-      currencyFormat: {
-        [currency: string]: string;
-      };
-    };
 
-    // 🔐 6. Security & Privacy Indicators
-    securityAndPrivacy: {
-      webdriver: boolean;
-      incognitoMode: boolean;
-      adBlocker: boolean;
-      permissions: {
-        [permission: string]: string;
-      };
-      doNotTrack: string;
-      secureContext: boolean;
-      crossOriginIsolated: boolean;
-    };
-
-    // 🧪 7. Rendering & Behavioral Fingerprints
-    renderingAndBehavior: {
-      canvas: {
-        dataURL?: string;
-        hash?: string;
-        error?: string;
-      };
-      webGL: {
-        vendor?: string;
-        renderer?: string;
-        version?: string;
-        shadingLanguageVersion?: string;
-        unmaskedVendor?: string;
-        unmaskedRenderer?: string;
-        extensions?: string[];
-        maxTextureSize?: number;
-        maxViewportDims?: number[];
-        error?: string;
-      };
-      fontFingerprint: {
-        availableFonts?: string[];
-        fontCount?: number;
-        systemFonts?: string[];
-        webFonts?: string[];
-        error?: string;
-      };
-      cssSupport: {
-        [feature: string]: boolean;
-      };
-      webAssembly: {
-        supported?: boolean;
-        compile?: boolean;
-        instantiate?: boolean;
-        streaming?: boolean;
-        error?: string;
-      };
-      timing: {
-        navigationStart?: number;
-        domLoading?: number;
-        domInteractive?: number;
-        domContentLoaded?: number;
-        loadComplete?: number;
-        navigationType?: number;
-        redirectCount?: number;
-        performanceObserver?: boolean;
-        performanceNow?: boolean;
-        resourceTiming?: boolean;
-        userTiming?: boolean;
-        navigationTiming?: boolean;
-        error?: string;
-      };
     };
 
     // 📊 8. Performance & Memory Information
@@ -328,10 +199,7 @@ export type BrowserInfo =
 export type DisplayInfo =
   JourneyTrackerPayload["systemData"]["displayAndDevice"];
 export type LocaleInfo = JourneyTrackerPayload["systemData"]["localeAndTime"];
-export type SecurityInfo =
-  JourneyTrackerPayload["systemData"]["securityAndPrivacy"];
-export type RenderingInfo =
-  JourneyTrackerPayload["systemData"]["renderingAndBehavior"];
+
 export type PerformanceInfo =
   JourneyTrackerPayload["systemData"]["performanceInfo"];
 export type NetworkInfo =
