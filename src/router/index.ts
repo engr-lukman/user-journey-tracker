@@ -68,7 +68,7 @@ journeyRouter.beforeEach((toRoute, fromRoute, next) => {
   const { recordJourneyStep } = useJourneyTracker();
 
   if (toRoute.meta?.stepName) {
-    recordJourneyStep(toRoute.meta.stepName, {
+    recordJourneyStep(toRoute.meta.stepName as string, {
       fromPath: fromRoute.path,
       toPath: toRoute.path,
       navigationMethod: "router",
