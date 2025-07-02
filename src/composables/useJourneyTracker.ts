@@ -80,7 +80,6 @@ export function useJourneyTracker() {
         plugins: getBrowserPlugins(),
         mimeTypes: getBrowserMimeTypes(),
         storageAvailability: {
-          localStorage: isStorageAvailable("localStorage"),
           sessionStorage: isStorageAvailable("sessionStorage"),
           indexedDB: "indexedDB" in window,
           cookies: navigator.cookieEnabled,
@@ -772,7 +771,6 @@ export function useJourneyTracker() {
 
       // Storage APIs
       indexedDB: "indexedDB" in window,
-      localStorage: "localStorage" in window,
       sessionStorage: "sessionStorage" in window,
       caches: "caches" in window,
 
@@ -1003,10 +1001,10 @@ export function useJourneyTracker() {
         return estimate.quota < 120000000; // Incognito typically has lower quota
       }
 
-      // Fallback test
+      // Fallback: check if sessionStorage behaves differently
       try {
-        localStorage.setItem("test", "test");
-        localStorage.removeItem("test");
+        sessionStorage.setItem("test", "test");
+        sessionStorage.removeItem("test");
         return false;
       } catch (e) {
         return true;
@@ -1162,10 +1160,28 @@ export function useJourneyTracker() {
     }
   };
 
-  const initializeJourneyTracker = async () => {
+  const initializeJourneyTracker = async (options = { resetData: true }) => {
     if (trackerInitialized.value) return;
 
     console.log("🚀 Initializing Journey Tracker...");
+
+    if (options.resetData) {
+      // Reset all stored data for new journey
+      console.log("🗑️ Resetting stored data for new journey...");
+
+      // Clear previous journey data
+      journeyStepsData.value = [];
+      Object.keys(collectedUserData).forEach(
+        (key) => delete collectedUserData[key]
+      );
+      Object.keys(deviceSystemData).forEach(
+        (key) => delete deviceSystemData[key]
+      );
+
+      console.log("✅ Previous data cleared, starting fresh journey");
+    } else {
+      console.log("🔄 Continuing with existing data (if any)...");
+    }
 
     await generateUserIdentifiers();
     await collectDeviceAndBrowserData();
@@ -1179,6 +1195,7 @@ export function useJourneyTracker() {
       userId: currentUserId.value,
       sessionId: currentSessionId.value,
       totalSteps: journeyStepsData.value.length,
+      resetData: options.resetData,
     });
   };
 
@@ -1197,10 +1214,6 @@ export function useJourneyTracker() {
     };
 
     journeyStepsData.value.push(stepRecord);
-    localStorage.setItem(
-      "journey_steps",
-      JSON.stringify(journeyStepsData.value)
-    );
 
     console.log(`📍 Journey Step Recorded: "${stepName}"`, {
       step: stepRecord,
@@ -1211,7 +1224,6 @@ export function useJourneyTracker() {
 
   const saveUserInformation = (userInfo) => {
     Object.assign(collectedUserData, userInfo);
-    localStorage.setItem("user_data", JSON.stringify(collectedUserData));
     recordJourneyStep("user_information_saved", {
       dataFields: Object.keys(userInfo),
     });
@@ -1264,36 +1276,8 @@ export function useJourneyTracker() {
     Object.keys(collectedUserData).forEach(
       (key) => delete collectedUserData[key]
     );
-    localStorage.removeItem("journey_steps");
-    localStorage.removeItem("user_data");
 
     console.log("✅ All Journey Data Cleared Successfully!");
-  };
-
-  const loadPreviousJourneySession = () => {
-    try {
-      console.log("🔄 Loading Previous Journey Session...");
-
-      const savedJourneySteps = localStorage.getItem("journey_steps");
-      const savedUserInformation = localStorage.getItem("user_data");
-
-      if (savedJourneySteps) {
-        journeyStepsData.value = JSON.parse(savedJourneySteps);
-        console.log("📍 Loaded Journey Steps:", journeyStepsData.value);
-      }
-
-      if (savedUserInformation) {
-        Object.assign(collectedUserData, JSON.parse(savedUserInformation));
-        console.log("👤 Loaded User Data:", { ...collectedUserData });
-      }
-
-      console.log("✅ Previous Session Loaded Successfully!", {
-        stepsCount: journeyStepsData.value.length,
-        userDataKeys: Object.keys(collectedUserData),
-      });
-    } catch (error) {
-      console.warn("❌ Failed to load previous journey session:", error);
-    }
   };
 
   const exportJourneyData = () => {
@@ -1385,14 +1369,6 @@ export function useJourneyTracker() {
       );
     }
 
-    console.log("\n💾 STORAGE:");
-    console.log(
-      "   LocalStorage Keys:",
-      Object.keys(localStorage).filter(
-        (key) => key.includes("journey") || key.includes("user_data")
-      )
-    );
-
     console.log("=".repeat(80));
 
     return getCompleteJourneyData();
@@ -1410,7 +1386,6 @@ export function useJourneyTracker() {
     saveUserInformation,
     getCompleteJourneyData,
     clearAllJourneyData,
-    loadPreviousJourneySession,
     exportJourneyData,
     printAllData,
   };
