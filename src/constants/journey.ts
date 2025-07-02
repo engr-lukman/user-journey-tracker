@@ -79,6 +79,7 @@ export const JOURNEY = {
     steps: {
       PAGE_VIEWED: "device_data_page_viewed",
       DATA_EXPORT_REQUESTED: "device_data_export_requested",
+      VIEW_DEVICE_DATA_CLICKED: "view_device_data_clicked",
     },
   },
 };

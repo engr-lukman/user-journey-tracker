@@ -159,7 +159,7 @@ const startJourney = async () => {
 };
 
 const viewDeviceData = async () => {
-  await recordJourneyStep("view_device_data_clicked");
+  await recordJourneyStep(JOURNEY.DEVICE_DATA.steps.VIEW_DEVICE_DATA_CLICKED);
   router.push(JOURNEY.DEVICE_DATA.path);
 };
 </script>
