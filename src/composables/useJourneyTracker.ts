@@ -65,7 +65,8 @@ export function useJourneyTracker() {
 
     // Merge collected data with module state
     Object.assign(deviceSystemData, systemInfo);
-    console.info(`System data collected successfully:`, deviceSystemData);
+    console.info("System data collected successfully:");
+    console.log(deviceSystemData);
   };
 
   /**
@@ -316,7 +317,7 @@ export function useJourneyTracker() {
   };
 
   /**
-   * Get network information with CORS-friendly approaches
+   * Get network information with IP address
    */
   const getNetworkInfo = async (): Promise<NetworkInfo> => {
     // Start with timezone which is always available client-side
@@ -326,60 +327,24 @@ export function useJourneyTracker() {
 
     // Add connection details if available
     if ("connection" in navigator && navigator.connection) {
-      result.connectionType = navigator.connection.type;
-      result.effectiveType = navigator.connection.effectiveType;
-      result.downlink = navigator.connection.downlink;
-      result.rtt = navigator.connection.rtt;
+      const conn = navigator.connection;
+      if (conn.type) result.connectionType = conn.type;
+      if (conn.effectiveType) result.effectiveType = conn.effectiveType;
+      if (conn.downlink) result.downlink = conn.downlink;
+      if (conn.rtt) result.rtt = conn.rtt;
     }
 
+    // Only use ipify.org for IP address
     try {
-      // Try these CORS-friendly geo APIs in order
-      const geoApis = [
-        "https://api.ipify.org?format=json", // Just gets IP address
-        "https://ipwho.is/", // CORS-friendly API with detailed info
-        "https://ip-api.io/json/", // Another CORS-friendly alternative
-        "https://api.db-ip.com/v2/free/self", // Fallback option
-      ];
+      const response = await fetch("https://api.ipify.org?format=json", {
+        method: "GET",
+        mode: "cors",
+        signal: AbortSignal.timeout(2000),
+      });
 
-      for (const api of geoApis) {
-        try {
-          const response = await fetch(api, {
-            method: "GET",
-            mode: "cors",
-            timeout: 2000,
-          });
-
-          if (response.ok) {
-            const data = await response.json();
-
-            // Different APIs return different data structures
-            if (api.includes("ipify.org")) {
-              result.ipAddress = data.ip;
-            } else if (api.includes("ipwho.is")) {
-              if (data.success !== false) {
-                result.ipAddress = data.ip;
-                result.country = data.country;
-                result.countryCode = data.country_code;
-                result.city = data.city;
-              }
-            } else if (api.includes("ip-api.io")) {
-              result.ipAddress = data.ip;
-              result.country = data.country_name;
-              result.countryCode = data.country_code;
-              result.city = data.city_name;
-            } else if (api.includes("db-ip.com")) {
-              result.ipAddress = data.ipAddress;
-              result.country = data.countryName;
-              result.countryCode = data.countryCode;
-              result.city = data.city;
-            }
-
-            // If we got at least the IP address, that's enough to break
-            if (result.ipAddress) break;
-          }
-        } catch (apiError) {
-          continue; // Try next API if this one fails
-        }
+      if (response.ok) {
+        const data = await response.json();
+        result.ipAddress = data.ip;
       }
     } catch (error) {
       // Silent fail, we'll return what we have so far
