@@ -22,16 +22,10 @@
 
         <div class="bg-white rounded-lg shadow-md p-4 sm:p-6 mb-6">
           <div class="space-y-3">
-            <label class="flex items-center space-x-3 cursor-pointer">
-              <input
-                type="checkbox"
-                v-model="termsAgreed"
-                class="w-4 h-4 text-pink-600 border-gray-300 rounded focus:ring-pink-500"
-              />
-              <span class="text-gray-700 text-sm"
-                >I agree to the Terms & Conditions</span
-              >
-            </label>
+            <Checkbox
+              v-model="termsAgreed"
+              label="I agree to the Terms & Conditions"
+            />
           </div>
         </div>
 
@@ -69,6 +63,8 @@ import { useJourneyTracker } from "@/composables/useJourneyTracker";
 import { JOURNEY } from "@/constants/journey";
 import AppHeader from "@/components/common/AppHeader.vue";
 import AppFooter from "@/components/common/AppFooter.vue";
+import Button from "@/components/ui/Button.vue";
+import Checkbox from "@/components/ui/Checkbox.vue";
 
 const router = useRouter();
 const { recordJourneyStep, saveUserInformation } = useJourneyTracker();

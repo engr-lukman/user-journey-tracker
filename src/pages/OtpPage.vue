@@ -13,19 +13,15 @@
         </div>
 
         <form @submit.prevent="verifyOtp" class="space-y-4">
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-2">
-              Verification Code
-            </label>
-            <input
-              v-model="otpCode"
-              type="text"
-              maxlength="6"
-              placeholder="000000"
-              class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-pink-500 text-center text-lg tracking-widest"
-              required
-            />
-          </div>
+          <TextField
+            v-model="otpCode"
+            type="text"
+            label="Verification Code"
+            placeholder="000000"
+            maxlength="6"
+            variant="otp"
+            required
+          />
 
           <Button
             type="submit"
@@ -72,6 +68,7 @@ import { JOURNEY } from "@/constants/journey";
 import AppHeader from "@/components/common/AppHeader.vue";
 import AppFooter from "@/components/common/AppFooter.vue";
 import Button from "@/components/ui/Button.vue";
+import TextField from "@/components/ui/TextField.vue";
 
 const router = useRouter();
 const { recordJourneyStep } = useJourneyTracker();
