@@ -141,10 +141,9 @@ import AppFooter from "@/components/common/AppFooter.vue";
 import Button from "@/components/ui/Button.vue";
 
 const router = useRouter();
-const { initializeJourneyTracker, recordJourneyStep } = useJourneyTracker();
+const { recordJourneyStep } = useJourneyTracker();
 
 onMounted(async () => {
-  await initializeJourneyTracker();
   recordJourneyStep(JOURNEY.WELCOME_PAGE.steps.PAGE_VIEWED);
 });
 
