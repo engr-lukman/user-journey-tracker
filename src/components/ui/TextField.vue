@@ -116,18 +116,18 @@ const inputClasses = computed(() => {
     "transition-colors",
   ];
 
-  // Size classes
+  // Size classes with mobile-first responsive design
   const sizeClasses = {
-    sm: "px-2 py-1.5 text-xs sm:text-sm",
-    md: "px-3 py-2 text-sm sm:text-base",
-    lg: "px-4 py-3 text-base sm:text-lg",
+    sm: "px-2 py-1.5 text-xs sm:px-3 sm:py-2 sm:text-sm",
+    md: "px-3 py-2 text-sm sm:px-4 sm:py-3 sm:text-base",
+    lg: "px-4 py-3 text-base sm:px-5 sm:py-4 sm:text-lg",
   };
 
-  // Variant classes
+  // Variant classes with mobile-first design
   const variantClasses = {
     default: "focus:border-transparent",
     centered: "text-center focus:border-pink-500",
-    otp: "text-center text-lg tracking-widest focus:border-pink-500",
+    otp: "text-center text-lg sm:text-xl tracking-widest focus:border-pink-500",
   };
 
   // State classes

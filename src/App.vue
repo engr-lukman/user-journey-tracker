@@ -7,7 +7,7 @@
 <script setup>
 import { RouterView } from "vue-router";
 import { onMounted } from "vue";
-import { useJourneyTracker } from "@/composables/useJourneyTracker.js";
+import { useJourneyTracker } from "@/composables/useJourneyTracker";
 
 const { initializeJourneyTracker, loadPreviousJourneySession } =
   useJourneyTracker();

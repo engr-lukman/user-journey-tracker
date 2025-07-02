@@ -1,14 +1,110 @@
 <template>
-  <div class="min-h-screen bg-gray-50 flex flex-col">
+  <div
+    class="min-h-screen bg-gradient-to-br from-green-50 via-white to-emerald-50 flex flex-col"
+  >
     <AppHeader />
     <div class="flex-1 p-4 sm:p-6">
       <div class="w-full max-w-md mx-auto">
-        <div class="text-center mb-8">
-          <div
-            class="w-20 h-20 bg-green-500 rounded-full mx-auto mb-4 flex items-center justify-center"
-          >
+        <!-- Success Header -->
+        <div class="text-center mb-10">
+          <div class="relative">
+            <!-- Success Icon with Animation -->
+            <div
+              class="w-24 h-24 bg-gradient-to-r from-green-500 to-emerald-600 rounded-full mx-auto mb-6 flex items-center justify-center shadow-lg"
+            >
+              <svg
+                class="w-12 h-12 text-white"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="3"
+                  d="M5 13l4 4L19 7"
+                />
+              </svg>
+            </div>
+            <!-- Celebration particles -->
+            <div class="absolute inset-0 pointer-events-none">
+              <div
+                class="absolute top-4 left-8 w-2 h-2 bg-yellow-400 rounded-full animate-ping"
+              ></div>
+              <div
+                class="absolute top-8 right-12 w-1.5 h-1.5 bg-pink-400 rounded-full animate-ping animation-delay-300"
+              ></div>
+              <div
+                class="absolute bottom-8 left-12 w-1 h-1 bg-blue-400 rounded-full animate-ping animation-delay-500"
+              ></div>
+            </div>
+          </div>
+
+          <h1 class="text-4xl sm:text-5xl font-bold text-gray-900 mb-4">
+            Congratulations!
+          </h1>
+          <p class="text-xl text-gray-600 mb-2">Your journey is complete</p>
+          <p class="text-sm text-gray-500">Account verified successfully</p>
+        </div>
+
+        <!-- Summary Card -->
+        <div
+          class="bg-white rounded-2xl shadow-lg p-6 sm:p-8 mb-8 border border-gray-100"
+        >
+          <div class="flex items-center mb-6">
+            <div
+              class="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center mr-3"
+            >
+              <svg
+                class="w-4 h-4 text-blue-600"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M6 2a2 2 0 00-2 2v12a2 2 0 002 2h8a2 2 0 002-2V4a2 2 0 00-2-2H6zm1 2a1 1 0 000 2h6a1 1 0 100-2H7zm6 7a1 1 0 011 1v3a1 1 0 11-2 0v-3a1 1 0 011-1zm-3 3a1 1 0 100 2h.01a1 1 0 100-2H10zm-4 1a1 1 0 011-1h.01a1 1 0 110 2H7a1 1 0 01-1-1zm1-4a1 1 0 100 2h.01a1 1 0 100-2H7zm2 0a1 1 0 100 2h.01a1 1 0 100-2H9z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+            </div>
+            <h3 class="text-lg font-semibold text-gray-900">Journey Summary</h3>
+          </div>
+
+          <div class="space-y-4">
+            <div
+              class="flex justify-between items-center p-3 bg-gray-50 rounded-lg"
+            >
+              <span class="text-sm font-medium text-gray-600">Session ID</span>
+              <span
+                class="text-sm font-mono text-gray-900 bg-white px-2 py-1 rounded"
+              >
+                {{ sessionId?.slice(0, 8) }}...
+              </span>
+            </div>
+            <div
+              class="flex justify-between items-center p-3 bg-gray-50 rounded-lg"
+            >
+              <span class="text-sm font-medium text-gray-600"
+                >Completed At</span
+              >
+              <span class="text-sm text-gray-900">{{ completedAt }}</span>
+            </div>
+            <div
+              class="flex justify-between items-center p-3 bg-gray-50 rounded-lg"
+            >
+              <span class="text-sm font-medium text-gray-600">Total Steps</span>
+              <span class="text-sm font-semibold text-green-600">{{
+                totalSteps
+              }}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="space-y-4">
+          <Button @click="downloadData" variant="primary" full-width size="lg">
             <svg
-              class="w-10 h-10 text-white"
+              class="w-5 h-5 mr-2"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -16,54 +112,27 @@
               <path
                 stroke-linecap="round"
                 stroke-linejoin="round"
-                stroke-width="3"
-                d="M5 13l4 4L19 7"
-              ></path>
+                stroke-width="2"
+                d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+              />
             </svg>
-          </div>
-          <h1 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-3">
-            Success!
-          </h1>
-          <p class="text-gray-600">Your account has been verified</p>
-        </div>
-
-        <div class="bg-white rounded-lg shadow-md p-4 sm:p-6 mb-6">
-          <h3 class="text-lg font-semibold text-gray-900 mb-4">
-            Verification Summary
-          </h3>
-          <div class="space-y-3 text-sm">
-            <div class="flex justify-between">
-              <span class="text-gray-600">Session ID:</span>
-              <span class="font-mono text-gray-900"
-                >{{ sessionId?.slice(0, 8) }}...</span
-              >
-            </div>
-            <div class="flex justify-between">
-              <span class="text-gray-600">Completed:</span>
-              <span class="text-gray-900">{{ completedAt }}</span>
-            </div>
-            <div class="flex justify-between">
-              <span class="text-gray-600">Steps:</span>
-              <span class="text-gray-900">{{ totalSteps }}</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="space-y-3">
-          <Button
-            type="button"
-            variant="primary"
-            full-width
-            @click="downloadData"
-          >
             Download Journey Data
           </Button>
-          <Button
-            type="button"
-            variant="secondary"
-            full-width
-            @click="startOver"
-          >
+
+          <Button @click="startOver" variant="secondary" full-width size="lg">
+            <svg
+              class="w-5 h-5 mr-2"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+              />
+            </svg>
             Start New Journey
           </Button>
         </div>

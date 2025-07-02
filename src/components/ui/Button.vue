@@ -51,11 +51,11 @@ const buttonClasses = computed(() => {
     "cursor-pointer",
   ];
 
-  // Size classes
+  // Size classes with mobile-first responsive design
   const sizeClasses = {
-    sm: "py-2 px-3 text-xs sm:text-sm",
-    md: "py-3 px-4 text-sm sm:text-base",
-    lg: "py-4 px-6 text-base sm:text-lg",
+    sm: "px-3 py-2 text-xs sm:px-4 sm:py-2.5 sm:text-sm",
+    md: "px-4 py-3 text-sm sm:px-6 sm:py-3.5 sm:text-base",
+    lg: "px-6 py-4 text-base sm:px-8 sm:py-4.5 sm:text-lg",
   };
 
   // Variant classes

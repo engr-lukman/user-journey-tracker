@@ -1,24 +1,89 @@
 <template>
-  <header class="bg-white shadow-sm border-b border-gray-200 mb-6">
-    <div class="max-w-md mx-auto px-4 py-4 flex items-center space-x-3">
-      <div class="flex-shrink-0">
-        <svg
-          class="w-8 h-8 text-pink-600"
-          fill="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path
-            d="M18.92 6.01C18.72 5.42 18.16 5 17.5 5h-11c-.66 0-1.22.42-1.42 1.01L3 12v8c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-1h12v1c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-8l-2.08-5.99zM6.5 16c-.83 0-1.5-.67-1.5-1.5S5.67 13 6.5 13s1.5.67 1.5 1.5S7.33 16 6.5 16zm11 0c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zM5 11l1.5-4.5h11L19 11H5z"
-          />
-        </svg>
+  <header
+    class="bg-white/95 backdrop-blur-sm shadow-sm border-b border-gray-100 mb-4 sm:mb-6"
+  >
+    <div class="max-w-md mx-auto px-3 sm:px-4 py-3 sm:py-4">
+      <!-- Header Content -->
+      <div class="flex items-center space-x-2 sm:space-x-3 mb-2 sm:mb-3">
+        <div class="flex-shrink-0">
+          <div
+            class="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-pink-500 to-purple-600 rounded-lg sm:rounded-xl flex items-center justify-center"
+          >
+            <svg
+              class="w-4 h-4 sm:w-5 sm:h-5 text-white"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M13 10V3L4 14h7v7l9-11h-7z"
+              />
+            </svg>
+          </div>
+        </div>
+
+        <div class="flex-1 min-w-0">
+          <h1 class="text-base sm:text-lg font-bold text-gray-900 truncate">
+            Journey Tracker
+          </h1>
+          <p class="text-xs text-gray-500 truncate">
+            User Experience Analytics
+          </p>
+        </div>
       </div>
 
-      <div class="flex-1">
-        <h1 class="text-lg font-bold text-gray-900">Journey Tracker</h1>
-        <p class="text-xs text-gray-500">User Experience Analytics</p>
+      <!-- Progress Bar -->
+      <div class="w-full bg-gray-100 rounded-full h-1 sm:h-1.5 overflow-hidden">
+        <div
+          class="bg-gradient-to-r from-pink-500 to-purple-600 h-1 sm:h-1.5 rounded-full transition-all duration-500 ease-out"
+          :style="{ width: progressWidth }"
+        ></div>
+      </div>
+
+      <!-- Progress Steps -->
+      <div class="flex justify-between mt-1 sm:mt-2 text-xs text-gray-400">
+        <span class="font-medium truncate">{{ currentStepText }}</span>
+        <span class="flex-shrink-0 ml-2">{{ progressText }}</span>
       </div>
     </div>
   </header>
 </template>
 
-<script setup></script>
+<script setup>
+import { computed } from "vue";
+import { useRoute } from "vue-router";
+import { JOURNEY } from "@/constants/journey";
+
+const route = useRoute();
+
+const journeySteps = [
+  { path: JOURNEY.WELCOME_PAGE.path, name: "Welcome", step: 1 },
+  { path: JOURNEY.TERMS_CONDITIONS.path, name: "Terms", step: 2 },
+  { path: JOURNEY.PERSONAL_INFORMATION.path, name: "Personal Info", step: 3 },
+  { path: JOURNEY.WALLET_SETUP.path, name: "Wallet Setup", step: 4 },
+  { path: JOURNEY.OTP_VERIFICATION.path, name: "Verification", step: 5 },
+  { path: JOURNEY.JOURNEY_COMPLETE.path, name: "Complete", step: 6 },
+];
+
+const currentStep = computed(() => {
+  const step = journeySteps.find((s) => s.path === route.path);
+  return step ? step.step : 1;
+});
+
+const currentStepText = computed(() => {
+  const step = journeySteps.find((s) => s.path === route.path);
+  return step ? step.name : "Welcome";
+});
+
+const progressWidth = computed(() => {
+  const progress = (currentStep.value / journeySteps.length) * 100;
+  return `${Math.min(progress, 100)}%`;
+});
+
+const progressText = computed(() => {
+  return `${currentStep.value}/${journeySteps.length}`;
+});
+</script>
