@@ -168,18 +168,6 @@ export function useJourneyTracker() {
     };
 
     Object.assign(deviceSystemData, deviceInfo);
-
-    console.log("📊 Complete Device & Browser Data Collected:");
-    console.log("🌐 Client Network:", deviceInfo.clientNetwork);
-    console.log("🧠 System Information:", deviceInfo.systemInformation);
-    console.log("🌐 Browser Information:", deviceInfo.browserInformation);
-    console.log("📱 Display & Device:", deviceInfo.displayAndDevice);
-    console.log("🌍 Locale & Time:", deviceInfo.localeAndTime);
-    console.log("🔐 Security & Privacy:", deviceInfo.securityAndPrivacy);
-    console.log("🧪 Rendering & Behavior:", deviceInfo.renderingAndBehavior);
-    console.log("📊 Performance Info:", deviceInfo.performanceInfo);
-    console.log("🌐 Network Connection:", deviceInfo.networkConnection);
-    console.log("📄 Session Metadata:", deviceInfo.sessionMetadata);
   };
 
   // Enhanced helper functions for comprehensive data collection
