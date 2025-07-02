@@ -43,8 +43,6 @@ export function useJourneyTracker() {
       // System Information
       systemInformation: {
         architecture: navigator.platform,
-        cpuCores: navigator.hardwareConcurrency || "unknown",
-        deviceMemory: navigator.deviceMemory || "unknown",
         userAgent: navigator.userAgent,
         vendor: navigator.vendor || "unknown",
         operatingSystem: getOperatingSystem(),
@@ -112,9 +110,6 @@ export function useJourneyTracker() {
 
       // Performance & Memory Information
       performanceInfo: getPerformanceInfo(),
-
-      // Network Connection Details
-      networkConnection: getNetworkConnectionInfo(),
 
       // Session Metadata
       sessionMetadata: {
@@ -406,19 +401,6 @@ export function useJourneyTracker() {
     }
   };
 
-  const getNetworkConnectionInfo = () => {
-    if ("connection" in navigator && navigator.connection) {
-      return {
-        effectiveType: navigator.connection.effectiveType,
-        downlink: navigator.connection.downlink,
-        downlinkMax: navigator.connection.downlinkMax,
-        rtt: navigator.connection.rtt,
-        saveData: navigator.connection.saveData,
-        type: navigator.connection.type,
-      };
-    }
-    return null;
-  };
   const getBrowserName = () => {
     const userAgent = navigator.userAgent;
     if (userAgent.includes("Firefox")) return "Firefox";
