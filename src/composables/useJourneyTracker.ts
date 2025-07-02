@@ -65,8 +65,6 @@ export function useJourneyTracker() {
 
     // Merge collected data with module state
     Object.assign(deviceSystemData, systemInfo);
-    console.info("System data collected successfully:");
-    console.log(deviceSystemData);
   };
 
   /**
@@ -608,7 +606,6 @@ export function useJourneyTracker() {
       sessionId: currentSessionId.value,
       journeySteps: journeyStepsData.value,
       userData: { ...collectedUserData },
-      systemData: { ...deviceSystemData },
       totalJourneyTime:
         journeyStepsData.value.length > 0
           ? new Date().getTime() -

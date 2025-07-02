@@ -57,6 +57,15 @@ const journeyRoutes = [
       title: JOURNEY.JOURNEY_COMPLETE.title,
     },
   },
+  {
+    path: JOURNEY.DEVICE_DATA.path,
+    name: JOURNEY.DEVICE_DATA.name,
+    component: () => import("@/pages/DeviceDataPage.vue"),
+    meta: {
+      stepName: JOURNEY.DEVICE_DATA.steps.PAGE_VIEWED,
+      title: JOURNEY.DEVICE_DATA.title,
+    },
+  },
 ];
 
 const journeyRouter = createRouter({

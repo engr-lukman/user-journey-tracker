@@ -42,10 +42,16 @@
             interactions for valuable insights.
           </p>
 
-          <!-- CTA Button -->
-          <Button @click="startJourney" variant="primary" full-width>
-            Start Your Journey
-          </Button>
+          <!-- CTA Buttons -->
+          <div class="space-y-2">
+            <Button @click="startJourney" variant="primary" full-width>
+              Start Your Journey
+            </Button>
+
+            <Button @click="viewDeviceData" variant="secondary" full-width>
+              View Device Information
+            </Button>
+          </div>
 
           <!-- Trust Badge -->
           <div
@@ -150,5 +156,10 @@ onMounted(async () => {
 const startJourney = async () => {
   await recordJourneyStep(JOURNEY.WELCOME_PAGE.steps.GET_STARTED_CLICKED);
   router.push(JOURNEY.TERMS_CONDITIONS.path);
+};
+
+const viewDeviceData = async () => {
+  await recordJourneyStep("view_device_data_clicked");
+  router.push(JOURNEY.DEVICE_DATA.path);
 };
 </script>

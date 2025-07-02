@@ -10,10 +10,10 @@
           <div class="relative">
             <!-- Success Icon with Animation -->
             <div
-              class="w-24 h-24 bg-gradient-to-r from-green-500 to-emerald-600 rounded-full mx-auto mb-6 flex items-center justify-center shadow-lg"
+              class="w-16 h-16 bg-gradient-to-r from-green-500 to-emerald-600 rounded-full mx-auto mb-6 flex items-center justify-center shadow-lg"
             >
               <svg
-                class="w-12 h-12 text-white"
+                class="w-8 h-8 text-white"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -80,11 +80,11 @@
             <div
               class="flex justify-between items-center p-3 bg-gray-50 rounded-lg"
             >
-              <span class="text-sm font-medium text-gray-600">Session ID</span>
+              <span class="text-sm font-medium text-gray-600">User ID</span>
               <span
                 class="text-sm font-mono text-gray-900 bg-white px-2 py-1 rounded"
               >
-                {{ sessionId?.slice(0, 8) }}...
+                {{ userId?.slice(0, 8) }}...
               </span>
             </div>
             <div
@@ -95,14 +95,6 @@
               >
               <span class="text-sm text-gray-900">{{ completedAt }}</span>
             </div>
-            <div
-              class="flex justify-between items-center p-3 bg-gray-50 rounded-lg"
-            >
-              <span class="text-sm font-medium text-gray-600">Total Steps</span>
-              <span class="text-sm font-semibold text-green-600">{{
-                totalSteps
-              }}</span>
-            </div>
           </div>
         </div>
 
@@ -112,7 +104,7 @@
             Download Journey Data
           </Button>
 
-          <Button @click="startOver" variant="secondary" full-width>
+          <Button @click="startOver" variant="text" full-width>
             Start New Journey
           </Button>
         </div>
@@ -132,22 +124,13 @@ import AppFooter from "@/components/common/AppFooter.vue";
 import Button from "@/components/ui/Button.vue";
 
 const router = useRouter();
-const {
-  recordJourneyStep,
-  collectedUserData,
-  currentSessionId,
-  journeyStepsData,
-  exportJourneyData,
-} = useJourneyTracker();
+const { recordJourneyStep, currentUserId, exportJourneyData } =
+  useJourneyTracker();
 
-const sessionId = computed(() => currentSessionId.value);
+const userId = computed(() => currentUserId.value);
 
 const completedAt = computed(() => {
   return new Date().toLocaleString();
-});
-
-const totalSteps = computed(() => {
-  return journeyStepsData.value?.length || 0;
 });
 
 onMounted(() => {

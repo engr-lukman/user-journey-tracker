@@ -70,4 +70,15 @@ export const JOURNEY = {
       RESTART_JOURNEY: "journey_restart_requested",
     },
   },
+
+  DEVICE_DATA: {
+    path: "/device-data",
+    name: "DeviceData",
+    title: "Device Information",
+    displayName: "Device Data Explorer",
+    steps: {
+      PAGE_VIEWED: "device_data_page_viewed",
+      DATA_EXPORT_REQUESTED: "device_data_export_requested",
+    },
+  },
 };
