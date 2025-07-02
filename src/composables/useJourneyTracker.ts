@@ -68,15 +68,12 @@ export function useJourneyTracker() {
         onLine: navigator.onLine,
         maxTouchPoints: navigator.maxTouchPoints || 0,
         pdfViewerEnabled: navigator.pdfViewerEnabled || false,
-        plugins: getBrowserPlugins(),
-        mimeTypes: getBrowserMimeTypes(),
         storageAvailability: {
           sessionStorage: isStorageAvailable("sessionStorage"),
           indexedDB: "indexedDB" in window,
           cookies: navigator.cookieEnabled,
           webSQL: "openDatabase" in window,
         },
-        browserFeatures: getBrowserFeatures(),
       },
 
       // Display & Device Information
@@ -111,7 +108,6 @@ export function useJourneyTracker() {
         timezoneOffset: new Date().getTimezoneOffset(),
         language: navigator.language,
         languages: navigator.languages || [navigator.language],
-        dateTimeFormat: getDateTimeFormats(),
       },
 
       // Security & Privacy Indicators
@@ -144,6 +140,8 @@ export function useJourneyTracker() {
         documentReadyState: document.readyState,
       },
     };
+
+    console.log("Collected device and browser information:", deviceInfo);
 
     Object.assign(deviceSystemData, deviceInfo);
   };
@@ -356,76 +354,6 @@ export function useJourneyTracker() {
     return "Unknown";
   };
 
-  const getBrowserPlugins = () => {
-    try {
-      return Array.from(navigator.plugins).map((plugin) => ({
-        name: plugin.name,
-        description: plugin.description,
-        filename: plugin.filename,
-        length: plugin.length,
-        mimeTypes: Array.from(plugin).map((mime) => mime.type),
-      }));
-    } catch (error) {
-      return [];
-    }
-  };
-
-  const getBrowserMimeTypes = () => {
-    try {
-      return Array.from(navigator.mimeTypes).map((mime) => ({
-        type: mime.type,
-        description: mime.description,
-        suffixes: mime.suffixes,
-        enabledPlugin: mime.enabledPlugin?.name || null,
-      }));
-    } catch (error) {
-      return [];
-    }
-  };
-
-  const getBrowserFeatures = () => {
-    return {
-      serviceWorker: "serviceWorker" in navigator,
-      pushNotifications: "PushManager" in window,
-      webGL: !!getWebGLContext(),
-      webGL2: !!getWebGL2Context(),
-      webAssembly: "WebAssembly" in window,
-      webRTC: "RTCPeerConnection" in window,
-      webSpeech:
-        "SpeechRecognition" in window || "webkitSpeechRecognition" in window,
-      fullscreen: "requestFullscreen" in document.documentElement,
-      pictureInPicture: "pictureInPictureEnabled" in document,
-      clipboardAPI: "clipboard" in navigator,
-      credentialsAPI: "credentials" in navigator,
-      paymentRequest: "PaymentRequest" in window,
-      webShare: "share" in navigator,
-      battery: "getBattery" in navigator,
-      gamepad: "getGamepads" in navigator,
-      vibration: "vibrate" in navigator,
-      wakeLock: "wakeLock" in navigator,
-    };
-  };
-
-  const getWebGLContext = () => {
-    try {
-      const canvas = document.createElement("canvas");
-      return (
-        canvas.getContext("webgl") || canvas.getContext("experimental-webgl")
-      );
-    } catch (e) {
-      return null;
-    }
-  };
-
-  const getWebGL2Context = () => {
-    try {
-      const canvas = document.createElement("canvas");
-      return canvas.getContext("webgl2");
-    } catch (e) {
-      return null;
-    }
-  };
-
   const getDeviceDimensions = () => {
     return {
       screenWidth: screen.width,
@@ -453,19 +381,6 @@ export function useJourneyTracker() {
     return {
       angle: window.orientation || 0,
       type: window.innerWidth > window.innerHeight ? "landscape" : "portrait",
-    };
-  };
-
-  const getDateTimeFormats = () => {
-    const now = new Date();
-    return {
-      locale: now.toLocaleString(),
-      dateString: now.toDateString(),
-      timeString: now.toTimeString(),
-      isoString: now.toISOString(),
-      utcString: now.toUTCString(),
-      timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-      timezoneOffset: now.getTimezoneOffset(),
     };
   };
 
@@ -723,10 +638,7 @@ export function useJourneyTracker() {
     URL.revokeObjectURL(downloadUrl);
   };
 
-  // Console logging utility function
   const printAllData = () => {
-    // Instead of logging to console, just return the data
-
     return getCompleteJourneyData();
   };
 
