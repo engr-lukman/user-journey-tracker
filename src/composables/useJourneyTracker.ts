@@ -411,18 +411,41 @@ export function useJourneyTracker() {
   };
 
   /**
-   * Export journey data
+   * Export journey data with system data first, then user journey data
    */
   const exportJourneyData = async (): Promise<void> => {
-    const data = await getCompleteJourneyData();
-    const blob = new Blob([JSON.stringify(data, null, 2)], {
+    const completeData = await getCompleteJourneyData();
+
+    // Restructure data with priority order: system data first, then journey data
+    const exportData = {
+      // Priority 1: System/Device Information
+      systemData: completeData.systemData,
+
+      // Priority 2: User Journey Information
+      journeyData: {
+        userId: completeData.userId,
+        sessionId: completeData.sessionId,
+        totalJourneyTime: completeData.totalJourneyTime,
+        journeySteps: completeData.journeySteps,
+        userData: completeData.userData,
+      },
+
+      // Export metadata
+      exportMetadata: {
+        exportedAt: new Date().toISOString(),
+        dataVersion: "1.0",
+        totalSteps: completeData.journeySteps.length,
+      },
+    };
+
+    const blob = new Blob([JSON.stringify(exportData, null, 2)], {
       type: "application/json",
     });
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
 
     link.href = url;
-    link.download = `journey-data-${currentSessionId.value}.json`;
+    link.download = `user-journey-export-${completeData.sessionId}.json`;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);

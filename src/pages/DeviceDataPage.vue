@@ -33,11 +33,40 @@
           <Button @click="goToHome" variant="secondary"> Home </Button>
         </div>
 
+        <!-- Tab Navigation -->
+        <div class="mb-4">
+          <div class="flex border-b border-gray-200">
+            <button
+              @click="activeTab = 'device'"
+              :class="[
+                'px-4 py-2 text-sm font-medium transition-colors',
+                activeTab === 'device'
+                  ? 'border-b-2 border-blue-500 text-blue-600'
+                  : 'text-gray-500 hover:text-gray-700',
+              ]"
+            >
+              Device Data
+            </button>
+            <button
+              @click="activeTab = 'journey'"
+              :class="[
+                'px-4 py-2 text-sm font-medium transition-colors ml-4',
+                activeTab === 'journey'
+                  ? 'border-b-2 border-blue-500 text-blue-600'
+                  : 'text-gray-500 hover:text-gray-700',
+              ]"
+            >
+              Journey Data
+            </button>
+          </div>
+        </div>
+
+        <!-- Tab Content -->
         <div class="mb-4">
           <div
             class="bg-gray-800 rounded-xl p-2 overflow-auto max-h-[55vh] text-sm font-mono shadow-lg"
           >
-            <pre class="text-green-400">{{ formattedDeviceData }}</pre>
+            <pre class="text-green-400">{{ currentTabData }}</pre>
           </div>
         </div>
       </div>
@@ -47,7 +76,7 @@
 </template>
 
 <script setup>
-import { computed } from "vue";
+import { computed, ref } from "vue";
 import { useRouter } from "vue-router";
 import { useJourneyTracker } from "@/composables/useJourneyTracker";
 import { JOURNEY } from "@/constants/journey";
@@ -56,13 +85,50 @@ import AppFooter from "@/components/common/AppFooter.vue";
 import Button from "@/components/ui/Button.vue";
 
 const router = useRouter();
-const { deviceSystemData, exportJourneyData } = useJourneyTracker();
+const {
+  deviceSystemData,
+  journeyStepsData,
+  exportJourneyData,
+  getCompleteJourneyData,
+} = useJourneyTracker();
 
+// Tab state
+const activeTab = ref("device");
+
+// Formatted device data
 const formattedDeviceData = computed(() => {
   if (!deviceSystemData || Object.keys(deviceSystemData).length === 0) {
     return "{}";
   }
   return JSON.stringify(deviceSystemData, null, 2);
+});
+
+// Formatted journey data
+const formattedJourneyData = computed(() => {
+  const journeyData = {
+    totalSteps: journeyStepsData.value.length,
+    steps: journeyStepsData.value,
+    summary: {
+      firstStep: journeyStepsData.value[0]?.recordedAt || null,
+      lastStep:
+        journeyStepsData.value[journeyStepsData.value.length - 1]?.recordedAt ||
+        null,
+      duration:
+        journeyStepsData.value.length > 0
+          ? new Date().getTime() -
+            new Date(journeyStepsData.value[0].recordedAt).getTime()
+          : 0,
+    },
+  };
+
+  return JSON.stringify(journeyData, null, 2);
+});
+
+// Current tab data
+const currentTabData = computed(() => {
+  return activeTab.value === "device"
+    ? formattedDeviceData.value
+    : formattedJourneyData.value;
 });
 
 const goToHome = () => {

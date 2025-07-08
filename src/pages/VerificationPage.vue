@@ -109,9 +109,9 @@
         </div>
 
         <div class="space-y-1 sm:space-y-2">
-          <Button @click="downloadData" variant="primary" full-width>
+          <Button @click="viewDeviceData" variant="primary" full-width>
             <span class="text-sm sm:text-base md:text-lg"
-              >Download Journey Data</span
+              >View Details Data</span
             >
           </Button>
 
@@ -137,22 +137,18 @@ import AppFooter from "@/components/common/AppFooter.vue";
 import Button from "@/components/ui/Button.vue";
 
 const router = useRouter();
-const { recordJourneyStep, currentUserId, exportJourneyData } =
-  useJourneyTracker();
+const { recordJourneyStep, currentUserId } = useJourneyTracker();
 
 const userId = computed(() => currentUserId.value);
-
-const completedAt = computed(() => {
-  return new Date().toLocaleString();
-});
+const completedAt = computed(() => new Date().toLocaleString());
 
 onMounted(() => {
   recordJourneyStep(JOURNEY.JOURNEY_COMPLETE.steps.JOURNEY_COMPLETED);
 });
 
-const downloadData = () => {
-  recordJourneyStep(JOURNEY.JOURNEY_COMPLETE.steps.DATA_EXPORT_REQUESTED);
-  exportJourneyData();
+const viewDeviceData = () => {
+  recordJourneyStep(JOURNEY.JOURNEY_COMPLETE.steps.DEVICE_DATA_PAGE_VISITED);
+  router.push(JOURNEY.DEVICE_DATA.path);
 };
 
 const startOver = () => {

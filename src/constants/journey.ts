@@ -67,6 +67,7 @@ export const JOURNEY = {
     steps: {
       JOURNEY_COMPLETED: "journey_completion_success",
       DATA_EXPORT_REQUESTED: "journey_data_export_requested",
+      DEVICE_DATA_PAGE_VISITED: "device_data_page_visited",
       RESTART_JOURNEY: "journey_restart_requested",
     },
   },
