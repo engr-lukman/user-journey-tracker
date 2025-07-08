@@ -1,129 +1,102 @@
 /**
- * Core data structures for user journey tracking
+ * User journey tracking data structures
  */
 
 export interface Payload {
-  userId: string; // Fingerprint-based user ID
-  sessionId: string; // Session identifier
+  userId: string;
+  sessionId: string;
   journeySteps: JourneyStep[];
   userData: Record<string, any>;
+  systemData: SystemData;
   totalJourneyTime: number;
+}
 
-  systemData: {
-    // Browser Information
-    browserInfo: {
-      name: string;
-      version: string;
-      userAgent: string;
-      language: string;
-      cookiesEnabled: boolean;
-      doNotTrack?: boolean;
-      webdriver: boolean; // Helps detect automated browsers
-      plugins?: string[];
-    };
+export interface SystemData {
+  userId: string;
+  sessionId: string;
+  recordedAt: string;
+  browserInfo: BrowserInfo;
+  deviceInfo: DeviceInfo;
+  hardwareInfo: HardwareInfo;
+  screenInfo: ScreenInfo;
+  networkInfo: NetworkInfo;
+  storageInfo: StorageInfo;
+  fingerprintInfo: FingerprintInfo;
+}
 
-    // Device & OS Information
-    deviceInfo: {
-      deviceType: "mobile" | "tablet" | "desktop";
-      operatingSystem: string;
-      osVersion: string;
-      isMobile: boolean;
-      isTablet: boolean;
-      isDesktop: boolean;
-      vendor: string;
-      model?: string;
-    };
+export interface BrowserInfo {
+  name: string;
+  version: string;
+  userAgent: string;
+  language: string;
+  cookiesEnabled: boolean;
+  doNotTrack: boolean;
+  platform: string;
+}
 
-    // Hardware Information
-    hardwareInfo: {
-      cpuCores: number | string;
-      architecture?: number; // 32 or 64 bit
-      deviceMemory?: number; // In GB
-      hardwareConcurrency?: number;
-      platform: string;
-      touchSupport: {
-        maxTouchPoints: number;
-        touchEvent: boolean;
-        isTouch: boolean;
-      };
-    };
+export interface DeviceInfo {
+  type: string;
+  os: string;
+  osVersion: string;
+  isMobile: boolean;
+  isTablet: boolean;
+  isDesktop: boolean;
+  vendor: string;
+  timezone: string;
+}
 
-    // Display Information
-    displayInfo: {
-      screenResolution: {
-        width: number;
-        height: number;
-      };
-      colorDepth: number;
-      pixelRatio: number;
-      viewport: {
-        width: number;
-        height: number;
-      };
-      orientation: string;
-      isHDR?: boolean;
-    };
+export interface HardwareInfo {
+  cpuCores: string;
+  memory: string;
+  architecture: string;
+  touchSupport: boolean;
+  maxTouchPoints: number;
+}
 
-    // Network Information
-    networkInfo: {
-      ipAddress?: string;
-      country?: string;
-      countryCode?: string;
-      city?: string;
-      timezone: string;
-      connectionType?: string; // wifi, cellular, etc.
-      effectiveType?: string; // 4g, 3g, etc.
-      downlink?: number; // In Mbps
-      rtt?: number; // Round trip time
-    };
+export interface ScreenInfo {
+  resolution: string;
+  colorDepth: string;
+  pixelRatio: string;
+  viewport: string;
+  orientation: string;
+  availableResolution: string;
+}
 
-    // Storage Information
-    storageInfo: {
-      localStorage: boolean;
-      sessionStorage: boolean;
-      indexedDB: boolean;
-      cookiesEnabled: boolean;
-    };
+export interface NetworkInfo {
+  timezone: string;
+  onlineStatus: boolean;
+  effectiveType?: string;
+  downlink?: string;
+  rtt?: string;
+  saveData?: boolean;
+  ipAddress: string;
+}
 
-    // Fingerprinting for bot detection
-    fingerprintInfo?: {
-      canvas?: {
-        winding: boolean;
-        geometry: string; // Base64 rendering
-        text: string; // Base64 text rendering
-      };
-      webGL?: {
-        vendor: string;
-        renderer: string;
-        supported: boolean;
-      };
-    };
+export interface StorageInfo {
+  localStorage: boolean;
+  sessionStorage: boolean;
+  indexedDB: boolean;
+  cookiesEnabled: boolean;
+  quota: string;
+}
 
-    // Session metadata
-    sessionMetadata: {
-      startTime: string;
-      referrerUrl: string;
-      loadTime?: number; // In ms
-      domInteractive?: number; // In ms
-    };
+export interface FingerprintInfo {
+  available: boolean;
+  canvasHash?: string;
+  webGL?: {
+    supported: boolean;
+    vendor?: string;
+    renderer?: string;
   };
+  fonts?: string[];
 }
 
 export interface JourneyStep {
-  stepName: string; // e.g., "page_view", "form_submit"
-  recordedAt: string; // ISO timestamp
+  stepName: string;
+  recordedAt: string;
   sessionId: string;
   userId: string;
   currentUrl: string;
   currentPath: string;
-  [key: string]: any; // Additional step data
+  [key: string]: any;
 }
-
-// Type exports
-export type BrowserInfo = Payload["systemData"]["browserInfo"];
-export type DeviceInfo = Payload["systemData"]["deviceInfo"];
-export type HardwareInfo = Payload["systemData"]["hardwareInfo"];
-export type DisplayInfo = Payload["systemData"]["displayInfo"];
-export type NetworkInfo = Payload["systemData"]["networkInfo"];
-export type StorageInfo = Payload["systemData"]["storageInfo"];
-export type SessionMetadata = Payload["systemData"]["sessionMetadata"];
