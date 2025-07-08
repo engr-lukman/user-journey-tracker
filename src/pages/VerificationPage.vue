@@ -3,17 +3,17 @@
     class="min-h-screen bg-gradient-to-br from-green-50 via-white to-emerald-50 flex flex-col"
   >
     <AppHeader />
-    <div class="flex-1 p-4 sm:p-6">
-      <div class="w-full max-w-md mx-auto">
-        <!-- Success Header -->
-        <div class="text-center mb-10">
+    <div
+      class="flex-1 flex items-start justify-center p-2 sm:p-3 md:p-4 pt-4 sm:pt-6 md:pt-8"
+    >
+      <div class="w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg">
+        <div class="text-center mb-4 sm:mb-6 md:mb-8">
           <div class="relative">
-            <!-- Success Icon with Animation -->
             <div
-              class="w-16 h-16 bg-gradient-to-r from-green-500 to-emerald-600 rounded-full mx-auto mb-6 flex items-center justify-center shadow-lg"
+              class="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 lg:w-10 lg:h-10 bg-gradient-to-r from-green-500 to-emerald-600 rounded-full mx-auto mb-2 sm:mb-3 md:mb-4 flex items-center justify-center shadow-lg"
             >
               <svg
-                class="w-8 h-8 text-white"
+                class="w-3 h-3 sm:w-3 sm:h-3 md:w-4 md:h-4 lg:w-5 lg:h-5 text-white"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -26,41 +26,43 @@
                 />
               </svg>
             </div>
-            <!-- Celebration particles -->
             <div class="absolute inset-0 pointer-events-none">
               <div
-                class="absolute top-4 left-8 w-2 h-2 bg-yellow-400 rounded-full animate-ping"
+                class="absolute top-2 left-4 w-1 h-1 sm:w-1.5 sm:h-1.5 md:w-2 md:h-2 bg-yellow-400 rounded-full animate-ping"
               ></div>
               <div
-                class="absolute top-8 right-12 w-1.5 h-1.5 bg-pink-400 rounded-full animate-ping animation-delay-300"
+                class="absolute top-3 right-6 w-0.5 h-0.5 sm:w-1 sm:h-1 md:w-1.5 md:h-1.5 bg-pink-400 rounded-full animate-ping animation-delay-300"
               ></div>
               <div
-                class="absolute bottom-8 left-12 w-1 h-1 bg-blue-400 rounded-full animate-ping animation-delay-500"
+                class="absolute bottom-3 left-6 w-0.5 h-0.5 sm:w-0.5 sm:h-0.5 md:w-1 md:h-1 bg-blue-400 rounded-full animate-ping animation-delay-500"
               ></div>
             </div>
           </div>
 
-          <h1 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
+          <h1
+            class="text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl font-bold text-gray-900 mb-1 sm:mb-2 md:mb-3"
+          >
             Congratulations!
           </h1>
-          <p class="text-lg sm:text-xl text-gray-600 mb-2">
+          <p
+            class="text-xs sm:text-sm md:text-base lg:text-lg text-gray-600 mb-1 sm:mb-2"
+          >
             Your journey is complete
           </p>
-          <p class="text-xs sm:text-sm text-gray-500">
+          <p class="text-xs sm:text-sm md:text-base text-gray-500">
             Account verified successfully
           </p>
         </div>
 
-        <!-- Summary Card -->
         <div
-          class="bg-white rounded-2xl shadow-lg p-6 sm:p-8 mb-6 border border-gray-100"
+          class="bg-white rounded-xl sm:rounded-2xl shadow-lg sm:shadow-xl p-3 sm:p-4 md:p-6 mb-3 sm:mb-4 md:mb-6 border border-gray-100"
         >
-          <div class="flex items-center mb-6">
+          <div class="flex items-center mb-3 sm:mb-4 md:mb-6">
             <div
-              class="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center mr-3"
+              class="w-4 h-4 sm:w-6 sm:h-6 md:w-8 md:h-8 bg-blue-100 rounded-lg flex items-center justify-center mr-2 sm:mr-3"
             >
               <svg
-                class="w-4 h-4 text-blue-600"
+                class="w-2 h-2 sm:w-3 sm:h-3 md:w-4 md:h-4 text-blue-600"
                 fill="currentColor"
                 viewBox="0 0 20 20"
               >
@@ -71,41 +73,52 @@
                 />
               </svg>
             </div>
-            <h3 class="text-base sm:text-lg font-semibold text-gray-900">
+            <h3
+              class="text-sm sm:text-base md:text-lg lg:text-xl font-semibold text-gray-900"
+            >
               Journey Summary
             </h3>
           </div>
 
-          <div class="space-y-4">
+          <div class="space-y-2 sm:space-y-3 md:space-y-4">
             <div
-              class="flex justify-between items-center p-3 bg-gray-50 rounded-lg"
+              class="flex justify-between items-center p-2 sm:p-3 bg-gray-50 rounded-lg"
             >
-              <span class="text-sm font-medium text-gray-600">User ID</span>
               <span
-                class="text-sm font-mono text-gray-900 bg-white px-2 py-1 rounded"
+                class="text-xs sm:text-sm md:text-base font-medium text-gray-600"
+                >User ID</span
+              >
+              <span
+                class="text-xs sm:text-sm md:text-base font-mono text-gray-900 bg-white px-1 sm:px-2 py-1 rounded"
               >
                 {{ userId?.slice(0, 8) }}...
               </span>
             </div>
             <div
-              class="flex justify-between items-center p-3 bg-gray-50 rounded-lg"
+              class="flex justify-between items-center p-2 sm:p-3 bg-gray-50 rounded-lg"
             >
-              <span class="text-sm font-medium text-gray-600"
+              <span
+                class="text-xs sm:text-sm md:text-base font-medium text-gray-600"
                 >Completed At</span
               >
-              <span class="text-sm text-gray-900">{{ completedAt }}</span>
+              <span class="text-xs sm:text-sm md:text-base text-gray-900">{{
+                completedAt
+              }}</span>
             </div>
           </div>
         </div>
 
-        <!-- Action Buttons -->
-        <div class="space-y-2">
+        <div class="space-y-1 sm:space-y-2">
           <Button @click="downloadData" variant="primary" full-width>
-            Download Journey Data
+            <span class="text-sm sm:text-base md:text-lg"
+              >Download Journey Data</span
+            >
           </Button>
 
           <Button @click="startOver" variant="text" full-width>
-            Start New Journey
+            <span class="text-sm sm:text-base md:text-lg"
+              >Start New Journey</span
+            >
           </Button>
         </div>
       </div>

@@ -1,20 +1,20 @@
 <template>
   <div
-    class="min-h-screen bg-gradient-to-br from-pink-50 via-white to-purple-50 flex flex-col"
+    class="min-h-screen bg-gradient-to </div> </div>a-white t </Button> </div> </div>x-col"
   >
     <AppHeader />
-    <div class="flex-1 flex items-center justify-center p-4 sm:p-6">
-      <div class="w-full max-w-md">
-        <!-- Welcome Hero Card -->
+    <div
+      class="flex-1 flex items-start justify-center p-2 sm:p-3 md:p-4 pt-4 sm:pt-6 md:pt-8"
+    >
+      <div class="w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg">
         <div
-          class="bg-white rounded-2xl shadow-xl p-6 sm:p-8 text-center border border-gray-100"
+          class="bg-white rounded-xl sm:rounded-2xl shadow-lg sm:shadow-xl p-3 sm:p-4 md:p-6 text-center border border-gray-100"
         >
-          <!-- Icon -->
           <div
-            class="w-14 h-14 sm:w-16 sm:h-16 bg-gradient-to-r from-pink-500 to-purple-600 rounded-full mx-auto mb-4 sm:mb-6 flex items-center justify-center"
+            class="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 lg:w-10 lg:h-10 bg-gradient-to-r from-pink-500 to-purple-600 rounded-full mx-auto mb-2 sm:mb-3 md:mb-4 flex items-center justify-center"
           >
             <svg
-              class="w-6 h-6 sm:w-8 sm:h-8 text-white"
+              class="w-3 h-3 sm:w-3 sm:h-3 md:w-4 md:h-4 lg:w-5 lg:h-5 text-white"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -28,107 +28,64 @@
             </svg>
           </div>
 
-          <!-- Content -->
           <h1
-            class="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 mb-3 sm:mb-4"
+            class="text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl font-bold text-gray-900 mb-1 sm:mb-2 md:mb-3"
           >
             Welcome to Your Journey
           </h1>
           <p
-            class="text-xs sm:text-sm md:text-base text-gray-600 mb-6 sm:mb-8 leading-relaxed px-2"
+            class="text-xs sm:text-sm md:text-base lg:text-lg text-gray-600 mb-2 sm:mb-3 md:mb-4 leading-relaxed px-1 sm:px-2 text-justify"
           >
-            Discover our comprehensive user experience tracking system. Navigate
-            through personalized steps while we securely analyze your
-            interactions for valuable insights.
+            Experience our advanced
+            <span class="font-semibold text-blue-600"
+              >user journey tracking</span
+            >
+            system that captures detailed
+            <span class="font-semibold text-green-600"
+              >device fingerprinting</span
+            >
+            and
+            <span class="font-semibold text-purple-600"
+              >behavioral analytics</span
+            >. Our
+            <span class="font-semibold text-orange-600"
+              >client-side solution</span
+            >
+            collects comprehensive data including browser information and
+            hardware specifications.
           </p>
 
-          <!-- CTA Buttons -->
-          <div class="space-y-2">
+          <p
+            class="text-xs sm:text-sm md:text-base lg:text-lg text-gray-600 mb-2 sm:mb-3 md:mb-4 leading-relaxed px-1 sm:px-2 text-justify"
+          >
+            Navigate through our
+            <span class="font-semibold text-red-600">multi-step journey</span>
+            while we demonstrate real-time
+            <span class="font-semibold text-indigo-600">data collection</span>
+            capabilities. Track network details and user interactions for
+            research and development purposes.
+          </p>
+
+          <p
+            class="text-xs sm:text-sm md:text-base lg:text-lg text-gray-600 mb-3 sm:mb-4 md:mb-5 leading-relaxed px-1 sm:px-2 text-justify"
+          >
+            All collected data remains
+            <span class="font-semibold text-teal-600">locally processed</span>
+            and can be exported for comprehensive analysis and insights.
+          </p>
+
+          <div class="space-y-1 sm:space-y-2">
             <Button @click="startJourney" variant="primary" full-width>
-              Start Your Journey
+              <span class="text-sm sm:text-base md:text-lg"
+                >Start Your Journey</span
+              >
             </Button>
 
             <Button @click="viewDeviceData" variant="secondary" full-width>
-              View Device Information
+              <span class="text-sm sm:text-base md:text-lg"
+                >View Device Information</span
+              >
             </Button>
-          </div>
-
-          <!-- Trust Badge -->
-          <div
-            class="mt-4 sm:mt-6 flex items-center justify-center space-x-2 text-xs sm:text-sm text-gray-500"
-          >
-            <svg
-              class="w-3 h-3 sm:w-4 sm:h-4"
-              fill="currentColor"
-              viewBox="0 0 20 20"
-            >
-              <path
-                fill-rule="evenodd"
-                d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"
-                clip-rule="evenodd"
-              />
-            </svg>
-            <span>Privacy Protected & Secure</span>
-          </div>
-        </div>
-
-        <!-- Features -->
-        <div class="mt-4 sm:mt-6 grid grid-cols-3 gap-3 sm:gap-4 text-center">
-          <div
-            class="bg-white/60 backdrop-blur rounded-xl p-3 sm:p-4 border border-gray-100"
-          >
-            <div
-              class="w-6 h-6 sm:w-8 sm:h-8 bg-blue-100 rounded-lg mx-auto mb-1 sm:mb-2 flex items-center justify-center"
-            >
-              <svg
-                class="w-3 h-3 sm:w-4 sm:h-4 text-blue-600"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-              >
-                <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-            </div>
-            <p class="text-xs font-medium text-gray-700">Secure</p>
-          </div>
-          <div
-            class="bg-white/60 backdrop-blur rounded-xl p-3 sm:p-4 border border-gray-100"
-          >
-            <div
-              class="w-6 h-6 sm:w-8 sm:h-8 bg-green-100 rounded-lg mx-auto mb-1 sm:mb-2 flex items-center justify-center"
-            >
-              <svg
-                class="w-3 h-3 sm:w-4 sm:h-4 text-green-600"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-              >
-                <path
-                  fill-rule="evenodd"
-                  d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                  clip-rule="evenodd"
-                />
-              </svg>
-            </div>
-            <p class="text-xs font-medium text-gray-700">Fast</p>
-          </div>
-          <div
-            class="bg-white/60 backdrop-blur rounded-xl p-3 sm:p-4 border border-gray-100"
-          >
-            <div
-              class="w-6 h-6 sm:w-8 sm:h-8 bg-purple-100 rounded-lg mx-auto mb-1 sm:mb-2 flex items-center justify-center"
-            >
-              <svg
-                class="w-3 h-3 sm:w-4 sm:h-4 text-purple-600"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-              >
-                <path
-                  fill-rule="evenodd"
-                  d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z"
-                  clip-rule="evenodd"
-                />
-              </svg>
-            </div>
-            <p class="text-xs font-medium text-gray-700">Analytics</p>
           </div>
         </div>
       </div>

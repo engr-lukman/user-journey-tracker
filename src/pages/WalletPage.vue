@@ -3,15 +3,16 @@
     class="min-h-screen bg-gradient-to-br from-pink-50 via-white to-purple-50 flex flex-col"
   >
     <AppHeader />
-    <div class="flex-1 p-4 sm:p-6">
-      <div class="w-full max-w-md mx-auto">
-        <!-- Header -->
-        <div class="text-center mb-8">
+    <div
+      class="flex-1 flex items-start justify-center p-2 sm:p-3 md:p-4 pt-4 sm:pt-6 md:pt-8"
+    >
+      <div class="w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg">
+        <div class="text-center mb-3 sm:mb-4 md:mb-6">
           <div
-            class="w-16 h-16 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-full mx-auto mb-4 flex items-center justify-center"
+            class="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 lg:w-10 lg:h-10 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-full mx-auto mb-2 sm:mb-3 md:mb-4 flex items-center justify-center"
           >
             <svg
-              class="w-8 h-8 text-white"
+              class="w-3 h-3 sm:w-3 sm:h-3 md:w-4 md:h-4 lg:w-5 lg:h-5 text-white"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -24,24 +25,25 @@
               />
             </svg>
           </div>
-          <h1 class="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
+          <h1
+            class="text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl font-bold text-gray-900 mb-1 sm:mb-2 md:mb-3"
+          >
             Wallet Setup
           </h1>
-          <p class="text-sm text-gray-600">
+          <p class="text-xs sm:text-sm md:text-base lg:text-lg text-gray-600">
             Connect your mobile wallet for secure transactions
           </p>
         </div>
 
-        <!-- Info Card -->
         <div
-          class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl p-6 mb-6 border border-blue-100"
+          class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl sm:rounded-2xl p-3 sm:p-4 md:p-6 mb-3 sm:mb-4 md:mb-6 border border-blue-100"
         >
           <div class="flex items-center">
             <div
-              class="w-12 h-12 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-xl flex items-center justify-center mr-4 flex-shrink-0"
+              class="w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10 lg:w-12 lg:h-12 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-lg sm:rounded-xl flex items-center justify-center mr-2 sm:mr-3 md:mr-4 flex-shrink-0"
             >
               <svg
-                class="w-6 h-6 text-white"
+                class="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5 lg:w-6 lg:h-6 text-white"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -55,20 +57,23 @@
               </svg>
             </div>
             <div>
-              <h3 class="font-semibold text-gray-900 text-base sm:text-lg">
+              <h3
+                class="font-semibold text-gray-900 text-sm sm:text-base md:text-lg lg:text-xl"
+              >
                 Digital Wallet
               </h3>
-              <p class="text-xs sm:text-sm text-gray-600">
+              <p
+                class="text-xs sm:text-sm md:text-base lg:text-lg text-gray-600"
+              >
                 Link your mobile number for secure payments
               </p>
             </div>
           </div>
         </div>
 
-        <!-- Form Card -->
         <form
           @submit.prevent="submitMobileWalletInfo"
-          class="bg-white rounded-2xl shadow-lg p-6 sm:p-8 space-y-6 border border-gray-100"
+          class="bg-white rounded-xl sm:rounded-2xl shadow-lg sm:shadow-xl p-3 sm:p-4 md:p-6 space-y-3 sm:space-y-4 md:space-y-6 border border-gray-100"
         >
           <div class="relative">
             <TextField
@@ -79,8 +84,14 @@
               placeholder="Enter wallet number (11 digits)"
               maxlength="11"
             />
-            <div class="mt-2 flex items-center text-xs text-gray-500">
-              <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
+            <div
+              class="mt-1 sm:mt-2 flex items-center text-xs sm:text-sm md:text-base text-gray-500"
+            >
+              <svg
+                class="w-2 h-2 sm:w-3 sm:h-3 mr-1"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+              >
                 <path
                   fill-rule="evenodd"
                   d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
@@ -91,9 +102,8 @@
             </div>
           </div>
 
-          <!-- Action Buttons -->
           <div
-            class="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-4 pt-6"
+            class="flex flex-col sm:flex-row space-y-1 sm:space-y-0 sm:space-x-2 md:space-x-4 pt-3 sm:pt-4 md:pt-6"
           >
             <Button
               type="button"
@@ -102,7 +112,7 @@
               @click="goBackToUserInfo"
               class="sm:flex-1"
             >
-              Back
+              <span class="text-sm sm:text-base md:text-lg">Back</span>
             </Button>
             <Button
               type="submit"
@@ -110,7 +120,7 @@
               full-width
               class="sm:flex-1"
             >
-              Continue
+              <span class="text-sm sm:text-base md:text-lg">Continue</span>
             </Button>
           </div>
         </form>
