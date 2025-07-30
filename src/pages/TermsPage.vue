@@ -96,6 +96,7 @@
             v-model="termsAgreed"
             label="I have read and agree to the Terms & Conditions"
             size="md"
+            @change="acceptTermsAndConditionsClick"
           />
         </div>
 
@@ -162,5 +163,9 @@ const acceptTermsAndContinue = () => {
   });
   recordJourneyStep(JOURNEY.TERMS_CONDITIONS.steps.ACCEPTED);
   router.push(JOURNEY.PERSONAL_INFORMATION.path);
+};
+
+const acceptTermsAndConditionsClick = () => {
+  recordJourneyStep(JOURNEY.TERMS_CONDITIONS.steps.CLICK);
 };
 </script>

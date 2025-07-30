@@ -19,6 +19,7 @@ export const JOURNEY = {
       PAGE_VIEWED: "terms_conditions_page_viewed",
       BACK_CLICKED: "terms_conditions_back_clicked",
       ACCEPTED: "terms_conditions_accepted",
+      CLICK: "terms_conditions_agreement_clicked",
     },
   },
 

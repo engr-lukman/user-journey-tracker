@@ -10,6 +10,62 @@ const collectedUserData = reactive<Record<string, any>>({});
 const deviceSystemData = reactive<Record<string, any>>({});
 const trackerInitialized = ref<boolean>(false);
 
+export const API_URL = "http://localhost:4000";
+
+const onSaveData = async (data: Record<string, any> = {}) => {
+  if (!currentUserId.value || !currentSessionId.value) return;
+
+  try {
+    // Check if user with userId exists
+    const resp = await fetch(`${API_URL}/users?userId=${currentUserId.value}`);
+    const existingUsers = await resp.json();
+
+    if (existingUsers?.length === 0) {
+      const createResponse = await fetch(`${API_URL}/users`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          userId: currentUserId.value,
+        }),
+      });
+    }
+
+    // Check if session with sessionId exists
+    const sessionResp = await fetch(
+      `${API_URL}/sessions?sessionId=${currentSessionId.value}`
+    );
+    const existingSessions = await sessionResp.json();
+    if (existingSessions?.length === 0) {
+      const createSessionResponse = await fetch(`${API_URL}/sessions`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          userId: currentUserId.value,
+          sessionId: currentSessionId.value,
+        }),
+      });
+    }
+
+    // Save journey step data
+
+    if (data) {
+      await fetch(`${API_URL}/journeys`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ ...data }),
+      });
+    }
+  } catch (error) {
+  } finally {
+  }
+};
+
 export function useJourneyTracker() {
   // Core Functions - Priority 1: Journey Tracking
 
@@ -324,6 +380,7 @@ export function useJourneyTracker() {
 
       trackerInitialized.value = true;
       await recordJourneyStep("journey_started");
+      onSaveData();
     } catch (error) {
       console.error("Failed to initialize journey tracker:", error);
       throw error;
@@ -356,6 +413,8 @@ export function useJourneyTracker() {
     };
 
     journeyStepsData.value.push(stepRecord);
+
+    onSaveData({ ...stepRecord });
   };
 
   /**
