@@ -68,10 +68,11 @@
               <p><strong>Sessions Grouped by User:</strong></p>
               <ul class="list-disc list-inside text-xs text-gray-600">
                 <li
-                  v-for="(sessions, userId) in stats?.sessionsByUser"
+                  v-for="(sessions, userId) in stats?.sessionsByUser ?? {}"
                   :key="userId"
                 >
-                  {{ truncateId(userId) }} — {{ sessions?.length }} sessions
+                  {{ truncateId(userId) }} —
+                  {{ sessions?.length ?? 0 }} sessions
                 </li>
               </ul>
             </div>
@@ -90,22 +91,21 @@
                   </thead>
                   <tbody>
                     <tr
-                      v-for="(
-                        userSessions, eventName
-                      ) in stats?.userJourneysByStep"
+                      v-for="(userSessions, eventName) in stats?.userEvents ??
+                      {}"
                       :key="eventName"
                       class="border-t hover:bg-gray-50"
                     >
                       <td class="px-4 py-2 font-medium">{{ eventName }}</td>
                       <td class="px-4 py-2">
-                        {{ Object.keys(userSessions).length }}
+                        {{ Object.keys(userSessions ?? {}).length }}
                       </td>
                       <td class="px-4 py-2">
                         <button
                           class="text-blue-600 underline text-xs"
                           @click="openSessionModal(eventName)"
                         >
-                          {{ totalSessions(userSessions) }} sessions
+                          {{ totalSessions(userSessions ?? {}) }} sessions
                         </button>
                       </td>
                     </tr>
@@ -157,16 +157,16 @@
         <div class="px-6 py-4">
           <ul class="text-sm space-y-3">
             <li
-              v-for="(sessions, userId, index) in modal?.data"
+              v-for="(sessions, userId, index) in modal?.data ?? {}"
               :key="userId"
               class="py-2 px-3 rounded-lg shadow-xs hover:bg-gray-100 transition-colors"
               :class="index % 2 === 0 ? 'bg-gray-100' : 'bg-white'"
             >
               <strong>
-                {{ truncateId(userId) }} - {{ sessions.length }} sessions
+                {{ truncateId(userId) }} - {{ sessions?.length ?? 0 }} sessions
               </strong>
               <ul class="ml-4 text-xs text-gray-600 mt-1 list-disc list-inside">
-                <li v-for="sid in sessions" :key="sid">
+                <li v-for="sid in sessions ?? []" :key="sid">
                   {{ truncateId(sid) }}
                 </li>
               </ul>
@@ -205,7 +205,7 @@ const tabClass = (tab) =>
 const modal = reactive({ visible: false, data: {}, eventName: "" });
 const openSessionModal = (eventName) => {
   modal.eventName = eventName;
-  modal.data = stats.userJourneysByStep[eventName] || {};
+  modal.data = stats.userEvents[eventName] || {};
   modal.visible = true;
 };
 
@@ -214,7 +214,7 @@ const stats = reactive({
   userCount: 0,
   sessionCount: 0,
   sessionsByUser: {},
-  userJourneysByStep: {},
+  userEvents: {},
   systemData: "",
 });
 
@@ -233,23 +233,21 @@ const fetchStats = async () => {
 
   stats.systemData = JSON.stringify(users[0], null, 2);
 
-  events.forEach(
-    ({ userId, sessionId, eventTitle, TITLE, eventName, order }) => {
-      if (!userId || !sessionId) return;
+  events.forEach(({ userId, sessionId, eventTitle, eventName }) => {
+    if (!userId || !sessionId) return;
 
-      const step = eventTitle || TITLE || eventName || "Unknown Step";
+    const step = eventTitle || eventName || "Unknown Step";
 
-      userSet.add(userId);
-      sessionSet.add(sessionId);
+    userSet.add(userId);
+    sessionSet.add(sessionId);
 
-      sessionsByUser[userId] ??= new Set();
-      sessionsByUser[userId].add(sessionId);
+    sessionsByUser[userId] ??= new Set();
+    sessionsByUser[userId].add(sessionId);
 
-      journeysByStep[step] ??= {};
-      journeysByStep[step][userId] ??= new Set();
-      journeysByStep[step][userId].add(sessionId);
-    }
-  );
+    journeysByStep[step] ??= {};
+    journeysByStep[step][userId] ??= new Set();
+    journeysByStep[step][userId].add(sessionId);
+  });
 
   stats.userCount = userSet.size;
   stats.sessionCount = sessionSet.size;
@@ -258,10 +256,28 @@ const fetchStats = async () => {
     Object.entries(sessionsByUser).map(([uid, s]) => [uid, [...s]])
   );
 
-  stats.userJourneysByStep = Object.fromEntries(
-    Object.entries(journeysByStep).map(([step, users]) => [
+  // Sort steps by eventOrder ascending
+  const stepOrderMap = {};
+  events.forEach(({ eventTitle, eventName, eventOrder }) => {
+    const step = eventTitle || eventName || "Unknown Step";
+    if (
+      eventOrder !== undefined &&
+      (stepOrderMap[step] === undefined || eventOrder < stepOrderMap[step])
+    ) {
+      stepOrderMap[step] = eventOrder;
+    }
+  });
+  const sortedSteps = Object.keys(journeysByStep).sort((a, b) => {
+    const orderA = stepOrderMap[a] ?? Number.MAX_SAFE_INTEGER;
+    const orderB = stepOrderMap[b] ?? Number.MAX_SAFE_INTEGER;
+    return orderA - orderB;
+  });
+  stats.userEvents = Object.fromEntries(
+    sortedSteps.map((step) => [
       step,
-      Object.fromEntries(Object.entries(users).map(([u, s]) => [u, [...s]])),
+      Object.fromEntries(
+        Object.entries(journeysByStep[step]).map(([u, s]) => [u, [...s]])
+      ),
     ])
   );
 };
