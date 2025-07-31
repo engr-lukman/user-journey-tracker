@@ -102,7 +102,7 @@
                       </td>
                       <td class="px-4 py-2">
                         <button
-                          class="text-blue-600 underline text-xs"
+                          class="text-blue-600 underline text-xs cursor-pointer"
                           @click="openSessionModal(eventName)"
                         >
                           {{ totalSessions(userSessions ?? {}) }} sessions
@@ -146,7 +146,7 @@
           </h3>
           <button
             @click="modal.visible = false"
-            class="text-gray-500 hover:text-gray-800 text-xl leading-none focus:outline-none"
+            class="text-red-500 hover:text-red-800 text-xl leading-none focus:outline-none cursor-pointer border-1 border-red-500 rounded-full w-7 h-7"
             aria-label="Close"
           >
             &times;
@@ -154,8 +154,8 @@
         </div>
 
         <!-- Modal Body -->
-        <div class="px-6 py-4">
-          <ul class="text-sm space-y-3">
+        <div class="px-6 py-4 flex justify-between w-full space-x-4">
+          <ul class="text-sm space-y-3 overflow-y-auto w-1/4 max-h-[60vh]">
             <li
               v-for="(sessions, userId, index) in modal?.data ?? {}"
               :key="userId"
@@ -165,13 +165,28 @@
               <strong>
                 {{ truncateId(userId) }} - {{ sessions?.length ?? 0 }} sessions
               </strong>
-              <ul class="ml-4 text-xs text-gray-600 mt-1 list-disc list-inside">
-                <li v-for="sid in sessions ?? []" :key="sid">
-                  {{ truncateId(sid) }}
-                </li>
-              </ul>
+              <div class="flex justify-between items-start">
+                <ul
+                  class="ml-4 text-xs text-gray-600 mt-1 list-disc list-inside"
+                >
+                  <li
+                    class="cursor-pointer hover:text-blue-600 py-1"
+                    v-for="sid in sessions ?? []"
+                    @click="() => (sessionId = sid)"
+                    :class="sessionId === sid ? 'text-blue-600 font-bold' : ''"
+                  >
+                    {{ truncateId(sid) }}
+                  </li>
+                </ul>
+              </div>
             </li>
           </ul>
+
+          <div
+            class="bg-gray-900 p-4 text-white rounded-lg text-xs overflow-y-auto w-3/4 max-h-[60vh]"
+          >
+            <pre> {{ sessionJourney }} </pre>
+          </div>
         </div>
       </div>
     </div>
@@ -179,7 +194,7 @@
 </template>
 
 <script setup>
-import { ref, reactive, onMounted } from "vue";
+import { ref, reactive, onMounted, computed, watch } from "vue";
 import { useRouter } from "vue-router";
 
 import { API_URL, useTracker } from "@/composables/useTracker";
@@ -190,6 +205,8 @@ import Button from "@/components/ui/Button.vue";
 
 const router = useRouter();
 const { userId } = useTracker();
+const sessionId = ref(null);
+const sessionJourney = ref(null);
 const tabs = ["System", "Stats"];
 const activeTab = ref("Stats");
 const truncateId = (id) => `${id.slice(0, 4)}...${id.slice(-4)}`;
@@ -208,6 +225,21 @@ const openSessionModal = (eventName) => {
   modal.data = stats.userEvents[eventName] || {};
   modal.visible = true;
 };
+
+watch(
+  () => sessionId.value,
+  (newSessionId) => {
+    if (newSessionId) {
+      fetch(`${API_URL}/events?sessionId=${newSessionId}`)
+        .then((res) => res.json())
+        .then((data) => {
+          sessionJourney.value = data;
+        });
+    } else {
+      sessionJourney.value = null;
+    }
+  }
+);
 
 // Stats
 const stats = reactive({
