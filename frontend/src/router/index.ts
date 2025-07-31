@@ -10,9 +10,9 @@ const routes = [
     name: ROUTES.WELCOME_PAGE.name,
     component: () => import("@/pages/WelcomePage.vue"),
     meta: {
-      sl: EVENTS?.WELCOME_PAGE?.SL,
+      order: EVENTS?.WELCOME_PAGE?.ORDER,
       eventName: EVENTS?.WELCOME_PAGE?.NAME,
-      title: EVENTS?.WELCOME_PAGE?.TITLE,
+      eventTitle: EVENTS?.WELCOME_PAGE?.TITLE,
     },
   },
   {
@@ -20,9 +20,9 @@ const routes = [
     name: ROUTES.WALLET_NUMBER.name,
     component: () => import("@/pages/WalletNumberPage.vue"),
     meta: {
-      sl: EVENTS?.ONBOARDING_START?.SL,
+      order: EVENTS?.ONBOARDING_START?.ORDER,
       eventName: EVENTS?.ONBOARDING_START?.NAME,
-      title: EVENTS?.ONBOARDING_START?.TITLE,
+      eventTitle: EVENTS?.ONBOARDING_START?.TITLE,
     },
   },
   {
@@ -30,9 +30,9 @@ const routes = [
     name: ROUTES.WALLET_OTP.name,
     component: () => import("@/pages/WalletOtpPage.vue"),
     meta: {
-      sl: EVENTS?.WALLET_OTP_PAGE?.SL,
+      order: EVENTS?.WALLET_OTP_PAGE?.ORDER,
       eventName: EVENTS?.WALLET_OTP_PAGE?.NAME,
-      title: EVENTS?.WALLET_OTP_PAGE?.TITLE,
+      eventTitle: EVENTS?.WALLET_OTP_PAGE?.TITLE,
     },
   },
   {
@@ -40,9 +40,9 @@ const routes = [
     name: ROUTES.ACCOUNT_INFO.name,
     component: () => import("@/pages/AccountInfoPage.vue"),
     meta: {
-      sl: EVENTS?.ACCOUNT_INFO_PAGE?.SL,
+      order: EVENTS?.ACCOUNT_INFO_PAGE?.ORDER,
       eventName: EVENTS?.ACCOUNT_INFO_PAGE?.NAME,
-      title: EVENTS?.ACCOUNT_INFO_PAGE?.TITLE,
+      eventTitle: EVENTS?.ACCOUNT_INFO_PAGE?.TITLE,
     },
   },
   {
@@ -50,9 +50,9 @@ const routes = [
     name: ROUTES.EMAIL_OTP.name,
     component: () => import("@/pages/EmailOtpPage.vue"),
     meta: {
-      sl: EVENTS?.EMAIL_OTP_PAGE?.SL,
+      order: EVENTS?.EMAIL_OTP_PAGE?.ORDER,
       eventName: EVENTS?.EMAIL_OTP_PAGE?.NAME,
-      title: EVENTS?.EMAIL_OTP_PAGE?.TITLE,
+      eventTitle: EVENTS?.EMAIL_OTP_PAGE?.TITLE,
     },
   },
   {
@@ -60,9 +60,9 @@ const routes = [
     name: ROUTES.PASSWORD.name,
     component: () => import("@/pages/PasswordPage.vue"),
     meta: {
-      sl: EVENTS?.PASSWORD_SETUP_PAGE?.SL,
+      order: EVENTS?.PASSWORD_SETUP_PAGE?.ORDER,
       eventName: EVENTS?.PASSWORD_SETUP_PAGE?.NAME,
-      title: EVENTS?.PASSWORD_SETUP_PAGE?.TITLE,
+      eventTitle: EVENTS?.PASSWORD_SETUP_PAGE?.TITLE,
     },
   },
   {
@@ -70,20 +70,15 @@ const routes = [
     name: ROUTES.ONBOARDING_COMPLETE.name,
     component: () => import("@/pages/OnboardingCompletePage.vue"),
     meta: {
-      sl: EVENTS?.ONBOARDING_COMPLETE?.SL,
+      order: EVENTS?.ONBOARDING_COMPLETE?.ORDER,
       eventName: EVENTS?.ONBOARDING_COMPLETE?.NAME,
-      title: EVENTS?.ONBOARDING_COMPLETE?.TITLE,
+      eventTitle: EVENTS?.ONBOARDING_COMPLETE?.TITLE,
     },
   },
   {
     path: ROUTES.REPORTS.path,
     name: ROUTES.REPORTS.name,
     component: () => import("@/pages/ReportsPage.vue"),
-    meta: {
-      sl: EVENTS?.REPORTS_PAGE?.SL,
-      eventName: EVENTS?.REPORTS_PAGE?.NAME,
-      title: EVENTS?.REPORTS_PAGE?.TITLE,
-    },
   },
 ];
 
@@ -95,7 +90,7 @@ const router = createRouter({
 router.beforeEach((toRoute, fromRoute, next) => {
   const { saveEventRecord } = useTracker();
 
-  if (toRoute.meta?.eventName) {
+  if (toRoute?.meta?.eventName) {
     saveEventRecord(toRoute.meta.eventName as string, {
       ...toRoute?.meta,
       fromPath: fromRoute.path,

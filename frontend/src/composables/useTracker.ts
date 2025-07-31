@@ -2,20 +2,18 @@ import { ref, reactive } from "vue";
 import FingerprintJS from "@fingerprintjs/fingerprintjs";
 import type { Payload, EventPayload, SystemData } from "@/types/journeyPayload";
 
-const currentUserId = ref<string | null>(null);
-const currentSessionId = ref<string | null>(null);
-const journeyStepsData = ref<EventPayload[]>([]);
-const collectedUserData = reactive<Record<string, any>>({});
-const deviceSystemData = reactive<Record<string, any>>({});
-const trackerInitialized = ref<boolean>(false);
+const isInitialized = ref<boolean>(false);
+const userId = ref<string | null>(null);
+const sessionId = ref<string | null>(null);
+const systemData = reactive<Record<string, any>>({});
 
 export const API_URL = "http://localhost:4000";
 
 const onSaveInitialInfo = async () => {
-  if (!currentUserId.value) return;
+  if (!userId.value || !sessionId.value) return;
 
   try {
-    const resp = await fetch(`${API_URL}/users?userId=${currentUserId.value}`);
+    const resp = await fetch(`${API_URL}/users?userId=${userId.value}`);
     const userExists = await resp.json();
 
     if (!userExists || userExists?.length === 0) {
@@ -25,9 +23,9 @@ const onSaveInitialInfo = async () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          userId: currentUserId.value,
+          userId: userId.value,
           recordedAt: new Date().toISOString(),
-          deviceInfo: deviceSystemData,
+          systemData,
         }),
       });
     }
@@ -37,7 +35,7 @@ const onSaveInitialInfo = async () => {
 };
 
 const onSaveEvent = async (data: Record<string, any> = {}) => {
-  if (!currentUserId.value || !currentSessionId.value) return;
+  if (!userId.value || !sessionId.value) return;
 
   try {
     if (data) {
@@ -64,12 +62,12 @@ export function useTracker() {
     try {
       const fingerprintProcessor = await FingerprintJS.load();
       const fingerprintResult = await fingerprintProcessor.get();
-      currentUserId.value = fingerprintResult.visitorId;
-      currentSessionId.value = `${fingerprintResult.visitorId}-${Date.now()}`;
+      userId.value = fingerprintResult.visitorId;
+      sessionId.value = `${fingerprintResult.visitorId}-${Date.now()}`;
     } catch {
       const randomId = Math.random().toString(36).substring(2, 9);
-      currentUserId.value = `user-${Date.now()}-${randomId}`;
-      currentSessionId.value = `session-${Date.now()}-${randomId}`;
+      userId.value = `user-${Date.now()}-${randomId}`;
+      sessionId.value = `session-${Date.now()}-${randomId}`;
     }
   };
 
@@ -78,12 +76,8 @@ export function useTracker() {
    */
   const collectSystemData = async (): Promise<void> => {
     const userAgent = navigator.userAgent;
-    const recordedAt = new Date().toISOString();
 
     const systemInfo = {
-      userId: currentUserId.value,
-      sessionId: currentSessionId.value,
-      recordedAt,
       browserInfo: getBrowserInfo(userAgent),
       deviceInfo: getDeviceInfo(userAgent),
       hardwareInfo: getHardwareInfo(),
@@ -93,7 +87,7 @@ export function useTracker() {
       fingerprintInfo: getFingerprintInfo(),
     };
 
-    Object.assign(deviceSystemData, systemInfo);
+    Object.assign(systemData, systemInfo);
   };
 
   // Data collection functions in required sequence
@@ -352,23 +346,15 @@ export function useTracker() {
    * Initialize tracker
    */
   const initializeTracker = async (): Promise<void> => {
-    if (trackerInitialized.value) return;
+    if (isInitialized.value) return;
 
     try {
-      journeyStepsData.value = [];
-
-      Object.keys(collectedUserData).forEach(
-        (key) => delete collectedUserData[key]
-      );
-
-      Object.keys(deviceSystemData).forEach(
-        (key) => delete deviceSystemData[key]
-      );
+      Object.keys(systemData).forEach((key) => delete systemData[key]);
 
       await generateUserIdentifiers();
       await collectSystemData();
 
-      trackerInitialized.value = true;
+      isInitialized.value = true;
       onSaveInitialInfo();
     } catch (error) {
       console.error("Failed to initialize tracker:", error);
@@ -383,137 +369,28 @@ export function useTracker() {
     eventName: string,
     meta: Record<string, any> = {}
   ): Promise<void> => {
-    if (!trackerInitialized.value) {
+    if (!isInitialized.value) {
       await initializeTracker();
     }
 
-    if (!currentUserId.value || !currentSessionId.value) return;
+    if (!userId.value || !sessionId.value) return;
 
-    const eventPayload: EventPayload = {
+    const payload: EventPayload = {
       eventName,
-      userId: currentUserId.value,
-      sessionId: currentSessionId.value,
+      userId: userId.value,
+      sessionId: sessionId.value,
       recordedAt: new Date().toISOString(),
-      meta: {
-        currentUrl: window.location.href,
-        currentPath: window.location.pathname,
-        ...meta,
-      },
+      ...meta,
     };
 
-    journeyStepsData.value.push(eventPayload);
-
-    onSaveEvent({ ...eventPayload });
-  };
-
-  /**
-   * Save user information
-   */
-  const saveUserInformation = async (
-    userInfo: Record<string, any>
-  ): Promise<void> => {
-    if (!trackerInitialized.value) {
-      await initializeTracker();
-    }
-
-    Object.assign(collectedUserData, userInfo);
-    await saveEventRecord("user_information_saved", {
-      dataFields: Object.keys(userInfo),
-    });
-  };
-
-  /**
-   * Get complete journey data
-   */
-  const getCompleteJourneyData = async (): Promise<Payload> => {
-    if (!trackerInitialized.value) {
-      await initializeTracker();
-    }
-
-    if (!currentUserId.value || !currentSessionId.value) {
-      throw new Error("Journey tracker not properly initialized");
-    }
-
-    return {
-      userId: currentUserId.value,
-      sessionId: currentSessionId.value,
-      journeySteps: journeyStepsData.value,
-      userData: { ...collectedUserData },
-      systemData: deviceSystemData as SystemData,
-      totalJourneyTime:
-        journeyStepsData.value.length > 0
-          ? new Date().getTime() -
-            new Date(journeyStepsData.value[0].recordedAt).getTime()
-          : 0,
-    };
-  };
-
-  /**
-   * Clear journey data
-   */
-  const clearAllJourneyData = (): void => {
-    journeyStepsData.value = [];
-    Object.keys(collectedUserData).forEach(
-      (key) => delete collectedUserData[key]
-    );
-  };
-
-  /**
-   * Export journey data with system data first, then user journey data
-   */
-  const exportJourneyData = async (): Promise<void> => {
-    const completeData = await getCompleteJourneyData();
-
-    // Restructure data with priority order: system data first, then journey data
-    const exportData = {
-      // Priority 1: System/Device Information
-      systemData: completeData.systemData,
-
-      // Priority 2: User Journey Information
-      journeyData: {
-        userId: completeData.userId,
-        sessionId: completeData.sessionId,
-        totalJourneyTime: completeData.totalJourneyTime,
-        journeySteps: completeData.journeySteps,
-        userData: completeData.userData,
-      },
-
-      // Export metadata
-      exportMetadata: {
-        exportedAt: new Date().toISOString(),
-        dataVersion: "1.0",
-        totalSteps: completeData.journeySteps.length,
-      },
-    };
-
-    const blob = new Blob([JSON.stringify(exportData, null, 2)], {
-      type: "application/json",
-    });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement("a");
-
-    link.href = url;
-    link.download = `user-journey-export-${completeData.sessionId}.json`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    URL.revokeObjectURL(url);
+    onSaveEvent({ ...payload });
   };
 
   return {
-    currentUserId,
-    currentSessionId,
-    journeyStepsData,
-    collectedUserData,
-    deviceSystemData,
-    trackerInitialized,
+    userId,
+    sessionId,
 
     initializeTracker,
     saveEventRecord,
-
-    saveUserInformation,
-    getCompleteJourneyData,
-    clearAllJourneyData,
-    exportJourneyData,
   };
 }

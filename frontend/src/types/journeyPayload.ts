@@ -5,10 +5,7 @@
 export interface Payload {
   userId: string;
   sessionId: string;
-  journeySteps: EventPayload[];
-  userData: Record<string, any>;
   systemData: SystemData;
-  totalJourneyTime: number;
 }
 
 export interface SystemData {

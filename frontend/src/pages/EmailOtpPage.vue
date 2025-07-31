@@ -113,7 +113,9 @@ const goToBack = () => {
 };
 
 const onResendOtp = () => {
-  console.log("Resend OTP clicked");
+  saveEventRecord(EVENTS?.EMAIL_OTP_RESEND?.NAME, {
+    ...EVENTS?.EMAIL_OTP_RESEND,
+  });
 };
 
 const onSubmitHandler = () => {

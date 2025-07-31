@@ -113,7 +113,9 @@ const goToBack = () => {
 };
 
 const onResendOtp = () => {
-  console.log("Resend OTP clicked");
+  saveEventRecord(EVENTS?.WALLET_OTP_RESEND?.NAME, {
+    ...EVENTS?.WALLET_OTP_RESEND,
+  });
 };
 
 const onSubmitHandler = () => {

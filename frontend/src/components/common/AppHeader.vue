@@ -55,38 +55,32 @@
 </template>
 
 <script setup>
-// import { computed } from "vue";
-// import { useRoute } from "vue-router";
+import { computed } from "vue";
+import { useRoute } from "vue-router";
 
-// import { EVENTS } from "@/constants/events";
+import { EVENTS } from "@/constants/events";
+import { ROUTES } from "@/constants/routes";
 
-// const route = useRoute();
+const route = useRoute();
 
-// const steps = [
-//   {
-//     name: EVENTS?.WELCOME_PAGE?.NAME,
-//     title: EVENTS?.WELCOME_PAGE?.TITLE,
-//     step: 1,
-//   },
+const routeArray = Object.values(ROUTES);
 
-// ];
+const currentStep = computed(() => {
+  const step = routeArray?.filter((s) => s.path === route.path)[0];
+  return step ? step.sl : 1;
+});
 
-// const currentStep = computed(() => {
-//   const step = journeySteps.find((s) => s.path === route.path);
-//   return step ? step.step : 1;
-// });
+const currentStepText = computed(() => {
+  const step = routeArray?.filter((s) => s.path === route.path)[0];
+  return step ? step.title : "Welcome";
+});
 
-// const currentStepText = computed(() => {
-//   const step = journeySteps.find((s) => s.path === route.path);
-//   return step ? step.name : "Welcome";
-// });
+const progressWidth = computed(() => {
+  const progress = (currentStep.value / 8) * 100;
+  return `${Math.min(progress, 100)}%`;
+});
 
-// const progressWidth = computed(() => {
-//   const progress = (currentStep.value / journeySteps.length) * 100;
-//   return `${Math.min(progress, 100)}%`;
-// });
-
-// const progressText = computed(() => {
-//   return `${currentStep.value}/${journeySteps.length}`;
-// });
+const progressText = computed(() => {
+  return `${currentStep.value}/8`;
+});
 </script>

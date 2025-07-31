@@ -124,20 +124,18 @@
 </template>
 
 <script setup>
-import { computed, onMounted } from "vue";
+import { computed } from "vue";
 import { useRouter } from "vue-router";
 
 import { useTracker } from "@/composables/useTracker";
-import { EVENTS } from "@/constants/events";
 import { ROUTES } from "@/constants/routes";
 import AppHeader from "@/components/common/AppHeader.vue";
 import AppFooter from "@/components/common/AppFooter.vue";
 import Button from "@/components/ui/Button.vue";
 
 const router = useRouter();
-const { currentUserId } = useTracker();
+const { userId } = useTracker();
 
-const userId = computed(() => currentUserId.value);
 const completedAt = computed(() => new Date().toLocaleString());
 
 const viewReports = async () => {
