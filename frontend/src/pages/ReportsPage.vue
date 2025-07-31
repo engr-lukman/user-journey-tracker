@@ -60,24 +60,25 @@
           >
             <h2 class="text-lg font-semibold mb-2">Statistics Overview</h2>
             <div class="space-y-1 text-gray-700">
-              <p><strong>Total Unique Users:</strong> {{ stats.userCount }}</p>
+              <p><strong>Total Unique Users:</strong> {{ stats?.userCount }}</p>
               <p>
-                <strong>Total Unique Sessions:</strong> {{ stats.sessionCount }}
+                <strong>Total Unique Sessions:</strong>
+                {{ stats?.sessionCount }}
               </p>
               <p><strong>Sessions Grouped by User:</strong></p>
               <ul class="list-disc list-inside text-xs text-gray-600">
                 <li
-                  v-for="(sessions, userId) in stats.sessionsByUser"
+                  v-for="(sessions, userId) in stats?.sessionsByUser"
                   :key="userId"
                 >
-                  {{ truncateId(userId) }} — {{ sessions.length }} sessions
+                  {{ truncateId(userId) }} — {{ sessions?.length }} sessions
                 </li>
               </ul>
             </div>
 
             <!-- Per Step Data -->
             <div class="mt-10">
-              <h2 class="text-md font-semibold mb-2">User Journeys per Step</h2>
+              <h2 class="text-md font-semibold mb-2">Events Overview</h2>
               <div class="overflow-auto border rounded">
                 <table class="min-w-full text-xs text-left text-gray-700">
                   <thead class="bg-gray-100 border-b">
@@ -90,19 +91,19 @@
                   <tbody>
                     <tr
                       v-for="(
-                        userSessions, stepName
-                      ) in stats.userJourneysByStep"
-                      :key="stepName"
+                        userSessions, eventName
+                      ) in stats?.userJourneysByStep"
+                      :key="eventName"
                       class="border-t hover:bg-gray-50"
                     >
-                      <td class="px-4 py-2 font-medium">{{ stepName }}</td>
+                      <td class="px-4 py-2 font-medium">{{ eventName }}</td>
                       <td class="px-4 py-2">
                         {{ Object.keys(userSessions).length }}
                       </td>
                       <td class="px-4 py-2">
                         <button
                           class="text-blue-600 underline text-xs"
-                          @click="openSessionModal(stepName)"
+                          @click="openSessionModal(eventName)"
                         >
                           {{ totalSessions(userSessions) }} sessions
                         </button>
@@ -127,35 +128,51 @@
 
     <AppFooter />
 
-    <!-- Modal -->
+    <!-- Session Modal -->
     <div
       v-if="modal.visible"
-      class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50"
+      class="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50"
     >
-      <div class="bg-white p-4 rounded-lg w-full max-w-md shadow-xl">
-        <h3 class="font-semibold mb-2">
-          Sessions for: <span class="text-blue-600">{{ modal.stepName }}</span>
-        </h3>
-        <ul class="text-sm max-h-[300px] overflow-y-auto">
-          <li
-            v-for="(sessions, userId) in modal.data"
-            :key="userId"
-            class="mb-2 border-b pb-1"
-          >
-            <strong
-              >{{ truncateId(userId) }} - {{ sessions.length }} sessions</strong
-            >
-            <ul class="ml-4 text-xs text-gray-600">
-              <li v-for="sid in sessions" :key="sid">{{ truncateId(sid) }}</li>
-            </ul>
-          </li>
-        </ul>
-        <button
-          class="mt-4 text-xs text-blue-600 underline"
-          @click="modal.visible = false"
+      <div
+        class="bg-white w-[75%] max-h-[80vh] overflow-y-auto rounded-xl shadow-xl relative"
+      >
+        <!-- Modal Header -->
+        <div
+          class="flex justify-between items-center px-6 py-4 shadow-sm bg-gray-50"
         >
-          Close
-        </button>
+          <h3 class="text-lg font-semibold text-gray-800">
+            Event Name:
+            <span class="text-blue-600">{{ modal?.eventName }}</span>
+          </h3>
+          <button
+            @click="modal.visible = false"
+            class="text-gray-500 hover:text-gray-800 text-xl leading-none focus:outline-none"
+            aria-label="Close"
+          >
+            &times;
+          </button>
+        </div>
+
+        <!-- Modal Body -->
+        <div class="px-6 py-4">
+          <ul class="text-sm space-y-3">
+            <li
+              v-for="(sessions, userId, index) in modal?.data"
+              :key="userId"
+              class="py-2 px-3 rounded-lg shadow-xs hover:bg-gray-100 transition-colors"
+              :class="index % 2 === 0 ? 'bg-gray-100' : 'bg-white'"
+            >
+              <strong>
+                {{ truncateId(userId) }} - {{ sessions.length }} sessions
+              </strong>
+              <ul class="ml-4 text-xs text-gray-600 mt-1 list-disc list-inside">
+                <li v-for="sid in sessions" :key="sid">
+                  {{ truncateId(sid) }}
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
   </div>
@@ -164,18 +181,18 @@
 <script setup>
 import { ref, reactive, onMounted } from "vue";
 import { useRouter } from "vue-router";
+
 import { API_URL, useTracker } from "@/composables/useTracker";
 import { ROUTES } from "@/constants/routes";
 import AppHeader from "@/components/common/AppHeader.vue";
 import AppFooter from "@/components/common/AppFooter.vue";
 import Button from "@/components/ui/Button.vue";
 
-// Router
 const router = useRouter();
-
-// Tabs
+const { userId } = useTracker();
 const tabs = ["System", "Stats"];
-const activeTab = ref("System");
+const activeTab = ref("Stats");
+const truncateId = (id) => `${id.slice(0, 4)}...${id.slice(-4)}`;
 const tabClass = (tab) =>
   [
     "px-4 py-2 text-sm font-medium transition-colors",
@@ -184,16 +201,11 @@ const tabClass = (tab) =>
       : "text-gray-500 hover:text-gray-700",
   ].join(" ");
 
-// Data & formatting
-const { userId } = useTracker();
-
-const truncateId = (id) => `${id.slice(0, 4)}...${id.slice(-4)}`;
-
 // Modal
-const modal = reactive({ visible: false, data: {}, stepName: "" });
-const openSessionModal = (stepName) => {
-  modal.stepName = stepName;
-  modal.data = stats.userJourneysByStep[stepName] || {};
+const modal = reactive({ visible: false, data: {}, eventName: "" });
+const openSessionModal = (eventName) => {
+  modal.eventName = eventName;
+  modal.data = stats.userJourneysByStep[eventName] || {};
   modal.visible = true;
 };
 
@@ -221,21 +233,23 @@ const fetchStats = async () => {
 
   stats.systemData = JSON.stringify(users[0], null, 2);
 
-  events.forEach(({ userId, sessionId, eventTitle, TITLE, eventName }) => {
-    if (!userId || !sessionId) return;
+  events.forEach(
+    ({ userId, sessionId, eventTitle, TITLE, eventName, order }) => {
+      if (!userId || !sessionId) return;
 
-    const step = eventTitle || TITLE || eventName || "Unknown Step";
+      const step = eventTitle || TITLE || eventName || "Unknown Step";
 
-    userSet.add(userId);
-    sessionSet.add(sessionId);
+      userSet.add(userId);
+      sessionSet.add(sessionId);
 
-    sessionsByUser[userId] ??= new Set();
-    sessionsByUser[userId].add(sessionId);
+      sessionsByUser[userId] ??= new Set();
+      sessionsByUser[userId].add(sessionId);
 
-    journeysByStep[step] ??= {};
-    journeysByStep[step][userId] ??= new Set();
-    journeysByStep[step][userId].add(sessionId);
-  });
+      journeysByStep[step] ??= {};
+      journeysByStep[step][userId] ??= new Set();
+      journeysByStep[step][userId].add(sessionId);
+    }
+  );
 
   stats.userCount = userSet.size;
   stats.sessionCount = sessionSet.size;

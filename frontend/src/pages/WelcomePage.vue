@@ -95,25 +95,18 @@
 <script setup>
 import { useRouter } from "vue-router";
 
-import { useTracker } from "@/composables/useTracker";
 import AppHeader from "@/components/common/AppHeader.vue";
 import AppFooter from "@/components/common/AppFooter.vue";
 import Button from "@/components/ui/Button.vue";
-import { EVENTS } from "@/constants/events";
 import { ROUTES } from "@/constants/routes";
 
 const router = useRouter();
-const { saveEventRecord } = useTracker();
 
 const startOnboarding = async () => {
   router.push(ROUTES?.WALLET_NUMBER?.path);
 };
 
 const viewReports = async () => {
-  await saveEventRecord(EVENTS?.REPORTS_PAGE?.NAME, {
-    ...EVENTS?.REPORTS_PAGE,
-  });
-
   router.push(ROUTES?.REPORTS?.path);
 };
 </script>
