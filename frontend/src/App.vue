@@ -7,15 +7,16 @@
 <script setup>
 import { RouterView } from "vue-router";
 import { onMounted } from "vue";
-import { useJourneyTracker } from "@/composables/useJourneyTracker";
 
-const { initializeJourneyTracker } = useJourneyTracker();
+import { useTracker } from "@/composables/useTracker";
+
+const { initializeTracker } = useTracker();
 
 onMounted(() => {
   // Start initialization but don't block mounting
   // Individual components will wait for this if needed
-  initializeJourneyTracker().catch((error) => {
-    console.error("Failed to initialize journey tracker:", error);
+  initializeTracker().catch((error) => {
+    console.error("Failed to initialize tracker:", error);
   });
 });
 </script>

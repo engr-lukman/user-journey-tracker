@@ -1,90 +1,109 @@
 import { createRouter, createWebHistory } from "vue-router";
-import { useJourneyTracker } from "@/composables/useJourneyTracker";
-import { JOURNEY } from "@/constants/journey";
 
-const journeyRoutes = [
+import { useTracker } from "@/composables/useTracker";
+import { EVENTS } from "@/constants/events";
+import { ROUTES } from "@/constants/routes";
+
+const routes = [
   {
-    path: JOURNEY.WELCOME_PAGE.path,
-    name: JOURNEY.WELCOME_PAGE.name,
-    component: () => import("@/pages/HomePage.vue"),
+    path: ROUTES.WELCOME_PAGE.path,
+    name: ROUTES.WELCOME_PAGE.name,
+    component: () => import("@/pages/WelcomePage.vue"),
     meta: {
-      stepName: JOURNEY.WELCOME_PAGE.steps.PAGE_VIEWED,
-      title: JOURNEY.WELCOME_PAGE.title,
+      sl: EVENTS?.WELCOME_PAGE?.SL,
+      eventName: EVENTS?.WELCOME_PAGE?.NAME,
+      title: EVENTS?.WELCOME_PAGE?.TITLE,
     },
   },
   {
-    path: JOURNEY.TERMS_CONDITIONS.path,
-    name: JOURNEY.TERMS_CONDITIONS.name,
-    component: () => import("@/pages/TermsPage.vue"),
+    path: ROUTES.WALLET_NUMBER.path,
+    name: ROUTES.WALLET_NUMBER.name,
+    component: () => import("@/pages/WalletNumberPage.vue"),
     meta: {
-      stepName: JOURNEY.TERMS_CONDITIONS.steps.PAGE_VIEWED,
-      title: JOURNEY.TERMS_CONDITIONS.title,
+      sl: EVENTS?.ONBOARDING_START?.SL,
+      eventName: EVENTS?.ONBOARDING_START?.NAME,
+      title: EVENTS?.ONBOARDING_START?.TITLE,
     },
   },
   {
-    path: JOURNEY.PERSONAL_INFORMATION.path,
-    name: JOURNEY.PERSONAL_INFORMATION.name,
-    component: () => import("@/pages/UserFormPage.vue"),
+    path: ROUTES.WALLET_OTP.path,
+    name: ROUTES.WALLET_OTP.name,
+    component: () => import("@/pages/WalletOtpPage.vue"),
     meta: {
-      stepName: JOURNEY.PERSONAL_INFORMATION.steps.PAGE_VIEWED,
-      title: JOURNEY.PERSONAL_INFORMATION.title,
+      sl: EVENTS?.WALLET_OTP_PAGE?.SL,
+      eventName: EVENTS?.WALLET_OTP_PAGE?.NAME,
+      title: EVENTS?.WALLET_OTP_PAGE?.TITLE,
     },
   },
   {
-    path: JOURNEY.WALLET_SETUP.path,
-    name: JOURNEY.WALLET_SETUP.name,
-    component: () => import("@/pages/WalletPage.vue"),
+    path: ROUTES.ACCOUNT_INFO.path,
+    name: ROUTES.ACCOUNT_INFO.name,
+    component: () => import("@/pages/AccountInfoPage.vue"),
     meta: {
-      stepName: JOURNEY.WALLET_SETUP.steps.PAGE_VIEWED,
-      title: JOURNEY.WALLET_SETUP.title,
+      sl: EVENTS?.ACCOUNT_INFO_PAGE?.SL,
+      eventName: EVENTS?.ACCOUNT_INFO_PAGE?.NAME,
+      title: EVENTS?.ACCOUNT_INFO_PAGE?.TITLE,
     },
   },
   {
-    path: JOURNEY.OTP_VERIFICATION.path,
-    name: JOURNEY.OTP_VERIFICATION.name,
-    component: () => import("@/pages/OtpPage.vue"),
+    path: ROUTES.EMAIL_OTP.path,
+    name: ROUTES.EMAIL_OTP.name,
+    component: () => import("@/pages/EmailOtpPage.vue"),
     meta: {
-      stepName: JOURNEY.OTP_VERIFICATION.steps.PAGE_VIEWED,
-      title: JOURNEY.OTP_VERIFICATION.title,
+      sl: EVENTS?.EMAIL_OTP_PAGE?.SL,
+      eventName: EVENTS?.EMAIL_OTP_PAGE?.NAME,
+      title: EVENTS?.EMAIL_OTP_PAGE?.TITLE,
     },
   },
   {
-    path: JOURNEY.JOURNEY_COMPLETE.path,
-    name: JOURNEY.JOURNEY_COMPLETE.name,
-    component: () => import("@/pages/VerificationPage.vue"),
+    path: ROUTES.PASSWORD.path,
+    name: ROUTES.PASSWORD.name,
+    component: () => import("@/pages/PasswordPage.vue"),
     meta: {
-      stepName: JOURNEY.JOURNEY_COMPLETE.steps.JOURNEY_COMPLETED,
-      title: JOURNEY.JOURNEY_COMPLETE.title,
+      sl: EVENTS?.PASSWORD_SETUP_PAGE?.SL,
+      eventName: EVENTS?.PASSWORD_SETUP_PAGE?.NAME,
+      title: EVENTS?.PASSWORD_SETUP_PAGE?.TITLE,
     },
   },
   {
-    path: JOURNEY.DEVICE_DATA.path,
-    name: JOURNEY.DEVICE_DATA.name,
-    component: () => import("@/pages/DeviceDataPage.vue"),
+    path: ROUTES.ONBOARDING_COMPLETE.path,
+    name: ROUTES.ONBOARDING_COMPLETE.name,
+    component: () => import("@/pages/OnboardingCompletePage.vue"),
     meta: {
-      stepName: JOURNEY.DEVICE_DATA.steps.PAGE_VIEWED,
-      title: JOURNEY.DEVICE_DATA.title,
+      sl: EVENTS?.ONBOARDING_COMPLETE?.SL,
+      eventName: EVENTS?.ONBOARDING_COMPLETE?.NAME,
+      title: EVENTS?.ONBOARDING_COMPLETE?.TITLE,
+    },
+  },
+  {
+    path: ROUTES.REPORTS.path,
+    name: ROUTES.REPORTS.name,
+    component: () => import("@/pages/ReportsPage.vue"),
+    meta: {
+      sl: EVENTS?.REPORTS_PAGE?.SL,
+      eventName: EVENTS?.REPORTS_PAGE?.NAME,
+      title: EVENTS?.REPORTS_PAGE?.TITLE,
     },
   },
 ];
 
-const journeyRouter = createRouter({
+const router = createRouter({
   history: createWebHistory(),
-  routes: journeyRoutes,
+  routes: routes,
 });
 
-journeyRouter.beforeEach((toRoute, fromRoute, next) => {
-  const { recordJourneyStep } = useJourneyTracker();
+router.beforeEach((toRoute, fromRoute, next) => {
+  const { saveEventRecord } = useTracker();
 
-  if (toRoute.meta?.stepName) {
-    recordJourneyStep(toRoute.meta.stepName as string, {
+  if (toRoute.meta?.eventName) {
+    saveEventRecord(toRoute.meta.eventName as string, {
+      ...toRoute?.meta,
       fromPath: fromRoute.path,
       toPath: toRoute.path,
-      navigationMethod: "router",
     });
   }
 
   next();
 });
 
-export default journeyRouter;
+export default router;

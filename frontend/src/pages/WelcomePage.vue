@@ -75,16 +75,14 @@
           </p>
 
           <div class="space-y-1 sm:space-y-2">
-            <Button @click="startJourney" variant="primary" full-width>
+            <Button @click="startOnboarding" variant="primary" full-width>
               <span class="text-sm sm:text-base md:text-lg"
-                >Start Your Journey</span
+                >Start Onboarding</span
               >
             </Button>
 
-            <Button @click="viewDeviceData" variant="secondary" full-width>
-              <span class="text-sm sm:text-base md:text-lg"
-                >View Device Information</span
-              >
+            <Button @click="viewReports" variant="secondary" full-width>
+              <span class="text-sm sm:text-base md:text-lg">View Reports</span>
             </Button>
           </div>
         </div>
@@ -95,28 +93,27 @@
 </template>
 
 <script setup>
-import { onMounted } from "vue";
 import { useRouter } from "vue-router";
-import { useJourneyTracker } from "@/composables/useJourneyTracker";
-import { JOURNEY } from "@/constants/journey";
+
+import { useTracker } from "@/composables/useTracker";
 import AppHeader from "@/components/common/AppHeader.vue";
 import AppFooter from "@/components/common/AppFooter.vue";
 import Button from "@/components/ui/Button.vue";
+import { EVENTS } from "@/constants/events";
+import { ROUTES } from "@/constants/routes";
 
 const router = useRouter();
-const { recordJourneyStep } = useJourneyTracker();
+const { saveEventRecord } = useTracker();
 
-onMounted(async () => {
-  await recordJourneyStep(JOURNEY.WELCOME_PAGE.steps.PAGE_VIEWED);
-});
-
-const startJourney = async () => {
-  await recordJourneyStep(JOURNEY.WELCOME_PAGE.steps.GET_STARTED_CLICKED);
-  router.push(JOURNEY.TERMS_CONDITIONS.path);
+const startOnboarding = async () => {
+  router.push(ROUTES?.WALLET_NUMBER?.path);
 };
 
-const viewDeviceData = async () => {
-  await recordJourneyStep(JOURNEY.DEVICE_DATA.steps.VIEW_DEVICE_DATA_CLICKED);
-  router.push(JOURNEY.DEVICE_DATA.path);
+const viewReports = async () => {
+  await saveEventRecord(EVENTS?.REPORTS_PAGE?.NAME, {
+    ...EVENTS?.REPORTS_PAGE,
+  });
+
+  router.push(ROUTES?.REPORTS?.path);
 };
 </script>

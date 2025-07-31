@@ -5,7 +5,7 @@
 export interface Payload {
   userId: string;
   sessionId: string;
-  journeySteps: JourneyStep[];
+  journeySteps: EventPayload[];
   userData: Record<string, any>;
   systemData: SystemData;
   totalJourneyTime: number;
@@ -91,12 +91,10 @@ export interface FingerprintInfo {
   fonts?: string[];
 }
 
-export interface JourneyStep {
-  stepName: string;
-  recordedAt: string;
-  sessionId: string;
+export interface EventPayload {
+  eventName: string;
   userId: string;
-  currentUrl: string;
-  currentPath: string;
+  sessionId: string;
+  recordedAt: string;
   [key: string]: any;
 }

@@ -28,37 +28,37 @@
           <h1
             class="text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl font-bold text-gray-900 mb-1 sm:mb-2 md:mb-3"
           >
-            Personal Information
+            Password Setup
           </h1>
           <p
             class="text-xs sm:text-sm md:text-base lg:text-lg text-gray-600 px-1 sm:px-2"
           >
-            Tell us a bit about yourself to personalize your experience
+            Please set a password for your account
           </p>
         </div>
 
         <form
-          @submit.prevent="submitUserForm"
+          @submit.prevent="onSubmitHandler"
           class="bg-white rounded-xl sm:rounded-2xl shadow-lg sm:shadow-xl p-3 sm:p-4 md:p-6 space-y-3 sm:space-y-4 md:space-y-6 border border-gray-100"
         >
           <div class="space-y-3 sm:space-y-4 md:space-y-6">
             <div class="relative">
               <TextField
-                id="userFullName"
-                v-model="userForm.fullName"
-                type="text"
-                label="Full Name"
-                placeholder="Enter your full name"
+                id="password"
+                v-model="payload.password"
+                type="password"
+                label="Password"
+                placeholder="Enter your password"
               />
             </div>
 
             <div class="relative">
               <TextField
-                id="userEmail"
-                v-model="userForm.email"
-                type="email"
-                label="Email Address"
-                placeholder="Enter your email address"
+                id="confirmPassword"
+                v-model="payload.confirmPassword"
+                type="password"
+                label="Confirm Password"
+                placeholder="Re-enter your password"
               />
             </div>
           </div>
@@ -67,19 +67,20 @@
             class="flex flex-col sm:flex-row space-y-1 sm:space-y-0 sm:space-x-2 md:space-x-4 pt-3 sm:pt-4 md:pt-6"
           >
             <Button
-              type="button"
               variant="secondary"
               full-width
-              @click="goBackToTerms"
+              @click="goToBack"
               class="sm:flex-1"
             >
               <span class="text-sm sm:text-base md:text-lg">Back</span>
             </Button>
+
             <Button
               type="submit"
               variant="primary"
               full-width
               class="sm:flex-1"
+              :disabled="!isEnabled"
             >
               <span class="text-sm sm:text-base md:text-lg">Continue</span>
             </Button>
@@ -92,35 +93,42 @@
 </template>
 
 <script setup>
-import { reactive, onMounted } from "vue";
+import { reactive, computed } from "vue";
 import { useRouter } from "vue-router";
-import { useJourneyTracker } from "@/composables/useJourneyTracker";
-import { JOURNEY } from "@/constants/journey";
+
+import { useTracker } from "@/composables/useTracker";
+import { EVENTS } from "@/constants/events";
+import { ROUTES } from "@/constants/routes";
 import AppHeader from "@/components/common/AppHeader.vue";
 import AppFooter from "@/components/common/AppFooter.vue";
 import Button from "@/components/ui/Button.vue";
 import TextField from "@/components/ui/TextField.vue";
 
 const router = useRouter();
-const { recordJourneyStep, saveUserInformation } = useJourneyTracker();
+const { saveEventRecord } = useTracker();
 
-const userForm = reactive({
-  fullName: "",
-  email: "",
+const payload = reactive({
+  password: "",
+  confirmPassword: "",
 });
 
-onMounted(() => {
-  recordJourneyStep(JOURNEY.PERSONAL_INFORMATION.steps.PAGE_VIEWED);
-});
+const isEnabled = computed(
+  () =>
+    payload.password &&
+    payload.confirmPassword &&
+    payload.confirmPassword === payload.password
+);
 
-const goBackToTerms = () => {
-  recordJourneyStep(JOURNEY.PERSONAL_INFORMATION.steps.BACK_CLICKED);
-  router.push(JOURNEY.TERMS_CONDITIONS.path);
+const goToBack = () => {
+  router.push(ROUTES?.EMAIL_OTP?.path);
 };
 
-const submitUserForm = () => {
-  saveUserInformation({ personalInformation: { ...userForm } });
-  recordJourneyStep(JOURNEY.PERSONAL_INFORMATION.steps.FORM_SUBMITTED);
-  router.push(JOURNEY.WALLET_SETUP.path);
+const onSubmitHandler = () => {
+  saveEventRecord(EVENTS?.PASSWORD_SUBMITTED?.NAME, {
+    ...EVENTS?.PASSWORD_SUBMITTED,
+    ...payload,
+  });
+
+  router.push(ROUTES?.ONBOARDING_COMPLETE?.path);
 };
 </script>

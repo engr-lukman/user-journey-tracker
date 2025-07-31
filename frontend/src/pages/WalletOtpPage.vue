@@ -28,7 +28,7 @@
           <h1
             class="text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl font-bold text-gray-900 mb-1 sm:mb-2 md:mb-3"
           >
-            Enter Verification Code
+            Enter OTP Code
           </h1>
           <p class="text-xs sm:text-sm md:text-base lg:text-lg text-gray-600">
             We've sent a 6-digit code to your mobile number
@@ -36,18 +36,17 @@
         </div>
 
         <form
-          @submit.prevent="verifyOtp"
+          @submit.prevent="onSubmitHandler"
           class="bg-white rounded-xl sm:rounded-2xl shadow-lg sm:shadow-xl p-3 sm:p-4 md:p-6 space-y-3 sm:space-y-4 md:space-y-6 border border-gray-100"
         >
           <div class="relative">
             <TextField
-              v-model="otpCode"
+              v-model="WalletOTP"
               type="text"
-              label="Verification Code"
-              placeholder="000000"
+              label="Wallet OTP"
+              placeholder="Enter 6-digit OTP"
               maxlength="6"
               variant="otp"
-              required
             />
             <div class="mt-1 sm:mt-2 md:mt-3 text-center">
               <p class="text-xs sm:text-sm md:text-base text-gray-500">
@@ -60,16 +59,15 @@
             type="submit"
             variant="primary"
             full-width
-            :disabled="otpCode.length !== 6"
+            :disabled="!isEnabled"
           >
             <span class="text-sm sm:text-base md:text-lg">Verify Code</span>
           </Button>
 
           <div class="text-center">
             <Button
-              type="button"
               variant="text"
-              @click="resendOtp"
+              @click="onResendOtp"
               class="text-xs sm:text-sm md:text-base"
             >
               Didn't receive the code? Resend
@@ -79,9 +77,8 @@
 
         <div class="mt-1 sm:mt-2 text-center">
           <Button
-            type="button"
             variant="text"
-            @click="goBack"
+            @click="goToBack"
             class="text-xs sm:text-sm md:text-base text-gray-500 hover:text-gray-700"
           >
             Back to Wallet Setup
@@ -94,40 +91,37 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, computed } from "vue";
 import { useRouter } from "vue-router";
-import { useJourneyTracker } from "@/composables/useJourneyTracker";
-import { JOURNEY } from "@/constants/journey";
+
+import { useTracker } from "@/composables/useTracker";
+import { EVENTS } from "@/constants/events";
+import { ROUTES } from "@/constants/routes";
 import AppHeader from "@/components/common/AppHeader.vue";
 import AppFooter from "@/components/common/AppFooter.vue";
 import Button from "@/components/ui/Button.vue";
 import TextField from "@/components/ui/TextField.vue";
 
 const router = useRouter();
-const { recordJourneyStep } = useJourneyTracker();
+const { saveEventRecord } = useTracker();
 
-const otpCode = ref("");
+const WalletOTP = ref("");
+const isEnabled = computed(() => WalletOTP.value.length === 6);
 
-onMounted(() => {
-  recordJourneyStep(JOURNEY.OTP_VERIFICATION.steps.PAGE_VIEWED);
-});
-
-const verifyOtp = () => {
-  if (otpCode.value.length === 6) {
-    recordJourneyStep(JOURNEY.OTP_VERIFICATION.steps.CODE_ENTERED, {
-      otpLength: otpCode.value.length,
-    });
-    router.push(JOURNEY.JOURNEY_COMPLETE.path);
-  }
+const goToBack = () => {
+  router.push(ROUTES?.WALLET_NUMBER?.path);
 };
 
-const resendOtp = () => {
-  recordJourneyStep(JOURNEY.OTP_VERIFICATION.steps.RESEND_REQUESTED);
-  // In a real app, this would trigger a new OTP
+const onResendOtp = () => {
+  console.log("Resend OTP clicked");
 };
 
-const goBack = () => {
-  recordJourneyStep(JOURNEY.OTP_VERIFICATION.steps.BACK_CLICKED);
-  router.push(JOURNEY.WALLET_SETUP.path);
+const onSubmitHandler = () => {
+  saveEventRecord(EVENTS?.WALLET_OTP_VERIFIED?.NAME, {
+    ...EVENTS?.WALLET_OTP_VERIFIED,
+    walletOtp: WalletOTP.value,
+  });
+
+  router.push(ROUTES?.ACCOUNT_INFO?.path);
 };
 </script>

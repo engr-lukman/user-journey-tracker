@@ -47,7 +47,7 @@
           <p
             class="text-xs sm:text-sm md:text-base lg:text-lg text-gray-600 mb-1 sm:mb-2"
           >
-            Your journey is complete
+            Your onboarding is complete
           </p>
           <p class="text-xs sm:text-sm md:text-base text-gray-500">
             Account verified successfully
@@ -76,7 +76,7 @@
             <h3
               class="text-sm sm:text-base md:text-lg lg:text-xl font-semibold text-gray-900"
             >
-              Journey Summary
+              Onboarding Summary
             </h3>
           </div>
 
@@ -109,16 +109,12 @@
         </div>
 
         <div class="space-y-1 sm:space-y-2">
-          <Button @click="viewDeviceData" variant="primary" full-width>
-            <span class="text-sm sm:text-base md:text-lg"
-              >View Details Data</span
-            >
+          <Button @click="viewReports" variant="primary" full-width>
+            <span class="text-sm sm:text-base md:text-lg">View Reports</span>
           </Button>
 
-          <Button @click="startOver" variant="text" full-width>
-            <span class="text-sm sm:text-base md:text-lg"
-              >Start New Journey</span
-            >
+          <Button @click="goToBack" variant="text" full-width>
+            <span class="text-sm sm:text-base md:text-lg">Back to Home</span>
           </Button>
         </div>
       </div>
@@ -130,30 +126,25 @@
 <script setup>
 import { computed, onMounted } from "vue";
 import { useRouter } from "vue-router";
-import { useJourneyTracker } from "@/composables/useJourneyTracker";
-import { JOURNEY } from "@/constants/journey";
+
+import { useTracker } from "@/composables/useTracker";
+import { EVENTS } from "@/constants/events";
+import { ROUTES } from "@/constants/routes";
 import AppHeader from "@/components/common/AppHeader.vue";
 import AppFooter from "@/components/common/AppFooter.vue";
 import Button from "@/components/ui/Button.vue";
 
 const router = useRouter();
-const { recordJourneyStep, currentUserId } = useJourneyTracker();
+const { currentUserId } = useTracker();
 
 const userId = computed(() => currentUserId.value);
 const completedAt = computed(() => new Date().toLocaleString());
 
-onMounted(() => {
-  recordJourneyStep(JOURNEY.JOURNEY_COMPLETE.steps.JOURNEY_COMPLETED);
-});
-
-const viewDeviceData = () => {
-  recordJourneyStep(JOURNEY.JOURNEY_COMPLETE.steps.DEVICE_DATA_PAGE_VISITED);
-  router.push(JOURNEY.DEVICE_DATA.path);
+const viewReports = async () => {
+  router.push(ROUTES?.REPORTS?.path);
 };
 
-const startOver = () => {
-  recordJourneyStep(JOURNEY.JOURNEY_COMPLETE.steps.RESTART_JOURNEY);
-  localStorage.clear();
-  router.push(JOURNEY.WELCOME_PAGE.path);
+const goToBack = () => {
+  router.push(ROUTES?.WELCOME_PAGE?.path);
 };
 </script>

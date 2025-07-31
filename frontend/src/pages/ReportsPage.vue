@@ -32,7 +32,7 @@
         <!-- Buttons -->
         <div class="flex flex-col sm:flex-row justify-end gap-2 mb-4">
           <Button @click="exportJourneyData" variant="primary">Export</Button>
-          <Button @click="goToHome" variant="secondary">Home</Button>
+          <Button @click="goToBack" variant="secondary">Home</Button>
         </div>
 
         <!-- Tabs -->
@@ -167,15 +167,16 @@
 <script setup>
 import { ref, computed, reactive, onMounted } from "vue";
 import { useRouter } from "vue-router";
-import { API_URL, useJourneyTracker } from "@/composables/useJourneyTracker";
-import { JOURNEY } from "@/constants/journey";
+
+import { API_URL, useTracker } from "@/composables/useTracker";
+import { EVENTS } from "@/constants/events";
+import { ROUTES } from "@/constants/routes";
 import AppHeader from "@/components/common/AppHeader.vue";
 import AppFooter from "@/components/common/AppFooter.vue";
 import Button from "@/components/ui/Button.vue";
 
 const router = useRouter();
-const { deviceSystemData, journeyStepsData, exportJourneyData } =
-  useJourneyTracker();
+const { deviceSystemData, journeyStepsData, exportJourneyData } = useTracker();
 
 const activeTab = ref("device");
 const tabClass = (tab) =>
@@ -209,7 +210,7 @@ const currentTabData = computed(() =>
     ? formattedDeviceData.value
     : formattedJourneyData.value
 );
-const goToHome = () => router.push(JOURNEY.WELCOME_PAGE.path);
+const goToBack = () => router.push(ROUTES.WELCOME_PAGE.path);
 const truncateId = (id) => `${id.slice(0, 4)}...${id.slice(-4)}`;
 
 const stats = reactive({

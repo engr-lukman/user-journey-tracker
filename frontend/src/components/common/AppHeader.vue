@@ -45,69 +45,48 @@
 
       <!-- Progress Steps -->
       <div class="flex justify-between mt-1 sm:mt-2 text-xs text-gray-400">
-        <span class="font-medium truncate">{{ currentStepText }}</span>
-        <span class="flex-shrink-0 ml-2">{{ progressText }}</span>
+        <span class="font-medium truncate">{{
+          currentStepText || "Unknown Step"
+        }}</span>
+        <span class="flex-shrink-0 ml-2">{{ progressText || "0/0" }}</span>
       </div>
     </div>
   </header>
 </template>
 
 <script setup>
-import { computed } from "vue";
-import { useRoute } from "vue-router";
-import { JOURNEY } from "@/constants/journey";
+// import { computed } from "vue";
+// import { useRoute } from "vue-router";
 
-const route = useRoute();
+// import { EVENTS } from "@/constants/events";
 
-const journeySteps = [
-  {
-    path: JOURNEY.WELCOME_PAGE.path,
-    name: JOURNEY.WELCOME_PAGE.title,
-    step: 1,
-  },
-  {
-    path: JOURNEY.TERMS_CONDITIONS.path,
-    name: JOURNEY.TERMS_CONDITIONS.title,
-    step: 2,
-  },
-  {
-    path: JOURNEY.PERSONAL_INFORMATION.path,
-    name: JOURNEY.PERSONAL_INFORMATION.title,
-    step: 3,
-  },
-  {
-    path: JOURNEY.WALLET_SETUP.path,
-    name: JOURNEY.WALLET_SETUP.title,
-    step: 4,
-  },
-  {
-    path: JOURNEY.OTP_VERIFICATION.path,
-    name: JOURNEY.OTP_VERIFICATION.title,
-    step: 5,
-  },
-  {
-    path: JOURNEY.JOURNEY_COMPLETE.path,
-    name: JOURNEY.JOURNEY_COMPLETE.title,
-    step: 6,
-  },
-];
+// const route = useRoute();
 
-const currentStep = computed(() => {
-  const step = journeySteps.find((s) => s.path === route.path);
-  return step ? step.step : 1;
-});
+// const steps = [
+//   {
+//     name: EVENTS?.WELCOME_PAGE?.NAME,
+//     title: EVENTS?.WELCOME_PAGE?.TITLE,
+//     step: 1,
+//   },
 
-const currentStepText = computed(() => {
-  const step = journeySteps.find((s) => s.path === route.path);
-  return step ? step.name : "Welcome";
-});
+// ];
 
-const progressWidth = computed(() => {
-  const progress = (currentStep.value / journeySteps.length) * 100;
-  return `${Math.min(progress, 100)}%`;
-});
+// const currentStep = computed(() => {
+//   const step = journeySteps.find((s) => s.path === route.path);
+//   return step ? step.step : 1;
+// });
 
-const progressText = computed(() => {
-  return `${currentStep.value}/${journeySteps.length}`;
-});
+// const currentStepText = computed(() => {
+//   const step = journeySteps.find((s) => s.path === route.path);
+//   return step ? step.name : "Welcome";
+// });
+
+// const progressWidth = computed(() => {
+//   const progress = (currentStep.value / journeySteps.length) * 100;
+//   return `${Math.min(progress, 100)}%`;
+// });
+
+// const progressText = computed(() => {
+//   return `${currentStep.value}/${journeySteps.length}`;
+// });
 </script>

@@ -1,59 +1,47 @@
 import { ref, reactive } from "vue";
 import FingerprintJS from "@fingerprintjs/fingerprintjs";
-import type { Payload, JourneyStep, SystemData } from "@/types/journeyPayload";
+import type { Payload, EventPayload, SystemData } from "@/types/journeyPayload";
 
-// Core state for journey tracking
 const currentUserId = ref<string | null>(null);
 const currentSessionId = ref<string | null>(null);
-const journeyStepsData = ref<JourneyStep[]>([]);
+const journeyStepsData = ref<EventPayload[]>([]);
 const collectedUserData = reactive<Record<string, any>>({});
 const deviceSystemData = reactive<Record<string, any>>({});
 const trackerInitialized = ref<boolean>(false);
 
 export const API_URL = "http://localhost:4000";
 
-const onSaveData = async (data: Record<string, any> = {}) => {
+const onSaveInitialInfo = async () => {
+  if (!currentUserId.value) return;
+
+  try {
+    const resp = await fetch(`${API_URL}/users?userId=${currentUserId.value}`);
+    const userExists = await resp.json();
+
+    if (!userExists || userExists?.length === 0) {
+      await fetch(`${API_URL}/users`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          userId: currentUserId.value,
+          recordedAt: new Date().toISOString(),
+          deviceInfo: deviceSystemData,
+        }),
+      });
+    }
+  } catch (error) {
+    console.error("Failed to save initial info:", error);
+  }
+};
+
+const onSaveEvent = async (data: Record<string, any> = {}) => {
   if (!currentUserId.value || !currentSessionId.value) return;
 
   try {
-    // Check if user with userId exists
-    const resp = await fetch(`${API_URL}/users?userId=${currentUserId.value}`);
-    const existingUsers = await resp.json();
-
-    if (existingUsers?.length === 0) {
-      const createResponse = await fetch(`${API_URL}/users`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          userId: currentUserId.value,
-        }),
-      });
-    }
-
-    // Check if session with sessionId exists
-    const sessionResp = await fetch(
-      `${API_URL}/sessions?sessionId=${currentSessionId.value}`
-    );
-    const existingSessions = await sessionResp.json();
-    if (existingSessions?.length === 0) {
-      const createSessionResponse = await fetch(`${API_URL}/sessions`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          userId: currentUserId.value,
-          sessionId: currentSessionId.value,
-        }),
-      });
-    }
-
-    // Save journey step data
-
     if (data) {
-      await fetch(`${API_URL}/journeys`, {
+      await fetch(`${API_URL}/events`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -62,11 +50,11 @@ const onSaveData = async (data: Record<string, any> = {}) => {
       });
     }
   } catch (error) {
-  } finally {
+    console.log("Failed to save event:", error);
   }
 };
 
-export function useJourneyTracker() {
+export function useTracker() {
   // Core Functions - Priority 1: Journey Tracking
 
   /**
@@ -363,14 +351,16 @@ export function useJourneyTracker() {
   /**
    * Initialize tracker
    */
-  const initializeJourneyTracker = async (): Promise<void> => {
+  const initializeTracker = async (): Promise<void> => {
     if (trackerInitialized.value) return;
 
     try {
       journeyStepsData.value = [];
+
       Object.keys(collectedUserData).forEach(
         (key) => delete collectedUserData[key]
       );
+
       Object.keys(deviceSystemData).forEach(
         (key) => delete deviceSystemData[key]
       );
@@ -379,10 +369,9 @@ export function useJourneyTracker() {
       await collectSystemData();
 
       trackerInitialized.value = true;
-      await recordJourneyStep("journey_started");
-      onSaveData();
+      onSaveInitialInfo();
     } catch (error) {
-      console.error("Failed to initialize journey tracker:", error);
+      console.error("Failed to initialize tracker:", error);
       throw error;
     }
   };
@@ -390,31 +379,31 @@ export function useJourneyTracker() {
   /**
    * Record journey step
    */
-  const recordJourneyStep = async (
-    stepName: string,
-    additionalData: Record<string, any> = {}
+  const saveEventRecord = async (
+    eventName: string,
+    meta: Record<string, any> = {}
   ): Promise<void> => {
     if (!trackerInitialized.value) {
-      await initializeJourneyTracker();
+      await initializeTracker();
     }
 
-    if (!currentUserId.value || !currentSessionId.value) {
-      throw new Error("Journey tracker not properly initialized");
-    }
+    if (!currentUserId.value || !currentSessionId.value) return;
 
-    const stepRecord: JourneyStep = {
-      stepName,
-      recordedAt: new Date().toISOString(),
-      sessionId: currentSessionId.value,
+    const eventPayload: EventPayload = {
+      eventName,
       userId: currentUserId.value,
-      currentUrl: window.location.href,
-      currentPath: window.location.pathname,
-      ...additionalData,
+      sessionId: currentSessionId.value,
+      recordedAt: new Date().toISOString(),
+      meta: {
+        currentUrl: window.location.href,
+        currentPath: window.location.pathname,
+        ...meta,
+      },
     };
 
-    journeyStepsData.value.push(stepRecord);
+    journeyStepsData.value.push(eventPayload);
 
-    onSaveData({ ...stepRecord });
+    onSaveEvent({ ...eventPayload });
   };
 
   /**
@@ -424,11 +413,11 @@ export function useJourneyTracker() {
     userInfo: Record<string, any>
   ): Promise<void> => {
     if (!trackerInitialized.value) {
-      await initializeJourneyTracker();
+      await initializeTracker();
     }
 
     Object.assign(collectedUserData, userInfo);
-    await recordJourneyStep("user_information_saved", {
+    await saveEventRecord("user_information_saved", {
       dataFields: Object.keys(userInfo),
     });
   };
@@ -438,7 +427,7 @@ export function useJourneyTracker() {
    */
   const getCompleteJourneyData = async (): Promise<Payload> => {
     if (!trackerInitialized.value) {
-      await initializeJourneyTracker();
+      await initializeTracker();
     }
 
     if (!currentUserId.value || !currentSessionId.value) {
@@ -512,7 +501,6 @@ export function useJourneyTracker() {
   };
 
   return {
-    // State
     currentUserId,
     currentSessionId,
     journeyStepsData,
@@ -520,9 +508,9 @@ export function useJourneyTracker() {
     deviceSystemData,
     trackerInitialized,
 
-    // Methods
-    initializeJourneyTracker,
-    recordJourneyStep,
+    initializeTracker,
+    saveEventRecord,
+
     saveUserInformation,
     getCompleteJourneyData,
     clearAllJourneyData,

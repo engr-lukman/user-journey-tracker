@@ -72,14 +72,13 @@
         </div>
 
         <form
-          @submit.prevent="submitMobileWalletInfo"
+          @submit.prevent="onSubmitHandler"
           class="bg-white rounded-xl sm:rounded-2xl shadow-lg sm:shadow-xl p-3 sm:p-4 md:p-6 space-y-3 sm:space-y-4 md:space-y-6 border border-gray-100"
         >
           <div class="relative">
             <TextField
               id="walletNumber"
               v-model="walletNumber"
-              type="tel"
               label="Wallet Number"
               placeholder="Enter wallet number (11 digits)"
               maxlength="11"
@@ -106,19 +105,20 @@
             class="flex flex-col sm:flex-row space-y-1 sm:space-y-0 sm:space-x-2 md:space-x-4 pt-3 sm:pt-4 md:pt-6"
           >
             <Button
-              type="button"
               variant="secondary"
               full-width
-              @click="goBackToUserInfo"
+              @click="goToBack"
               class="sm:flex-1"
             >
               <span class="text-sm sm:text-base md:text-lg">Back</span>
             </Button>
+
             <Button
               type="submit"
               variant="primary"
               full-width
               class="sm:flex-1"
+              :disabled="!isEnabled"
             >
               <span class="text-sm sm:text-base md:text-lg">Continue</span>
             </Button>
@@ -131,36 +131,33 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { computed, ref } from "vue";
 import { useRouter } from "vue-router";
-import { useJourneyTracker } from "@/composables/useJourneyTracker";
-import { JOURNEY } from "@/constants/journey";
+
+import { useTracker } from "@/composables/useTracker";
+import { EVENTS } from "@/constants/events";
+import { ROUTES } from "@/constants/routes";
 import AppHeader from "@/components/common/AppHeader.vue";
 import AppFooter from "@/components/common/AppFooter.vue";
 import Button from "@/components/ui/Button.vue";
 import TextField from "@/components/ui/TextField.vue";
 
 const router = useRouter();
-const { recordJourneyStep, saveUserInformation } = useJourneyTracker();
+const { saveEventRecord } = useTracker();
 
 const walletNumber = ref("");
+const isEnabled = computed(() => walletNumber?.value?.length === 11);
 
-onMounted(() => {
-  recordJourneyStep(JOURNEY.WALLET_SETUP.steps.PAGE_VIEWED);
-});
-
-const goBackToUserInfo = () => {
-  recordJourneyStep(JOURNEY.WALLET_SETUP.steps.BACK_CLICKED);
-  router.push(JOURNEY.PERSONAL_INFORMATION.path);
+const goToBack = () => {
+  router.push(ROUTES?.WELCOME_PAGE?.path);
 };
 
-const submitMobileWalletInfo = () => {
-  saveUserInformation({
-    walletInformation: {
-      walletNumber: walletNumber.value,
-    },
+const onSubmitHandler = () => {
+  saveEventRecord(EVENTS?.WALLET_NUMBER_SUBMITTED?.NAME, {
+    ...EVENTS?.WALLET_NUMBER_SUBMITTED,
+    walletNumber: walletNumber.value,
   });
-  recordJourneyStep(JOURNEY.WALLET_SETUP.steps.MOBILE_NUMBER_SUBMITTED);
-  router.push(JOURNEY.OTP_VERIFICATION.path);
+
+  router.push(ROUTES?.WALLET_OTP?.path);
 };
 </script>
