@@ -121,7 +121,7 @@ const goToBack = () => {
 };
 
 const onSubmitHandler = () => {
-  saveEventRecord(EVENTS?.ACCOUNT_INFO_SUBMITTED?.NAME, {
+  saveEventRecord(EVENTS?.ACCOUNT_INFO_SUBMITTED?.eventName, {
     ...EVENTS?.ACCOUNT_INFO_SUBMITTED,
     ...payload,
   });

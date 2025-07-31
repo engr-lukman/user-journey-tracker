@@ -113,13 +113,13 @@ const goToBack = () => {
 };
 
 const onResendOtp = () => {
-  saveEventRecord(EVENTS?.EMAIL_OTP_RESEND?.NAME, {
+  saveEventRecord(EVENTS?.EMAIL_OTP_RESEND?.eventName, {
     ...EVENTS?.EMAIL_OTP_RESEND,
   });
 };
 
 const onSubmitHandler = () => {
-  saveEventRecord(EVENTS?.EMAIL_OTP_VERIFIED?.NAME, {
+  saveEventRecord(EVENTS?.EMAIL_OTP_VERIFIED?.eventName, {
     ...EVENTS?.EMAIL_OTP_VERIFIED,
     emailOtp: EmailOTP.value,
   });

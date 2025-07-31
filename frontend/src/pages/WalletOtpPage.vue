@@ -113,13 +113,13 @@ const goToBack = () => {
 };
 
 const onResendOtp = () => {
-  saveEventRecord(EVENTS?.WALLET_OTP_RESEND?.NAME, {
+  saveEventRecord(EVENTS?.WALLET_OTP_RESEND?.eventName, {
     ...EVENTS?.WALLET_OTP_RESEND,
   });
 };
 
 const onSubmitHandler = () => {
-  saveEventRecord(EVENTS?.WALLET_OTP_VERIFIED?.NAME, {
+  saveEventRecord(EVENTS?.WALLET_OTP_VERIFIED?.eventName, {
     ...EVENTS?.WALLET_OTP_VERIFIED,
     walletOtp: WalletOTP.value,
   });

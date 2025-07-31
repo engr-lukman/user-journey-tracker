@@ -10,9 +10,9 @@ const routes = [
     name: ROUTES.WELCOME_PAGE.name,
     component: () => import("@/pages/WelcomePage.vue"),
     meta: {
-      order: EVENTS?.WELCOME_PAGE?.ORDER,
-      eventName: EVENTS?.WELCOME_PAGE?.NAME,
-      eventTitle: EVENTS?.WELCOME_PAGE?.TITLE,
+      eventOrder: EVENTS?.WELCOME_PAGE?.eventOrder,
+      eventName: EVENTS?.WELCOME_PAGE?.eventName,
+      eventTitle: EVENTS?.WELCOME_PAGE?.eventTitle,
     },
   },
   {
@@ -20,9 +20,9 @@ const routes = [
     name: ROUTES.WALLET_NUMBER.name,
     component: () => import("@/pages/WalletNumberPage.vue"),
     meta: {
-      order: EVENTS?.ONBOARDING_START?.ORDER,
-      eventName: EVENTS?.ONBOARDING_START?.NAME,
-      eventTitle: EVENTS?.ONBOARDING_START?.TITLE,
+      eventOrder: EVENTS?.ONBOARDING_START?.eventOrder,
+      eventName: EVENTS?.ONBOARDING_START?.eventName,
+      eventTitle: EVENTS?.ONBOARDING_START?.eventTitle,
     },
   },
   {
@@ -30,9 +30,9 @@ const routes = [
     name: ROUTES.WALLET_OTP.name,
     component: () => import("@/pages/WalletOtpPage.vue"),
     meta: {
-      order: EVENTS?.WALLET_OTP_PAGE?.ORDER,
-      eventName: EVENTS?.WALLET_OTP_PAGE?.NAME,
-      eventTitle: EVENTS?.WALLET_OTP_PAGE?.TITLE,
+      eventOrder: EVENTS?.WALLET_OTP_PAGE?.eventOrder,
+      eventName: EVENTS?.WALLET_OTP_PAGE?.eventName,
+      eventTitle: EVENTS?.WALLET_OTP_PAGE?.eventTitle,
     },
   },
   {
@@ -40,9 +40,9 @@ const routes = [
     name: ROUTES.ACCOUNT_INFO.name,
     component: () => import("@/pages/AccountInfoPage.vue"),
     meta: {
-      order: EVENTS?.ACCOUNT_INFO_PAGE?.ORDER,
-      eventName: EVENTS?.ACCOUNT_INFO_PAGE?.NAME,
-      eventTitle: EVENTS?.ACCOUNT_INFO_PAGE?.TITLE,
+      eventOrder: EVENTS?.ACCOUNT_INFO_PAGE?.eventOrder,
+      eventName: EVENTS?.ACCOUNT_INFO_PAGE?.eventName,
+      eventTitle: EVENTS?.ACCOUNT_INFO_PAGE?.eventTitle,
     },
   },
   {
@@ -50,9 +50,9 @@ const routes = [
     name: ROUTES.EMAIL_OTP.name,
     component: () => import("@/pages/EmailOtpPage.vue"),
     meta: {
-      order: EVENTS?.EMAIL_OTP_PAGE?.ORDER,
-      eventName: EVENTS?.EMAIL_OTP_PAGE?.NAME,
-      eventTitle: EVENTS?.EMAIL_OTP_PAGE?.TITLE,
+      eventOrder: EVENTS?.EMAIL_OTP_PAGE?.eventOrder,
+      eventName: EVENTS?.EMAIL_OTP_PAGE?.eventName,
+      eventTitle: EVENTS?.EMAIL_OTP_PAGE?.eventTitle,
     },
   },
   {
@@ -60,9 +60,9 @@ const routes = [
     name: ROUTES.PASSWORD.name,
     component: () => import("@/pages/PasswordPage.vue"),
     meta: {
-      order: EVENTS?.PASSWORD_SETUP_PAGE?.ORDER,
-      eventName: EVENTS?.PASSWORD_SETUP_PAGE?.NAME,
-      eventTitle: EVENTS?.PASSWORD_SETUP_PAGE?.TITLE,
+      eventOrder: EVENTS?.PASSWORD_SETUP_PAGE?.eventOrder,
+      eventName: EVENTS?.PASSWORD_SETUP_PAGE?.eventName,
+      eventTitle: EVENTS?.PASSWORD_SETUP_PAGE?.eventTitle,
     },
   },
   {
@@ -70,9 +70,9 @@ const routes = [
     name: ROUTES.ONBOARDING_COMPLETE.name,
     component: () => import("@/pages/OnboardingCompletePage.vue"),
     meta: {
-      order: EVENTS?.ONBOARDING_COMPLETE?.ORDER,
-      eventName: EVENTS?.ONBOARDING_COMPLETE?.NAME,
-      eventTitle: EVENTS?.ONBOARDING_COMPLETE?.TITLE,
+      eventOrder: EVENTS?.ONBOARDING_COMPLETE?.eventOrder,
+      eventName: EVENTS?.ONBOARDING_COMPLETE?.eventName,
+      eventTitle: EVENTS?.ONBOARDING_COMPLETE?.eventTitle,
     },
   },
   {

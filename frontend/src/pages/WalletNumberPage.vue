@@ -153,7 +153,7 @@ const goToBack = () => {
 };
 
 const onSubmitHandler = () => {
-  saveEventRecord(EVENTS?.WALLET_NUMBER_SUBMITTED?.NAME, {
+  saveEventRecord(EVENTS?.WALLET_NUMBER_SUBMITTED?.eventName, {
     ...EVENTS?.WALLET_NUMBER_SUBMITTED,
     walletNumber: walletNumber.value,
   });
