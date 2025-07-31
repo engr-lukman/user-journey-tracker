@@ -25,24 +25,20 @@
             </svg>
           </div>
           <h1 class="text-xl sm:text-2xl font-bold text-gray-900 mb-1">
-            Device Information
+            Analytical Reports
           </h1>
         </div>
 
         <!-- Buttons -->
         <div class="flex flex-col sm:flex-row justify-end gap-2 mb-4">
-          <Button @click="exportJourneyData" variant="primary">Export</Button>
-          <Button @click="goToBack" variant="secondary">Home</Button>
+          <Button @click="goToBack" variant="primary">Home</Button>
         </div>
 
         <!-- Tabs -->
         <div class="mb-4">
           <div class="flex border-b border-gray-200">
-            <button @click="activeTab = 'device'" :class="tabClass('device')">
-              Device Data
-            </button>
-            <button @click="activeTab = 'journey'" :class="tabClass('journey')">
-              Journey Data
+            <button @click="activeTab = 'system'" :class="tabClass('system')">
+              System Data
             </button>
             <button @click="activeTab = 'stats'" :class="tabClass('stats')">
               Stats
@@ -58,7 +54,7 @@
             class="mb-4 bg-white p-4 rounded-xl shadow border border-gray-200 text-sm"
           >
             <h2 class="text-lg font-semibold text-gray-800 mb-2">
-              User & Session Stats
+              Statistics Overview
             </h2>
             <div class="text-gray-700 space-y-1">
               <p><strong>Total Unique Users:</strong> {{ stats.userCount }}</p>

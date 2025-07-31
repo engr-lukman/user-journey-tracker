@@ -1,6 +1,6 @@
 import { ref, reactive } from "vue";
 import FingerprintJS from "@fingerprintjs/fingerprintjs";
-import type { Payload, EventPayload, SystemData } from "@/types/journeyPayload";
+import type { EventPayload } from "@/types/journey";
 
 const isInitialized = ref<boolean>(false);
 const userId = ref<string | null>(null);

@@ -1,26 +1,3 @@
-/**
- * User journey tracking data structures
- */
-
-export interface Payload {
-  userId: string;
-  sessionId: string;
-  systemData: SystemData;
-}
-
-export interface SystemData {
-  userId: string;
-  sessionId: string;
-  recordedAt: string;
-  browserInfo: BrowserInfo;
-  deviceInfo: DeviceInfo;
-  hardwareInfo: HardwareInfo;
-  screenInfo: ScreenInfo;
-  networkInfo: NetworkInfo;
-  storageInfo: StorageInfo;
-  fingerprintInfo: FingerprintInfo;
-}
-
 export interface BrowserInfo {
   name: string;
   version: string;
